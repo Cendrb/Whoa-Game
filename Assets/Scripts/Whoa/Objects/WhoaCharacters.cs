@@ -2,27 +2,28 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
-public static class WhoaCharacters
+public class WhoaCharacters
 {
-    public static CharactersData Characters { get; private set; }
-    private static readonly string SavePath = Application.persistentDataPath + "/characters.dat";
+    public List<WhoaCharacter> characters = new List<WhoaCharacter>();
+    private readonly string SavePath = Application.persistentDataPath + "/characters.dat";
 
-    public static WhoaCharacters()
+    public WhoaCharacters()
     {
         Load();
     }
 
-    public static void SetupDefaults()
+    public void SetupDefaults()
     {
-        Characters = new CharactersData();
-        Characters.SetupDefaults();
+        characters = new List<WhoaCharacter>();
+        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 1, (float)23, (float)377, 0));
     }
 
-    public static void Load()
+    public void Load()
     {
         if (!File.Exists(SavePath))
         {
@@ -33,31 +34,18 @@ public static class WhoaCharacters
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.Open);
-            Characters = (CharactersData)formatter.Deserialize(stream);
+            characters = (List<WhoaCharacter>)formatter.Deserialize(stream);
+            stream.Close();
         }
     }
 
-    public static void Save()
+    public void Save()
     {
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.OpenOrCreate);
-        formatter.Serialize(stream, Characters);
+        formatter.Serialize(stream, characters);
+        stream.Close();
     }
 
-    [Serializable]
-    public class CharactersData
-    {
-        public WhoaCharacter Andrsova { get; set; }
-
-        public CharactersData()
-        {
-
-        }
-
-        public void SetupDefaults()
-        {
-            Andrsova = new WhoaCharacter();
-        }
-    }
 }
 

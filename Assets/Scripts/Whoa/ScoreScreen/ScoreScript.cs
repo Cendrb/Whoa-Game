@@ -4,8 +4,9 @@ using System.Collections;
 
 public class ScoreScript : MonoBehaviour
 {
-    public Text scoreText;
+    public Text klidText;
     public Text highScoreText;
+    public Text scoreText;
     public AudioClip failSound;
     public AudioClip highscoreSound;
 
@@ -17,6 +18,7 @@ public class ScoreScript : MonoBehaviour
         else
             audio.PlayOneShot(failSound);
 
+        klidText.text = WhoaPlayerProperties.LastKlid.ToString();
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
         highScoreText.text = WhoaPlayerProperties.HighScore.ToString();
     }

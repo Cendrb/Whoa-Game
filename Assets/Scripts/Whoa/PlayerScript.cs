@@ -3,9 +3,6 @@ using System.Collections;
 
 public class PlayerScript : MonoBehaviour
 {
-    public float flapAmount;
-    public float speed;
-
     public AudioClip flapSound;
     public AudioClip deathSound;
     public AudioClip crashSound;
@@ -15,6 +12,7 @@ public class PlayerScript : MonoBehaviour
     bool flapped = false;
     bool bouncedOff = false;
     int bouncedOffTimer = 0;
+    int lives;
     const int bouncedOffTimerLimit = 40;
 
     ParticleSystem particles;
@@ -25,6 +23,8 @@ public class PlayerScript : MonoBehaviour
         audio.PlayOneShot(startupSound);
         WhoaPlayerProperties.Load();
         WhoaPlayerProperties.LastScore = 0;
+        WhoaPlayerProperties.LastKlid = 0;
+        lives = WhoaPlayerProperties.Character.Lives;
         particles = GetComponentInChildren<ParticleSystem>();
     }
 
@@ -50,7 +50,7 @@ public class PlayerScript : MonoBehaviour
             bouncedOffTimer++;
         }
         else
-            velocity.x = speed * Time.deltaTime;
+            velocity.x = WhoaPlayerProperties.Character.Speed * Time.deltaTime;
         if (bouncedOffTimer == bouncedOffTimerLimit)
         {
             bouncedOffTimer = 0;
@@ -63,7 +63,7 @@ public class PlayerScript : MonoBehaviour
     private Vector3 Flap(Vector3 v)
     {
         flapped = true;
-        v.y = flapAmount;
+        v.y = WhoaPlayerProperties.Character.Flap;
         audio.PlayOneShot(flapSound);
         particles.Emit(10);
         return v;
@@ -78,7 +78,8 @@ public class PlayerScript : MonoBehaviour
         }
         else
             WhoaPlayerProperties.LastWasHighscore = false;
-        WhoaPlayerProperties.Money += WhoaPlayerProperties.LastScore;
+        WhoaPlayerProperties.LastKlid = (int)Mathf.Pow(WhoaPlayerProperties.LastScore, WhoaPlayerProperties.Character.Multiplier);
+        WhoaPlayerProperties.Money += WhoaPlayerProperties.LastKlid;
         WhoaPlayerProperties.Save();
         Application.LoadLevel("WhoaScore");
     }
@@ -87,14 +88,14 @@ public class PlayerScript : MonoBehaviour
     {
         audio.PlayOneShot(crashSound);
 
-        WhoaPlayerProperties.Lives--;
+        lives--;
 
-        if (WhoaPlayerProperties.Lives < 1)
+        if (lives < 1)
             Die();
         else if (type == KillerCollisionScript.KillerType.obstacle)
         {
             Vector2 velocity = rigidbody2D.velocity;
-            velocity.x = -(speed * Time.deltaTime);
+            velocity.x = -(WhoaPlayerProperties.Character.Speed * Time.deltaTime);
             rigidbody2D.velocity = velocity;
             bouncedOff = true;
         }
@@ -103,7 +104,7 @@ public class PlayerScript : MonoBehaviour
     private void OnGUI()
     {
         GUI.Label(new Rect(10, 7, 100, 20), WhoaPlayerProperties.LastScore.ToString());
-        GUI.Label(new Rect(Screen.width - 20, 7, 100, 20), WhoaPlayerProperties.Lives.ToString());
+        GUI.Label(new Rect(Screen.width - 20, 7, 100, 20), lives.ToString());
     }
 
     public void ObstaclePassed()
