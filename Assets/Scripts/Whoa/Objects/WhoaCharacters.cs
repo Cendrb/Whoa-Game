@@ -20,11 +20,12 @@ public class WhoaCharacters
     public void SetupDefaults()
     {
         characters = new List<WhoaCharacter>();
-        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 1, (float)23, (float)377, 0));
+        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 69, (float)23, (float)377, (float)6, 0));
     }
 
     public void Load()
     {
+        Debug.Log("Loading characters...");
         if (!File.Exists(SavePath))
         {
             SetupDefaults();
@@ -32,15 +33,25 @@ public class WhoaCharacters
         }
         else
         {
-            BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.Open);
-            characters = (List<WhoaCharacter>)formatter.Deserialize(stream);
-            stream.Close();
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                characters = (List<WhoaCharacter>)formatter.Deserialize(stream);
+                stream.Close();
+            }
+            catch(Exception e)
+            {
+                stream.Close();
+                SetupDefaults();
+                Save();
+            }
         }
     }
 
     public void Save()
     {
+        Debug.Log("Saving characters...");
         BinaryFormatter formatter = new BinaryFormatter();
         FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.OpenOrCreate);
         formatter.Serialize(stream, characters);

@@ -3,9 +3,9 @@ using System.Collections;
 
 public class KillerCollisionScript : MonoBehaviour
 {
-    public enum KillerType { obstacle, wall }
+    public enum CollisionType { basicObstacle, wall, frozenObstacle, slimyObstacle }
 
-    public KillerType type;
+    public CollisionType type;
     PlayerScript playerScript;
 
     void Start()
@@ -18,7 +18,7 @@ public class KillerCollisionScript : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            playerScript.Kill(type);
+            playerScript.CollideWith(type);
         }
     }
 }

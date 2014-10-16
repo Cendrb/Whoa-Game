@@ -31,6 +31,9 @@ public class WhoaCharacter : ISerializable
     private readonly string SPEED = "speed";
     public float Speed { get; private set; }
 
+    private readonly string GRAVITY = "gravity";
+    public float Gravity { get; private set; }
+
     //Deserialization constructor.
     public WhoaCharacter(SerializationInfo info, StreamingContext ctxt)
     {
@@ -41,10 +44,11 @@ public class WhoaCharacter : ISerializable
         Name = (string)info.GetValue(NAME, typeof(string));
         Flap = (float)info.GetValue(FLAP, typeof(float));
         Speed = (float)info.GetValue(SPEED, typeof(float));
+        Gravity = (float)info.GetValue(GRAVITY, typeof(float));
     }
 
     //Manual creation constructor
-    public WhoaCharacter(string name, float multiplier, int lives, float flap, float speed, int price)
+    public WhoaCharacter(string name, float multiplier, int lives, float flap, float speed, float gravity, int price)
     {
         Multiplier = multiplier;
         Lives = lives;
@@ -52,6 +56,7 @@ public class WhoaCharacter : ISerializable
         Price = price;
         Flap = flap;
         Speed = speed;
+        Gravity = gravity;
     }
 
     //Serialization function.
@@ -64,5 +69,6 @@ public class WhoaCharacter : ISerializable
         info.AddValue(NAME, Name);
         info.AddValue(SPEED, Speed);
         info.AddValue(FLAP, Flap);
+        info.AddValue(GRAVITY, Gravity);
     }
 }
