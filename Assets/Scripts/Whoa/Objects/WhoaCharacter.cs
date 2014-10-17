@@ -34,17 +34,41 @@ public class WhoaCharacter : ISerializable
     private readonly string GRAVITY = "gravity";
     public float Gravity { get; private set; }
 
+    // Statistics
+    private readonly string OBSTACLES_PASSED = "obstacles_passed";
+    public int ObstaclesPassed { get; private set; }
+
+    private readonly string MONEY_EARNED = "money_earned";
+    public int MoneyEarned { get; private set; }
+
     //Deserialization constructor.
     public WhoaCharacter(SerializationInfo info, StreamingContext ctxt)
     {
         Multiplier = (float)info.GetValue(MULTIPLIER, typeof(float));
-        Lives = (int)info.GetValue(LIVES, typeof(int));
+        Lives = GetDeserializedData<int>(LIVES, info);
         Purchased = (bool)info.GetValue(PURCHASED, typeof(bool));
         Price = (int)info.GetValue(PRICE, typeof(int));
         Name = (string)info.GetValue(NAME, typeof(string));
         Flap = (float)info.GetValue(FLAP, typeof(float));
         Speed = (float)info.GetValue(SPEED, typeof(float));
         Gravity = (float)info.GetValue(GRAVITY, typeof(float));
+        ObstaclesPassed = GetDeserializedData<int>(OBSTACLES_PASSED, info);
+        MoneyEarned = GetDeserializedData<int>(MONEY_EARNED, info);
+    }
+
+    private T GetDeserializedData<T>(string key, SerializationInfo info)
+    {
+        Type type = typeof(T);
+        try
+        {
+            return (T)info.GetValue(key, type);
+        }
+        catch(Exception e)
+        {
+            Debug.LogException(e);
+            Debug.LogWarning("Using default value...(" + default(T) + ")");
+            return default(T);
+        }
     }
 
     //Manual creation constructor
@@ -70,5 +94,7 @@ public class WhoaCharacter : ISerializable
         info.AddValue(SPEED, Speed);
         info.AddValue(FLAP, Flap);
         info.AddValue(GRAVITY, Gravity);
+        info.AddValue(OBSTACLES_PASSED, ObstaclesPassed);
+        info.AddValue(MONEY_EARNED, MoneyEarned);
     }
 }

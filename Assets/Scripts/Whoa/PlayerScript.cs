@@ -107,13 +107,6 @@ public class PlayerScript : MonoBehaviour
     {
         audio.PlayOneShot(crashSound);
 
-        switch(type)
-        {
-            case KillerCollisionScript.CollisionType.basicObstacle:
-
-                break;
-        }
-
         lives--;
 
         if (lives < 1)
