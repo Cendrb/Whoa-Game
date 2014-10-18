@@ -14,7 +14,7 @@ public static class WhoaPlayerProperties
 
     public static int HighScore { get; set; }
     public static int LastScore { get; set; }
-    public static int LastKlid { get; set; }
+    public static int LastMoney { get; set; }
     public static int Money { get; set; }
     public static bool LastWasHighscore { get; set; }
 
@@ -35,6 +35,7 @@ public static class WhoaPlayerProperties
     public static void Load()
     {
         Characters.Load();
+        Character = Characters.characters[0];
         Money = PlayerPrefs.GetInt(MONEY_PREFS_KEY);
         HighScore = PlayerPrefs.GetInt(HIGH_SCORE_PREFS_KEY);
     }

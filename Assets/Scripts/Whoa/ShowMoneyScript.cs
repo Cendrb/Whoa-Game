@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class StoreScript : MonoBehaviour
+public class ShowMoneyScript : MonoBehaviour
 {
 
     public Text moneyText;

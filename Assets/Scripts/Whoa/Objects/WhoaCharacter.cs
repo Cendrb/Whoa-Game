@@ -13,8 +13,8 @@ public class WhoaCharacter : ISerializable
     private readonly string MULTIPLIER = "multiplier";
     public float Multiplier { get; private set; }
 
-    private readonly string LIVES = "lives";
-    public int Lives { get; private set; }
+    private readonly string HEALTH = "health";
+    public int Health { get; private set; }
 
     private readonly string PURCHASED = "purchased";
     public bool Purchased { get; private set; }
@@ -34,26 +34,42 @@ public class WhoaCharacter : ISerializable
     private readonly string GRAVITY = "gravity";
     public float Gravity { get; private set; }
 
-    // Statistics
-    private readonly string OBSTACLES_PASSED = "obstacles_passed";
-    public int ObstaclesPassed { get; private set; }
+    private readonly string KLID_ENERGY = "klid_energy";
+    public float KlidEnergy { get; private set; }
 
-    private readonly string MONEY_EARNED = "money_earned";
-    public int MoneyEarned { get; private set; }
+    private readonly string KLID_ENERGY_REGEN = "klid_energy_regen";
+    public float KlidEnergyRegen { get; private set; }
+
+    private readonly string SPELL_SLOTS = "spell_slots";
+    public int SpellSlots { get; private set; }
+
+    //// Statistics
+    //private readonly string OBSTACLES_PASSED = "obstacles_passed";
+    //public int ObstaclesPassed { get; set; }
+
+    //private readonly string MONEY_EARNED = "money_earned";
+    //public int MoneyEarned { get; set; }
+
+    //private readonly string WHOA_FLAPS = "whoa_flaps";
+    //public int WhoaFlaps { get; set; }
 
     //Deserialization constructor.
     public WhoaCharacter(SerializationInfo info, StreamingContext ctxt)
     {
-        Multiplier = (float)info.GetValue(MULTIPLIER, typeof(float));
-        Lives = GetDeserializedData<int>(LIVES, info);
-        Purchased = (bool)info.GetValue(PURCHASED, typeof(bool));
-        Price = (int)info.GetValue(PRICE, typeof(int));
-        Name = (string)info.GetValue(NAME, typeof(string));
-        Flap = (float)info.GetValue(FLAP, typeof(float));
-        Speed = (float)info.GetValue(SPEED, typeof(float));
-        Gravity = (float)info.GetValue(GRAVITY, typeof(float));
-        ObstaclesPassed = GetDeserializedData<int>(OBSTACLES_PASSED, info);
-        MoneyEarned = GetDeserializedData<int>(MONEY_EARNED, info);
+        Multiplier = GetDeserializedData<float>(MULTIPLIER, info);
+        Health = GetDeserializedData<int>(HEALTH, info);
+        Purchased = GetDeserializedData<bool>(PURCHASED, info);
+        Price = GetDeserializedData<int>(PRICE, info);
+        Name = GetDeserializedData<string>(NAME, info);
+        Flap = GetDeserializedData<float>(FLAP, info);
+        Speed = GetDeserializedData<float>(SPEED, info);
+        Gravity = GetDeserializedData<float>(GRAVITY, info);
+        //ObstaclesPassed = GetDeserializedData<int>(OBSTACLES_PASSED, info);
+        //MoneyEarned = GetDeserializedData<int>(MONEY_EARNED, info);
+        //WhoaFlaps = GetDeserializedData<int>(WHOA_FLAPS, info);
+        KlidEnergy = GetDeserializedData<float>(KLID_ENERGY, info);
+        KlidEnergyRegen = GetDeserializedData<float>(KLID_ENERGY_REGEN, info);
+        SpellSlots = GetDeserializedData<int>(SPELL_SLOTS, info);
     }
 
     private T GetDeserializedData<T>(string key, SerializationInfo info)
@@ -72,22 +88,25 @@ public class WhoaCharacter : ISerializable
     }
 
     //Manual creation constructor
-    public WhoaCharacter(string name, float multiplier, int lives, float flap, float speed, float gravity, int price)
+    public WhoaCharacter(string name, float multiplier, int lives, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price)
     {
         Multiplier = multiplier;
-        Lives = lives;
+        Health = lives;
         Name = name;
         Price = price;
         Flap = flap;
         Speed = speed;
         Gravity = gravity;
+        KlidEnergyRegen = klidEnergyRegen;
+        KlidEnergy = klidEnergy;
+        SpellSlots = spellSlotsCount;
     }
 
     //Serialization function.
     public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
     {
         info.AddValue(MULTIPLIER, Multiplier);
-        info.AddValue(LIVES, Lives);
+        info.AddValue(HEALTH, Health);
         info.AddValue(PURCHASED, Purchased);
         info.AddValue(PRICE, Price);
         info.AddValue(NAME, Name);
@@ -96,5 +115,9 @@ public class WhoaCharacter : ISerializable
         info.AddValue(GRAVITY, Gravity);
         info.AddValue(OBSTACLES_PASSED, ObstaclesPassed);
         info.AddValue(MONEY_EARNED, MoneyEarned);
+        info.AddValue(WHOA_FLAPS, WhoaFlaps);
+        info.AddValue(KLID_ENERGY, KlidEnergy);
+        info.AddValue(KLID_ENERGY_REGEN, KlidEnergyRegen);
+        info.AddValue(SPELL_SLOTS, SpellSlots);
     }
 }

@@ -18,7 +18,7 @@ public class ScoreScript : MonoBehaviour
         else
             audio.PlayOneShot(failSound);
 
-        klidText.text = WhoaPlayerProperties.LastKlid.ToString();
+        klidText.text = WhoaPlayerProperties.LastMoney.ToString();
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
         highScoreText.text = WhoaPlayerProperties.HighScore.ToString();
     }

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
+using System;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -9,10 +11,14 @@ public class PlayerScript : MonoBehaviour
     public AudioClip obstaclePassedSound;
     public AudioClip startupSound;
 
+    public Text healthText;
+    public Text klidText;
+    public Text scoreText;
+
     bool flapped = false;
     bool bouncedOff = false;
     int bouncedOffTimer = 0;
-    int lives;
+    int health;
     float speed;
     float flap;
     const int bouncedOffTimerLimit = 40;
@@ -25,31 +31,22 @@ public class PlayerScript : MonoBehaviour
         audio.PlayOneShot(startupSound);
         WhoaPlayerProperties.Load();
         WhoaPlayerProperties.LastScore = 0;
-        WhoaPlayerProperties.LastKlid = 0;
-        lives = WhoaPlayerProperties.Character.Lives;
+        WhoaPlayerProperties.LastMoney = 0;
+        health = WhoaPlayerProperties.Character.Health;
         speed = WhoaPlayerProperties.Character.Speed;
         flap = WhoaPlayerProperties.Character.Flap;
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentInChildren<ParticleSystem>();
+
+        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
+        // TODO Whoa! Spells!
+        klidText.text = String.Format("{0}/{1}", WhoaPlayerProperties.Character.KlidEnergy, WhoaPlayerProperties.Character.KlidEnergy);
     }
 
     // Update is called once per frame
     private void Update()
     {
         Vector2 velocity = rigidbody2D.velocity;
-        if ((Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.Space)) && !flapped)
-        {
-            velocity = Flap(velocity);
-        }
-        if (Input.touches.Length > 0 && !flapped)
-        {
-            velocity = Flap(velocity);
-        }
-        if (!Input.GetMouseButton(0) && !Input.GetKeyDown(KeyCode.Space) && Input.touches.Length == 0)
-        {
-            flapped = false;
-        }
-
         if (bouncedOff)
         {
             bouncedOffTimer++;
@@ -65,13 +62,15 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.velocity = velocity;
     }
 
-    private Vector3 Flap(Vector3 v)
+    public void Flap()
     {
+        Vector2 velocity = rigidbody2D.velocity;
+        WhoaPlayerProperties.Character.WhoaFlaps++;
         flapped = true;
-        v.y = flap;
+        velocity.y = flap;
         audio.PlayOneShot(flapSound);
         particles.Emit(10);
-        return v;
+        rigidbody2D.velocity = velocity;
     }
 
     void Die()
@@ -83,40 +82,40 @@ public class PlayerScript : MonoBehaviour
         }
         else
             WhoaPlayerProperties.LastWasHighscore = false;
-        WhoaPlayerProperties.LastKlid = (int)Mathf.Pow(WhoaPlayerProperties.LastScore, WhoaPlayerProperties.Character.Multiplier);
-        WhoaPlayerProperties.Money += WhoaPlayerProperties.LastKlid;
+        WhoaPlayerProperties.LastMoney = (int)Mathf.Pow(WhoaPlayerProperties.LastScore, WhoaPlayerProperties.Character.Multiplier);
+        WhoaPlayerProperties.Character.MoneyEarned += WhoaPlayerProperties.LastMoney;
+        WhoaPlayerProperties.Money += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Save();
         Application.LoadLevel("WhoaScore");
-    }
-
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(10, 7, 100, 20), WhoaPlayerProperties.LastScore.ToString());
-        GUI.Label(new Rect(Screen.width - 20, 7, 100, 20), lives.ToString());
     }
 
     public void ObstaclePassed()
     {
         audio.PlayOneShot(obstaclePassedSound);
+        WhoaPlayerProperties.Character.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
         if (WhoaPlayerProperties.LastScore % 7 == 0)
             speed++;
+        scoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
     public void CollideWith(KillerCollisionScript.CollisionType type)
     {
         audio.PlayOneShot(crashSound);
 
-        lives--;
-
-        if (lives < 1)
-            Die();
-        else if (type == KillerCollisionScript.CollisionType.basicObstacle)
+        switch(type)
         {
-            Vector2 velocity = rigidbody2D.velocity;
-            velocity.x = -(speed * Time.deltaTime);
-            rigidbody2D.velocity = velocity;
-            bouncedOff = true;
+            case KillerCollisionScript.CollisionType.basicObstacle:
+                health -= 8;
+                break;
+            case KillerCollisionScript.CollisionType.wall:
+                health -= 5;
+                break;
         }
+
+        if (health < 1)
+            Die();
+
+        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
     }
 }

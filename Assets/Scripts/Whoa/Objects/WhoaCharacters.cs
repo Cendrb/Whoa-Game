@@ -20,7 +20,7 @@ public class WhoaCharacters
     public void SetupDefaults()
     {
         characters = new List<WhoaCharacter>();
-        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 69, (float)23, (float)377, (float)6, 0));
+        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 5, (float)23, (float)377, (float)6, 200, (float)0.01, 1, 69));
     }
 
     public void Load()

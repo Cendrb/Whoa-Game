@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Whoa\BordersGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ChangeSceneScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\CharacterStatsScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\FollowObjectScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\KillerCollisionScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
@@ -56,8 +57,11 @@
      <Compile Include="Assets\Scripts\Whoa\ObstaclePassedScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ScoreScreen\ScoreScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\StoreScreen\StoreScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\ShowMoneyScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\ShowMyCharacterNameScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UpgradesScreen\UpgradesScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\WhoaPlayerProperties.cs" />
+     <Compile Include="Assets\Scripts\Whoa\WiperScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>
