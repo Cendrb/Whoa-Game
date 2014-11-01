@@ -38,6 +38,9 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentInChildren<ParticleSystem>();
 
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
+
         healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
         // TODO Whoa! Spells!
         klidText.text = String.Format("{0}/{1}", WhoaPlayerProperties.Character.KlidEnergy, WhoaPlayerProperties.Character.KlidEnergy);
@@ -46,6 +49,16 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (Input.touchCount > 0 || Input.GetMouseButton(0))
+        {
+            if (!flapped)
+            {
+                Flap();
+                flapped = true;
+            }
+        }
+        else
+            flapped = false;
         Vector2 velocity = rigidbody2D.velocity;
         if (bouncedOff)
         {
@@ -65,7 +78,7 @@ public class PlayerScript : MonoBehaviour
     public void Flap()
     {
         Vector2 velocity = rigidbody2D.velocity;
-        WhoaPlayerProperties.Character.WhoaFlaps++;
+        WhoaPlayerProperties.Character.Data.Statistics.WhoaFlaps++;
         flapped = true;
         velocity.y = flap;
         audio.PlayOneShot(flapSound);
@@ -83,7 +96,7 @@ public class PlayerScript : MonoBehaviour
         else
             WhoaPlayerProperties.LastWasHighscore = false;
         WhoaPlayerProperties.LastMoney = (int)Mathf.Pow(WhoaPlayerProperties.LastScore, WhoaPlayerProperties.Character.Multiplier);
-        WhoaPlayerProperties.Character.MoneyEarned += WhoaPlayerProperties.LastMoney;
+        WhoaPlayerProperties.Character.Data.Statistics.MoneyEarned += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Money += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Save();
         Application.LoadLevel("WhoaScore");
@@ -92,7 +105,7 @@ public class PlayerScript : MonoBehaviour
     public void ObstaclePassed()
     {
         audio.PlayOneShot(obstaclePassedSound);
-        WhoaPlayerProperties.Character.ObstaclesPassed++;
+        WhoaPlayerProperties.Character.Data.Statistics.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
         if (WhoaPlayerProperties.LastScore % 7 == 0)
             speed++;

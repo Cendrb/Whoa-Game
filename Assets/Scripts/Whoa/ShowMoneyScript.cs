@@ -10,7 +10,11 @@ public class ShowMoneyScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        WhoaPlayerProperties.Load();
+        ShowMoney();
+    }
+
+    public void ShowMoney()
+    {
         moneyText.text = WhoaPlayerProperties.Money.ToString();
     }
 }

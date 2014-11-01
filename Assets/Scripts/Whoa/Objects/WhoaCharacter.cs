@@ -7,70 +7,33 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
-[Serializable]
-public class WhoaCharacter : ISerializable
+public enum BuyUpgradeResult { success, insufficientMoney, maxLevelReached }
+public enum BuyCharacterResult { success, insufficientMoney, insufficientHighscore }
+
+public class WhoaCharacter
 {
-    private readonly string MULTIPLIER = "multiplier";
     public float Multiplier { get; private set; }
-
-    private readonly string HEALTH = "health";
     public int Health { get; private set; }
-
-    private readonly string PURCHASED = "purchased";
-    public bool Purchased { get; private set; }
-
-    private readonly string PRICE = "price";
     public int Price { get; private set; }
-
-    private readonly string NAME = "name";
     public string Name { get; private set; }
-
-    private readonly string FLAP = "flap";
     public float Flap { get; private set; }
-
-    private readonly string SPEED = "speed";
     public float Speed { get; private set; }
-
-    private readonly string GRAVITY = "gravity";
     public float Gravity { get; private set; }
-
-    private readonly string KLID_ENERGY = "klid_energy";
     public float KlidEnergy { get; private set; }
-
-    private readonly string KLID_ENERGY_REGEN = "klid_energy_regen";
     public float KlidEnergyRegen { get; private set; }
-
-    private readonly string SPELL_SLOTS = "spell_slots";
     public int SpellSlots { get; private set; }
 
-    //// Statistics
-    //private readonly string OBSTACLES_PASSED = "obstacles_passed";
-    //public int ObstaclesPassed { get; set; }
+    private int baseHealth;
+    private float baseKlidEnergy;
+    private float baseKlidEnergyRegen;
 
-    //private readonly string MONEY_EARNED = "money_earned";
-    //public int MoneyEarned { get; set; }
+    public List<CharacterUpgrade> Upgrades { get; private set; }
 
-    //private readonly string WHOA_FLAPS = "whoa_flaps";
-    //public int WhoaFlaps { get; set; }
+    public Sprite Sprite { get; private set; }
 
-    //Deserialization constructor.
-    public WhoaCharacter(SerializationInfo info, StreamingContext ctxt)
-    {
-        Multiplier = GetDeserializedData<float>(MULTIPLIER, info);
-        Health = GetDeserializedData<int>(HEALTH, info);
-        Purchased = GetDeserializedData<bool>(PURCHASED, info);
-        Price = GetDeserializedData<int>(PRICE, info);
-        Name = GetDeserializedData<string>(NAME, info);
-        Flap = GetDeserializedData<float>(FLAP, info);
-        Speed = GetDeserializedData<float>(SPEED, info);
-        Gravity = GetDeserializedData<float>(GRAVITY, info);
-        //ObstaclesPassed = GetDeserializedData<int>(OBSTACLES_PASSED, info);
-        //MoneyEarned = GetDeserializedData<int>(MONEY_EARNED, info);
-        //WhoaFlaps = GetDeserializedData<int>(WHOA_FLAPS, info);
-        KlidEnergy = GetDeserializedData<float>(KLID_ENERGY, info);
-        KlidEnergyRegen = GetDeserializedData<float>(KLID_ENERGY_REGEN, info);
-        SpellSlots = GetDeserializedData<int>(SPELL_SLOTS, info);
-    }
+    public WhoaCharacterData Data { get; private set; }
+
+    private string savePath;
 
     private T GetDeserializedData<T>(string key, SerializationInfo info)
     {
@@ -88,36 +51,142 @@ public class WhoaCharacter : ISerializable
     }
 
     //Manual creation constructor
-    public WhoaCharacter(string name, float multiplier, int lives, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price)
+    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price, List<CharacterUpgrade> upgrades)
     {
         Multiplier = multiplier;
-        Health = lives;
+        baseHealth = health;
         Name = name;
         Price = price;
         Flap = flap;
         Speed = speed;
         Gravity = gravity;
-        KlidEnergyRegen = klidEnergyRegen;
-        KlidEnergy = klidEnergy;
+        baseKlidEnergyRegen = klidEnergyRegen;
+        baseKlidEnergy = klidEnergy;
         SpellSlots = spellSlotsCount;
+
+        Upgrades = upgrades;
+
+        Sprite = Resources.Load<Sprite>("Graphics/Characters/" + Name);
+
+        savePath = Application.persistentDataPath + "/" + Name + ".dat";
+
+        Load();
+
+        foreach (CharacterUpgrade upgrade in Upgrades)
+            upgrade.levelDatabase = Data.UpgradeLevelDatabase;
+
+        applyUpgrades();
     }
 
-    //Serialization function.
-    public void GetObjectData(SerializationInfo info, StreamingContext ctxt)
+    private void applyUpgrades()
     {
-        info.AddValue(MULTIPLIER, Multiplier);
-        info.AddValue(HEALTH, Health);
-        info.AddValue(PURCHASED, Purchased);
-        info.AddValue(PRICE, Price);
-        info.AddValue(NAME, Name);
-        info.AddValue(SPEED, Speed);
-        info.AddValue(FLAP, Flap);
-        info.AddValue(GRAVITY, Gravity);
-        info.AddValue(OBSTACLES_PASSED, ObstaclesPassed);
-        info.AddValue(MONEY_EARNED, MoneyEarned);
-        info.AddValue(WHOA_FLAPS, WhoaFlaps);
-        info.AddValue(KLID_ENERGY, KlidEnergy);
-        info.AddValue(KLID_ENERGY_REGEN, KlidEnergyRegen);
-        info.AddValue(SPELL_SLOTS, SpellSlots);
+        Health = baseHealth;
+        KlidEnergy = baseKlidEnergy;
+        KlidEnergyRegen = baseKlidEnergyRegen;
+
+        foreach(CharacterUpgrade upgrade in Upgrades)
+        {
+            Debug.Log(upgrade.Name);
+            Debug.Log(Data.UpgradeLevelDatabase[upgrade.Name]);
+            int level = Data.UpgradeLevelDatabase[upgrade.Name];
+            foreach(UpgradeEffect effect in upgrade.Effects)
+            {
+                switch(effect.AffectedProperty)
+                {
+                    case EffectAffectedProperty.health:
+                        Health = (int)effect.GetModifiedValue(Health, level);
+                        break;
+                    case EffectAffectedProperty.klid:
+                        KlidEnergy = effect.GetModifiedValue(KlidEnergy, level);
+                        break;
+                    case EffectAffectedProperty.klidRegen:
+                        KlidEnergyRegen = effect.GetModifiedValue(KlidEnergyRegen, level);
+                        break;
+                }
+            }
+        }
+    }
+
+    private void saveDefaults()
+    {
+        Data = new WhoaCharacterData();
+        Data.Statistics = new WhoaCharacterStatistics();
+        Data.UpgradeLevelDatabase = new Dictionary<string, int>();
+        foreach(CharacterUpgrade upgrade in Upgrades)
+            Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
+        Save();
+    }
+
+    public BuyUpgradeResult BuyUpgrade(CharacterUpgrade upgrade)
+    {
+        upgrade.levelDatabase = Data.UpgradeLevelDatabase;
+        Debug.Log(upgrade.GetPrice());
+        Debug.Log(upgrade.GetLevel());
+
+        if (WhoaPlayerProperties.Money >= upgrade.GetPrice())
+        {
+            Debug.Log(upgrade.MaxLevel);
+            Debug.Log(Data.UpgradeLevelDatabase[upgrade.Name]);
+            if (Data.UpgradeLevelDatabase[upgrade.Name] < upgrade.MaxLevel)
+            {
+                Data.UpgradeLevelDatabase[upgrade.Name]++;
+                WhoaPlayerProperties.Money -= upgrade.GetPrice();
+                WhoaPlayerProperties.Save();
+                applyUpgrades();
+                return BuyUpgradeResult.success;
+            }
+            else
+                return BuyUpgradeResult.maxLevelReached;
+        }
+        else
+            return BuyUpgradeResult.insufficientMoney;
+    }
+
+    public BuyCharacterResult BuyCharacter()
+    {
+        if (WhoaPlayerProperties.Money >= Price)
+        {
+            WhoaPlayerProperties.Money -= Price;
+            Data.Purchased = true;
+            WhoaPlayerProperties.Save();
+            return BuyCharacterResult.success;
+        }
+        else
+            return BuyCharacterResult.insufficientMoney;
+    }
+
+    public void Load()
+    {
+        Debug.Log(String.Format("Loading character {0}...", Name));
+        if (!File.Exists(savePath))
+        {
+            saveDefaults();
+        }
+        else
+        {
+            FileStream stream = File.Open(savePath, FileMode.Open);
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                Data = (WhoaCharacterData)formatter.Deserialize(stream);
+                stream.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+                stream.Close();
+                saveDefaults();
+            }
+        }
+    }
+
+    public void Save()
+    {
+        Debug.Log(String.Format("Saving character {0}...", Name));
+        BinaryFormatter formatter = new BinaryFormatter();
+        using (FileStream stream = File.Open(savePath, FileMode.OpenOrCreate))
+        {
+            formatter.Serialize(stream, Data);
+        }
     }
 }

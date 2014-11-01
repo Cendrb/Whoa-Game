@@ -10,52 +10,51 @@ using UnityEngine;
 public class WhoaCharacters
 {
     public List<WhoaCharacter> characters = new List<WhoaCharacter>();
-    private readonly string SavePath = Application.persistentDataPath + "/characters.dat";
 
     public WhoaCharacters()
     {
-        Load();
+        SetupCharacters();
     }
 
-    public void SetupDefaults()
+    public void SetupCharacters()
     {
         characters = new List<WhoaCharacter>();
-        characters.Add(new WhoaCharacter("Andršová", (float)1.12, 5, (float)23, (float)377, (float)6, 200, (float)0.01, 1, 69));
+        List<CharacterUpgrade> upgrades = new List<CharacterUpgrade>();
+
+        CharacterUpgrade healthUpgrade = new CharacterUpgrade("Health", 10, 100, (float)3);
+        float[] modifiersHealth = new float[healthUpgrade.MaxLevel];
+        for(int x = 0; x < modifiersHealth.Length; x++)
+            modifiersHealth[x] = (float)1.5;
+        healthUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.health, EffectMethod.times, modifiersHealth));
+        upgrades.Add(healthUpgrade);
+
+        CharacterUpgrade klidUpgrade = new CharacterUpgrade("Klid", 10, 200, (float)2);
+        float[] modifiersKlid = new float[healthUpgrade.MaxLevel];
+        for(int x = 0; x < modifiersKlid.Length; x++)
+            modifiersKlid[x] = (float)1.5;
+        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klid, EffectMethod.times, modifiersKlid));
+        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klidRegen, EffectMethod.times, modifiersKlid));
+        upgrades.Add(klidUpgrade);
+
+        WhoaCharacter andrs = new WhoaCharacter("Andršová", 10.12F, 5, 23F, 377F, 6F, 200, 0.01F, 1, 69, upgrades);
+        andrs.Data.Purchased = true;
+        andrs.Save();
+        characters.Add(andrs);
+        characters.Add(new WhoaCharacter("Roko", 1.16F, 20, 27F, 377F, 7F, 210, 0.05F, 1, 1000, upgrades));
     }
 
     public void Load()
     {
-        Debug.Log("Loading characters...");
-        if (!File.Exists(SavePath))
-        {
-            SetupDefaults();
-            Save();
-        }
-        else
-        {
-            FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.Open);
-            try
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                characters = (List<WhoaCharacter>)formatter.Deserialize(stream);
-                stream.Close();
-            }
-            catch(Exception e)
-            {
-                stream.Close();
-                SetupDefaults();
-                Save();
-            }
-        }
+        Debug.Log("Loading characters data...");
+        foreach (WhoaCharacter character in characters)
+            character.Load();
     }
 
     public void Save()
     {
-        Debug.Log("Saving characters...");
-        BinaryFormatter formatter = new BinaryFormatter();
-        FileStream stream = File.Open(Application.persistentDataPath + "/characters.dat", FileMode.OpenOrCreate);
-        formatter.Serialize(stream, characters);
-        stream.Close();
+        Debug.Log("Saving characters data...");
+        foreach (WhoaCharacter character in characters)
+            character.Save();
     }
 
 }

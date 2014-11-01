@@ -24,9 +24,9 @@ public class CharacterStatsScript : MonoBehaviour
         flapStrengthText.text = currentCharacter.Flap.ToString();
         speedText.text = currentCharacter.Speed.ToString();
         gravityText.text = currentCharacter.Gravity.ToString();
-        obstaclesPassedText.text = currentCharacter.ObstaclesPassed.ToString();
-        moneyEarnedText.text = currentCharacter.MoneyEarned.ToString();
-        whoaFlapsText.text = currentCharacter.WhoaFlaps.ToString();
+        obstaclesPassedText.text = currentCharacter.Data.Statistics.ObstaclesPassed.ToString();
+        moneyEarnedText.text = currentCharacter.Data.Statistics.MoneyEarned.ToString();
+        whoaFlapsText.text = currentCharacter.Data.Statistics.WhoaFlaps.ToString();
         priceText.text = currentCharacter.Price.ToString();
         healthText.text = currentCharacter.Health.ToString();
         klidEnergyText.text = currentCharacter.KlidEnergy.ToString();

@@ -48,10 +48,15 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Whoa\BordersGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ChangeSceneScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\CharacterShop\CharacterShopScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\CharacterStatsScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\FollowObjectScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\KillerCollisionScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterStatistics.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacters.cs" />
      <Compile Include="Assets\Scripts\Whoa\ObstacleGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ObstaclePassedScript.cs" />

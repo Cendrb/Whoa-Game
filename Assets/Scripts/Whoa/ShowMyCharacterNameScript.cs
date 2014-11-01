@@ -10,6 +10,11 @@ public class ShowMyCharacterNameScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        ShowCurrentCharacterName();
+    }
+
+    public void ShowCurrentCharacterName()
+    {
         CharacterNameText.text = WhoaPlayerProperties.Character.Name;
     }
 }
