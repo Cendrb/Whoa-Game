@@ -42,8 +42,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-Temp/bin/Debug/Assembly-CSharp.dll
-Temp/bin/Debug/Assembly-CSharp.pdb
-Temp/bin/Debug/ICSharpCode.NRefactory.dll
-Temp/bin/Debug/Mono.Cecil.dll
-Temp/UnityLockfile
+Temp/
