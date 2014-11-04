@@ -13,7 +13,7 @@ public class CharacterUpgrade
 
     private int basePrice;
     private float perLevelPriceMultiplier;
-    public Dictionary<string, int> levelDatabase;
+    public Func<string, int> getLevelMethod;
 
     public Sprite Sprite { get; private set; }
 
@@ -30,12 +30,12 @@ public class CharacterUpgrade
 
     public int GetLevel()
     {
-        return levelDatabase[Name];
+        return getLevelMethod(Name);
     }
 
     public int GetPrice()
     {
-        return (int)(basePrice * Mathf.Pow(perLevelPriceMultiplier, levelDatabase[Name]));
+        return (int)(basePrice * Mathf.Pow(perLevelPriceMultiplier, getLevelMethod(Name)));
     }
 }
 

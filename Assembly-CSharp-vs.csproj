@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Whoa\ScoreScreen\ScoreScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ShowMoneyScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ShowMyCharacterNameScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Static.cs" />
      <Compile Include="Assets\Scripts\Whoa\UpgradesScreen\UpgradesScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\WhoaPlayerProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\WiperScript.cs" />

@@ -50,7 +50,6 @@ public class WhoaCharacter
         }
     }
 
-    //Manual creation constructor
     public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price, List<CharacterUpgrade> upgrades)
     {
         Multiplier = multiplier;
@@ -73,9 +72,13 @@ public class WhoaCharacter
         Load();
 
         foreach (CharacterUpgrade upgrade in Upgrades)
-            upgrade.levelDatabase = Data.UpgradeLevelDatabase;
-
+            upgrade.getLevelMethod = getLevelOf;
         applyUpgrades();
+    }
+
+    private int getLevelOf(string upgradeName)
+    {
+        return Data.UpgradeLevelDatabase[upgradeName];
     }
 
     private void applyUpgrades()
@@ -107,7 +110,7 @@ public class WhoaCharacter
         }
     }
 
-    private void saveDefaults()
+    public void SaveDefaults()
     {
         Data = new WhoaCharacterData();
         Data.Statistics = new WhoaCharacterStatistics();
@@ -119,18 +122,12 @@ public class WhoaCharacter
 
     public BuyUpgradeResult BuyUpgrade(CharacterUpgrade upgrade)
     {
-        upgrade.levelDatabase = Data.UpgradeLevelDatabase;
-        Debug.Log(upgrade.GetPrice());
-        Debug.Log(upgrade.GetLevel());
-
         if (WhoaPlayerProperties.Money >= upgrade.GetPrice())
         {
-            Debug.Log(upgrade.MaxLevel);
-            Debug.Log(Data.UpgradeLevelDatabase[upgrade.Name]);
             if (Data.UpgradeLevelDatabase[upgrade.Name] < upgrade.MaxLevel)
             {
-                Data.UpgradeLevelDatabase[upgrade.Name]++;
                 WhoaPlayerProperties.Money -= upgrade.GetPrice();
+                Data.UpgradeLevelDatabase[upgrade.Name]++;
                 WhoaPlayerProperties.Save();
                 applyUpgrades();
                 return BuyUpgradeResult.success;
@@ -160,7 +157,7 @@ public class WhoaCharacter
         Debug.Log(String.Format("Loading character {0}...", Name));
         if (!File.Exists(savePath))
         {
-            saveDefaults();
+            SaveDefaults();
         }
         else
         {
@@ -175,7 +172,7 @@ public class WhoaCharacter
             {
                 Debug.LogException(e);
                 stream.Close();
-                saveDefaults();
+                SaveDefaults();
             }
         }
     }

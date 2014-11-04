@@ -33,6 +33,8 @@ public class CharacterShopScript : MonoBehaviour
         float counter = 0;
         foreach (WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
         {
+            Debug.Log("ZIdan");
+
             GameObject characterObject = (GameObject)Instantiate(CharacterLinePrefab);
             RectTransform rectTransform = characterObject.GetComponent<RectTransform>();
             rectTransform.parent = CharactersParent.transform;
