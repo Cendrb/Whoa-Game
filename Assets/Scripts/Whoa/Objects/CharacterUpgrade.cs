@@ -13,7 +13,7 @@ public class CharacterUpgrade
 
     private int basePrice;
     private float perLevelPriceMultiplier;
-    public Func<string, int> getLevelMethod;
+    public System.Func<string, int> getLevelMethod;
 
     public Sprite Sprite { get; private set; }
 

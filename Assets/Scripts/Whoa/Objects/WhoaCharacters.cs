@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.GData.Spreadsheets;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,46 +20,68 @@ public class WhoaCharacters
     public void SetupCharacters()
     {
         characters = new List<WhoaCharacter>();
-        List<CharacterUpgrade> upgrades = new List<CharacterUpgrade>();
 
-        CharacterUpgrade healthUpgrade = new CharacterUpgrade("Health", 10, 100, (float)3);
-        float[] modifiersHealth = new float[healthUpgrade.MaxLevel];
-        for(int x = 0; x < modifiersHealth.Length; x++)
-            modifiersHealth[x] = (float)1.5;
-        healthUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.health, EffectMethod.times, modifiersHealth));
-        upgrades.Add(healthUpgrade);
+        ListFeed list = GDriveManager.GetSpreadsheet(WhoaPlayerProperties.DRIVE_DOCUMENT_URL, 1);
+        foreach (ListEntry row in list.Entries)
+        {
+            string name = row.Elements[0].Value;
+            float multiplier = float.Parse(row.Elements[1].Value);
+            int health = int.Parse(row.Elements[2].Value);
+            int klid = int.Parse(row.Elements[3].Value);
+            float klidRegen = float.Parse(row.Elements[4].Value);
+            float speed = float.Parse(row.Elements[5].Value);
+            float whoaPower = float.Parse(row.Elements[6].Value);
+            float weight = float.Parse(row.Elements[7].Value);
+            int spellSlotCount = int.Parse(row.Elements[8].Value);
+            int price = int.Parse(row.Elements[9].Value);
+            WhoaCharacter character = new WhoaCharacter(name, multiplier, health, whoaPower, speed, weight, klid, klidRegen, spellSlotCount, price);
+            characters.Add(character);
+        }
 
-        CharacterUpgrade klidUpgrade = new CharacterUpgrade("Klid", 10, 200, (float)2);
-        float[] modifiersKlid = new float[healthUpgrade.MaxLevel];
-        for(int x = 0; x < modifiersKlid.Length; x++)
-            modifiersKlid[x] = (float)1.5;
-        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klid, EffectMethod.times, modifiersKlid));
-        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klidRegen, EffectMethod.times, modifiersKlid));
-        upgrades.Add(klidUpgrade);
+        ListFeed upgradesList = GDriveManager.GetSpreadsheet(WhoaPlayerProperties.DRIVE_DOCUMENT_URL, 2);
+        WhoaCharacter currentlyUpgradedCharacter;
+        CharacterUpgrade upgrade = new CharacterUpgrade("You shall not pass!", 69, 69, 69);
+        foreach (ListEntry row in upgradesList.Entries)
+        {
+            int id = int.Parse(row.Elements[0].Value);
+            if (id == -1)
+            {
+                upgrade.Effects.Add(parseEffect(row));
+            }
+            else
+            {
+                currentlyUpgradedCharacter = characters[id];
+                
+                string name = row.Elements[1].Value;
+                int maxLevel = int.Parse(row.Elements[2].Value);
+                int basePrice = int.Parse(row.Elements[3].Value);
+                float priceMultiplier = float.Parse(row.Elements[4].Value);
+                upgrade = new CharacterUpgrade(name, maxLevel, basePrice, priceMultiplier);
 
-        WhoaCharacter andrs = new WhoaCharacter("Andršová", 1.12F, 5, 23F, 377F, 6F, 200, 0.01F, 1, 69, upgrades);
-        andrs.Data.Purchased = true;
-        andrs.Save();
-        characters.Add(andrs);
+                upgrade.Effects.Add(parseEffect(row));
 
-        upgrades = new List<CharacterUpgrade>();
+                currentlyUpgradedCharacter.AddUpgrade(upgrade);
+            }
+        }
 
-        healthUpgrade = new CharacterUpgrade("Health", 10, 100, (float)3);
-        modifiersHealth = new float[healthUpgrade.MaxLevel];
-        for (int x = 0; x < modifiersHealth.Length; x++)
-            modifiersHealth[x] = (float)1.5;
-        healthUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.health, EffectMethod.times, modifiersHealth));
-        upgrades.Add(healthUpgrade);
+        foreach (WhoaCharacter character in characters)
+            character.Finalize();
 
-        klidUpgrade = new CharacterUpgrade("Klid", 10, 200, (float)2);
-        modifiersKlid = new float[healthUpgrade.MaxLevel];
-        for (int x = 0; x < modifiersKlid.Length; x++)
-            modifiersKlid[x] = (float)1.5;
-        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klid, EffectMethod.times, modifiersKlid));
-        klidUpgrade.Effects.Add(new UpgradeEffect(EffectAffectedProperty.klidRegen, EffectMethod.times, modifiersKlid));
-        upgrades.Add(klidUpgrade);
+    }
+    private UpgradeEffect parseEffect(ListEntry row)
+    {
+        int indexOffset = 5;
 
-        characters.Add(new WhoaCharacter("Roko", 1.16F, 20, 27F, 377F, 7F, 210, 0.05F, 1, 1000, upgrades));
+        EffectAffectedProperty affectedProperty = (EffectAffectedProperty)Enum.Parse(typeof(EffectAffectedProperty), row.Elements[indexOffset].Value);
+        EffectMethod effectMethod = (EffectMethod)Enum.Parse(typeof(EffectMethod), row.Elements[indexOffset + 1].Value);
+
+        indexOffset += 2;
+
+        float[] modifiers = new float[10];
+        for (int x = 0; x < 10; x++)
+            modifiers[x] = float.Parse(row.Elements[x + indexOffset].Value);
+
+        return new UpgradeEffect(affectedProperty, effectMethod, modifiers);
     }
 
     public void WipeCharactersData()

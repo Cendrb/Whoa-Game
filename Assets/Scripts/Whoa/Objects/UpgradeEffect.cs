@@ -28,14 +28,16 @@ public class UpgradeEffect
         if (method == EffectMethod.times)
         {
             for (int x = level; x != 0; x--)
-                modifier *= propertyModifiers[x];
+                modifier *= propertyModifiers[x - 1];
+            return source * modifier;
         }
         else
         {
             for (int x = level; x != 0; x--)
-                modifier += propertyModifiers[x];
+                source += propertyModifiers[x - 1];
+            return source;
         }
-        return source * modifier;
+
     }
 }
 

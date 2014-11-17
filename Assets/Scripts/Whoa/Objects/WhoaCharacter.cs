@@ -30,6 +30,7 @@ public class WhoaCharacter
     public List<CharacterUpgrade> Upgrades { get; private set; }
 
     public Sprite Sprite { get; private set; }
+    public Texture2D Texture { get; private set; }
 
     public WhoaCharacterData Data { get; private set; }
 
@@ -50,7 +51,7 @@ public class WhoaCharacter
         }
     }
 
-    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price, List<CharacterUpgrade> upgrades)
+    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price)
     {
         Multiplier = multiplier;
         baseHealth = health;
@@ -63,22 +64,28 @@ public class WhoaCharacter
         baseKlidEnergy = klidEnergy;
         SpellSlots = spellSlotsCount;
 
-        Upgrades = upgrades;
-
         Sprite = Resources.Load<Sprite>("Graphics/Characters/" + Name);
 
         savePath = Application.persistentDataPath + "/" + Name + ".dat";
 
-        Load();
+        Upgrades = new List<CharacterUpgrade>();
+    }
 
-        foreach (CharacterUpgrade upgrade in Upgrades)
-            upgrade.getLevelMethod = getLevelOf;
-        applyUpgrades();
+    public void AddUpgrade(CharacterUpgrade upgrade)
+    {
+        upgrade.getLevelMethod = getLevelOf;
+        Upgrades.Add(upgrade);
     }
 
     private int getLevelOf(string upgradeName)
     {
         return Data.UpgradeLevelDatabase[upgradeName];
+    }
+
+    public void Finalize()
+    {
+        Load();
+        applyUpgrades();
     }
 
     private void applyUpgrades()

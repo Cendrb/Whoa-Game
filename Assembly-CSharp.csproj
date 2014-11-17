@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,30 +46,51 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Whoa\BordersGeneratorScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\ChangeSceneScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\CharacterShop\CharacterShopScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\CharacterStatsScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\FollowObjectScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\KillerCollisionScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\BordersGeneratorScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\CharacterStatsScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ConstantVelocityScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyByTime.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyOnTouch.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ExplosiveProjectile.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\FollowObjectScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\KillerCollisionScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstacleGeneratorScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstaclePassedScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterStatistics.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacters.cs" />
-     <Compile Include="Assets\Scripts\Whoa\ObstacleGeneratorScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\ObstaclePassedScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\ScoreScreen\ScoreScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\ShowMoneyScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\ShowMyCharacterNameScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Static.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ChangeSceneScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\WiperScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UpgradesScreen\UpgradesScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\WhoaPlayerProperties.cs" />
-     <Compile Include="Assets\Scripts\Whoa\WiperScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.GData.AccessControl">
+ <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.AccessControl.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.GData.Client">
+ <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Client.DLL</HintPath>
+ </Reference>
+ <Reference Include="Google.GData.Extensions">
+ <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Extensions.dll</HintPath>
+ </Reference>
+ <Reference Include="Google.GData.Spreadsheets">
+ <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Spreadsheets.dll</HintPath>
+ </Reference>
+ <Reference Include="Newtonsoft.Json">
+ <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Newtonsoft.Json.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
