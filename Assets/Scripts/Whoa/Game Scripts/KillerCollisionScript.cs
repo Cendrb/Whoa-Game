@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KillerCollisionScript : MonoBehaviour
 {
-    public enum CollisionType { basicObstacle, wall, frozenObstacle, slimyObstacle, njarbeitsheft3, zidan }
+    public enum CollisionType { basicObstacle, wall, frozenObstacle, slimyObstacle, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
 
     public CollisionType type;
     PlayerScript playerScript;
@@ -18,14 +18,8 @@ public class KillerCollisionScript : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            if(type == CollisionType.njarbeitsheft3)
-            {
-                GetComponent<ExplosiveProjectile>().Explode();
-            }
-            if (type == CollisionType.zidan)
-            {
-                GetComponent<ExplosiveProjectile>().Explode();
-            }
+            if (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan)
+                GetComponent<ExplodeScript>().Explode();
             playerScript.CollideWith(type);
         }
     }

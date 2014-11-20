@@ -65,7 +65,7 @@ public class WhoaCharacters
         }
 
         foreach (WhoaCharacter character in characters)
-            character.Finalize();
+            character.LoadEverything();
 
     }
     private UpgradeEffect parseEffect(ListEntry row)
@@ -82,6 +82,14 @@ public class WhoaCharacters
             modifiers[x] = float.Parse(row.Elements[x + indexOffset].Value);
 
         return new UpgradeEffect(affectedProperty, effectMethod, modifiers);
+    }
+
+    public WhoaCharacter FindByName(string name)
+    {
+        foreach (WhoaCharacter character in characters)
+            if (character.Name == name)
+                return character;
+        return null;
     }
 
     public void WipeCharactersData()

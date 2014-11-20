@@ -66,7 +66,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
         else
-            flapped = false;
+            flapped = false;/*
         Vector2 velocity = rigidbody2D.velocity;
         if (bouncedOff)
         {
@@ -80,7 +80,7 @@ public class PlayerScript : MonoBehaviour
             bouncedOff = false;
         }
 
-        rigidbody2D.velocity = velocity;
+        rigidbody2D.velocity = velocity;*/
     }
 
     public void Flap()
@@ -107,7 +107,7 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.MoneyEarned += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Money += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Save();
-        Application.LoadLevel("WhoaScore");
+        Application.LoadLevel("Score");
     }
 
     public void OpenAreaSurvived(int value)
@@ -131,29 +131,41 @@ public class PlayerScript : MonoBehaviour
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
-    public void CollideWith(KillerCollisionScript.CollisionType type)
+    public bool CollideWith(KillerCollisionScript.CollisionType type)
     {
-        audio.PlayOneShot(crashSound);
-
         switch(type)
         {
             case KillerCollisionScript.CollisionType.basicObstacle:
-                health -= 10;
-                break;
+                getDamaged(10);
+                return true;
             case KillerCollisionScript.CollisionType.wall:
-                health -= 5;
-                break;
+                getDamaged(5);
+                return true;
             case KillerCollisionScript.CollisionType.njarbeitsheft3:
-                health -= 7;
-                break;
+                getDamaged(7);
+                return true;
+            case KillerCollisionScript.CollisionType.njarbeitsheft2:
+                getDamaged(5);
+                return true;
+            case KillerCollisionScript.CollisionType.njarbeitsheft1:
+                getDamaged(3);
+                return true;
             case KillerCollisionScript.CollisionType.zidan:
-                health -= 20;
-                break;
+                getDamaged(20);
+                return true;
         }
+
+        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
+        return false;
+    }
+
+    private void getDamaged(int damage)
+    {
+        audio.PlayOneShot(crashSound);
+
+        health -= damage;
 
         if (health < 1)
             GetRekt();
-
-        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
     }
 }

@@ -8,7 +8,7 @@ using System.Text;
 using UnityEngine;
 
 public enum BuyUpgradeResult { success, insufficientMoney, maxLevelReached }
-public enum BuyCharacterResult { success, insufficientMoney, insufficientHighscore }
+public enum BuyCharacterResult { success, insufficientMoney }
 
 public class WhoaCharacter
 {
@@ -82,7 +82,7 @@ public class WhoaCharacter
         return Data.UpgradeLevelDatabase[upgradeName];
     }
 
-    public void Finalize()
+    public void LoadEverything()
     {
         Load();
         applyUpgrades();

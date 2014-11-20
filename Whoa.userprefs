@@ -1,10 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\BordersGeneratorScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Objects\Aspects\Self\NewBehaviourScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\Whoa\ObstacleGeneratorScript.cs" Line="95" Column="35" />
-      <File FileName="Assets\Scripts\Whoa\KillerCollisionScript.cs" Line="19" Column="1" />
-      <File FileName="Assets\Scripts\Whoa\BordersGeneratorScript.cs" Line="14" Column="24" />
+      <File FileName="Assets\Scripts\Whoa\Objects\Aspects\Self\NewBehaviourScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -11,11 +11,13 @@ public class ObstacleGeneratorScript : MonoBehaviour
     float spaceBetweenObstacles;
     int obstaclesPerSection;
 
-    private int areasPassed = 0;
+    private int areasPassed = -1;
 
     Vector2 lastpos;
 
-    public GameObject NJArbeitsheft;
+    public GameObject NJArbeitsheft3;
+    public GameObject NJArbeitsheft2;
+    public GameObject NJArbeitsheft1;
     public GameObject Zidan;
 
     public PlayerScript playerScript;
@@ -96,6 +98,9 @@ public class ObstacleGeneratorScript : MonoBehaviour
         else
         {
             Debug.Log(Time.fixedDeltaTime);
+            int zidanCount = WhoaPlayerProperties.Settings.ZidanCount + areasPassed / 2;
+            float minimumArbeitsheftDistance = 0.001f;
+            float maximumArbeitsheftDistance = 1.8f;
 
             float sizeOfArea = WhoaPlayerProperties.Settings.FreeAreaSize;
             float playerTimeForFullArea = sizeOfArea / (WhoaPlayerProperties.Character.Speed * Time.fixedDeltaTime);
@@ -103,28 +108,51 @@ public class ObstacleGeneratorScript : MonoBehaviour
 
             float distanceMaxAdditionForZidan = playerTimeForFullArea * (WhoaPlayerProperties.Settings.ZidanSpeed) * Time.fixedDeltaTime;
             float distanceMinAdditionForZidan = playerTimeForOffsetArea * (WhoaPlayerProperties.Settings.ZidanSpeed) * Time.fixedDeltaTime;
-            float distanceBetweenZidans = (distanceMaxAdditionForZidan + sizeOfArea - WhoaPlayerProperties.Settings.FreeAreaEntityOffset) / WhoaPlayerProperties.Settings.ZidanCount;
+            float distanceBetweenZidans = (distanceMaxAdditionForZidan + sizeOfArea - WhoaPlayerProperties.Settings.FreeAreaEntityOffset) / zidanCount;
 
             bordersGeneratorScript.GenerateBorders(sizeOfArea + distanceMaxAdditionForZidan);
             float zidanVelocity = WhoaPlayerProperties.Settings.ZidanSpeed * Time.fixedDeltaTime;
-            for (int x = WhoaPlayerProperties.Settings.ZidanCount; x != 0; x--)
-                SummonZidan(new Vector2((lastpos.x + offset + (x * distanceBetweenZidans)) + distanceMinAdditionForZidan, -5), new Quaternion(), -(zidanVelocity));
+            for (int x = zidanCount; x != 0; x--)
+                SummonZidan(new Vector2((lastpos.x + offset + (x * distanceBetweenZidans)) + distanceMinAdditionForZidan, -5), new Quaternion(), new Vector2(-(zidanVelocity), 0));
             lastpos.x += sizeOfArea;
+
+            for (float distance = minimumArbeitsheftDistance; distance < maximumArbeitsheftDistance; distance += 0.6f)
+                SummonNJArbeitsheft3(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
+
+            for (float distance = minimumArbeitsheftDistance; distance < maximumArbeitsheftDistance; distance += 0.5f)
+                SummonNJArbeitsheft2(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
+
+            for (float distance = minimumArbeitsheftDistance; distance < maximumArbeitsheftDistance; distance += 0.4f)
+                SummonNJArbeitsheft1(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
         }
         transform.position = lastpos;
     }
 
-    private GameObject SummonNJArbeitsheft3(Vector2 pos, Quaternion quat, Vector2 velocity)
+    private GameObject SummonNJArbeitsheft3(Vector2 pos)
     {
-        GameObject arbeitsheft = Instantiate(NJArbeitsheft, pos, quat) as GameObject;
-        arbeitsheft.rigidbody2D.velocity = velocity;
+        GameObject arbeitsheft = Instantiate(NJArbeitsheft3, pos, new Quaternion()) as GameObject;
+        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-12, -8), Random.Range(-7, 7));
         return arbeitsheft;
     }
 
-    private GameObject SummonZidan(Vector2 pos, Quaternion quat, float velocity)
+    private GameObject SummonNJArbeitsheft2(Vector2 pos)
+    {
+        GameObject arbeitsheft = Instantiate(NJArbeitsheft2, pos, new Quaternion()) as GameObject;
+        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-14, -9), Random.Range(-8, 8));
+        return arbeitsheft;
+    }
+
+    private GameObject SummonNJArbeitsheft1(Vector2 pos)
+    {
+        GameObject arbeitsheft = Instantiate(NJArbeitsheft1, pos, new Quaternion()) as GameObject;
+        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-15, -10), Random.Range(-10, 10));
+        return arbeitsheft;
+    }
+
+    private GameObject SummonZidan(Vector2 pos, Quaternion quat, Vector2 velocity)
     {
         GameObject zidan = Instantiate(Zidan, pos, quat) as GameObject;
-        zidan.GetComponent<ConstantVelocityScript>().xVelocity = velocity;
+        zidan.rigidbody2D.velocity = velocity;
         return zidan;
     }
 }
