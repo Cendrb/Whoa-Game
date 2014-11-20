@@ -60,9 +60,10 @@
     <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" />
     <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
-    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Spell parts\SelfAspect.cs" />
-    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Templates\ParkourTemplate.cs" />
-    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Templates\SelfAspectTemplate.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ParkourSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\PlayerEffects.cs" />
