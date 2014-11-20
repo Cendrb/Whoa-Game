@@ -7,14 +7,5 @@ namespace Aspects.Self.Effects
 {
     public class ParkourSelfEffect : SelfEffect
     {
-        public ParkourSelfEffect()
-        {
-            
-        }
-
-        public override void ApplyEffect(PlayerScript playerScript, WhoaCharacter character)
-        {
-
-        }
     }
 }

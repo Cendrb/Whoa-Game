@@ -17,8 +17,6 @@ public class PlayerScript : MonoBehaviour
     public Text obstaclesPassed;
     public Text openAreasPassed;
 
-    
-
     int obstaclesPassedCount;
     int openAreasPassedCount;
 

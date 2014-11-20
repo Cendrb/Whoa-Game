@@ -60,7 +60,9 @@
     <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" />
     <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\HealSelfEffect.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ParkourSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ValueSelfEffect.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspect.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SelfEffect.cs" />
     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />

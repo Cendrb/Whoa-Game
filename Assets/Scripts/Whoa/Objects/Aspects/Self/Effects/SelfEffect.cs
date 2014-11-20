@@ -13,7 +13,5 @@ namespace Aspects.Self.Effects
         {
             Duration = duration;
         }
-
-        public abstract void ApplyEffect(PlayerScript playerScript, WhoaCharacter character);
     }
 }
