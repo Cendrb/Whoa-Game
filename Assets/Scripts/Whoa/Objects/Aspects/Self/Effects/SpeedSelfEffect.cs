@@ -6,22 +6,22 @@ using UnityEngine;
 
 namespace Aspects.Self.Effects
 {
-    public class HealSelfEffect : StartEndSelfEffect
+    public class SpeedSelfEffect : StartEndSelfEffect
     {
-        public HealSelfEffect(int healAmount)
-            : base(0, healAmount)
+        public SpeedSelfEffect(int duration, int speedAmount)
+            : base(duration, speedAmount)
         {
 
         }
 
         public override void Start(PlayerDynamicProperties properties)
         {
-            properties.Health += Amplifier;
+            properties.Speed += Amplifier;
         }
 
         public override void End(PlayerDynamicProperties properties)
         {
-            
+            properties.Speed -= Amplifier;
         }
     }
 }

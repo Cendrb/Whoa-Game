@@ -34,7 +34,19 @@ namespace Aspects.Self
             switch(Type)
             {
                 case SelfTemplateType.BablBam:
-                    break;
+                    return new BablBamEffect(Duration);
+                case SelfTemplateType.Speed:
+                    return new SpeedSelfEffect(Duration, Amplifier);
+                case SelfTemplateType.Slowness:
+                    return new SlownessSelfEffect(Duration, Amplifier);
+                case SelfTemplateType.Inteligence:
+                    return new ArbeitsheftProtectionSelfEffect(Duration);
+                case SelfTemplateType.Parkour:
+                    return new ParkourSelfEffect(Duration);
+                case SelfTemplateType.Heal:
+                    return new HealSelfEffect(Amplifier);
+                case SelfTemplateType.Regeneration:
+                    return new RegenerationSelfEffect(Duration, Amplifier);
             }
             return null;
         }

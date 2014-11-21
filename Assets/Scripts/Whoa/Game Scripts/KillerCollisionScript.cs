@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KillerCollisionScript : MonoBehaviour
 {
-    public enum CollisionType { basicObstacle, wall, frozenObstacle, slimyObstacle, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
+    public enum CollisionType { basicObstacle, wall, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
 
     public CollisionType type;
     PlayerScript playerScript;

@@ -20,12 +20,11 @@ public class PlayerScript : MonoBehaviour
     int obstaclesPassedCount;
     int openAreasPassedCount;
 
+    PlayerDynamicProperties properties;
+
     bool flapped = false;
     bool bouncedOff = false;
     int bouncedOffTimer = 0;
-    int health;
-    float speed;
-    float flap;
     const int bouncedOffTimerLimit = 40;
 
     ParticleSystem[] particles;
@@ -37,9 +36,9 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Load();
         WhoaPlayerProperties.LastScore = 0;
         WhoaPlayerProperties.LastMoney = 0;
-        health = WhoaPlayerProperties.Character.Health;
-        speed = WhoaPlayerProperties.Character.Speed;
-        flap = WhoaPlayerProperties.Character.Flap;
+        properties = new PlayerDynamicProperties(WhoaPlayerProperties.Character);
+        properties.HealthChanged += RefreshHealthLabel;
+        properties.KlidChanged += RefreshKlidLabel;
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentsInChildren<ParticleSystem>();
 
@@ -49,9 +48,8 @@ public class PlayerScript : MonoBehaviour
         particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
         particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
 
-        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
-        // TODO Whoa! Spells!
-        klidText.text = String.Format("{0}/{1}", WhoaPlayerProperties.Character.KlidEnergy, WhoaPlayerProperties.Character.KlidEnergy);
+        RefreshHealthLabel();
+        RefreshKlidLabel();
     }
 
     // Update is called once per frame
@@ -88,7 +86,7 @@ public class PlayerScript : MonoBehaviour
         Vector2 velocity = rigidbody2D.velocity;
         WhoaPlayerProperties.Character.Data.Statistics.WhoaFlaps++;
         flapped = true;
-        velocity.y = flap;
+        velocity.y = properties.Flap;
         audio.PlayOneShot(flapSound);
         particles[0].Emit(10);
         rigidbody2D.velocity = velocity;
@@ -124,8 +122,6 @@ public class PlayerScript : MonoBehaviour
         audio.PlayOneShot(obstaclePassedSound);
         WhoaPlayerProperties.Character.Data.Statistics.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
-        if (WhoaPlayerProperties.LastScore % 7 == 0)
-            speed++;
         obstaclesPassedCount++;
         obstaclesPassed.text = obstaclesPassedCount.ToString();
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
@@ -133,39 +129,35 @@ public class PlayerScript : MonoBehaviour
 
     public bool CollideWith(KillerCollisionScript.CollisionType type)
     {
-        switch(type)
-        {
-            case KillerCollisionScript.CollisionType.basicObstacle:
-                getDamaged(10);
-                return true;
-            case KillerCollisionScript.CollisionType.wall:
-                getDamaged(5);
-                return true;
-            case KillerCollisionScript.CollisionType.njarbeitsheft3:
-                getDamaged(7);
-                return true;
-            case KillerCollisionScript.CollisionType.njarbeitsheft2:
-                getDamaged(5);
-                return true;
-            case KillerCollisionScript.CollisionType.njarbeitsheft1:
-                getDamaged(3);
-                return true;
-            case KillerCollisionScript.CollisionType.zidan:
-                getDamaged(20);
-                return true;
-        }
+        bool result = getDamaged(properties.GetCollisionHandling(type));
 
-        healthText.text = String.Format("{0}/{1}", health, WhoaPlayerProperties.Character.Health);
-        return false;
+        if (result)
+            RefreshHealthLabel();
+        return result;
     }
 
-    private void getDamaged(int damage)
+    private void RefreshHealthLabel()
     {
+        healthText.text = String.Format("{0}/{1}", properties.Health, properties.MaxHealth);
+    }
+
+    private void RefreshKlidLabel()
+    {
+        klidText.text = String.Format("{0}/{1}", properties.Klid, properties.MaxKlid);
+    }
+
+    private bool getDamaged(int damage)
+    {
+        if (damage == -1)
+            return false;
+
         audio.PlayOneShot(crashSound);
 
-        health -= damage;
+        properties.Health -= damage;
 
-        if (health < 1)
+        if (properties.Health < 1)
             GetRekt();
+
+        return true;
     }
 }
