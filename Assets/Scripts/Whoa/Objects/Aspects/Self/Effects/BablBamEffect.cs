@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public class BablBamEffect : StartEndSelfEffect
     {
-        public BablBamEffect(int duration)
-            : base(duration, 0)
+        public BablBamEffect(Sprite sprite, int duration)
+            : base(sprite, duration, 0)
         {
 
         }

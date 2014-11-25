@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public class HealSelfEffect : StartEndSelfEffect
     {
-        public HealSelfEffect(int healAmount)
-            : base(0, healAmount)
+        public HealSelfEffect(Sprite sprite, int healAmount)
+            : base(sprite, 0, healAmount)
         {
 
         }

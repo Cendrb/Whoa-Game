@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public abstract class StartEndSelfEffect : SelfEffect
     {
-        public StartEndSelfEffect(int duration, int amplifier)
-            : base(duration, amplifier)
+        public StartEndSelfEffect(Sprite sprite, int duration, int amplifier)
+            : base(sprite, duration, amplifier)
         {
 
         }

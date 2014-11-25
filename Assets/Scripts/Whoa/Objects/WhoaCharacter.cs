@@ -21,11 +21,15 @@ public class WhoaCharacter
     public float Gravity { get; private set; }
     public float KlidEnergy { get; private set; }
     public float KlidEnergyRegen { get; private set; }
-    public int SpellSlots { get; private set; }
+    public int SelfSpellSlots { get; private set; }
+    public int RangedSpellSlots { get; private set; }
 
     private int baseHealth;
     private float baseKlidEnergy;
     private float baseKlidEnergyRegen;
+    private float baseSpeed;
+    private float baseFlap;
+    private float baseGravity;
 
     public List<CharacterUpgrade> Upgrades { get; private set; }
 
@@ -43,7 +47,7 @@ public class WhoaCharacter
         {
             return (T)info.GetValue(key, type);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogException(e);
             Debug.LogWarning("Using default value...(" + default(T) + ")");
@@ -51,18 +55,22 @@ public class WhoaCharacter
         }
     }
 
-    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int spellSlotsCount, int price)
+    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int selfSpellSlots, int rangedSpellSlots, int price)
     {
         Multiplier = multiplier;
         baseHealth = health;
         Name = name;
         Price = price;
         Flap = flap;
+        baseFlap = flap;
         Speed = speed;
+        baseSpeed = speed;
         Gravity = gravity;
+        baseGravity = gravity;
         baseKlidEnergyRegen = klidEnergyRegen;
         baseKlidEnergy = klidEnergy;
-        SpellSlots = spellSlotsCount;
+        SelfSpellSlots = selfSpellSlots;
+        RangedSpellSlots = rangedSpellSlots;
 
         Sprite = Resources.Load<Sprite>("Graphics/Characters/" + Name);
 
@@ -93,15 +101,16 @@ public class WhoaCharacter
         Health = baseHealth;
         KlidEnergy = baseKlidEnergy;
         KlidEnergyRegen = baseKlidEnergyRegen;
+        Gravity = baseGravity;
+        Flap = baseFlap;
+        Speed = baseSpeed;
 
-        foreach(CharacterUpgrade upgrade in Upgrades)
+        foreach (CharacterUpgrade upgrade in Upgrades)
         {
-            Debug.Log(upgrade.Name);
-            Debug.Log(Data.UpgradeLevelDatabase[upgrade.Name]);
             int level = Data.UpgradeLevelDatabase[upgrade.Name];
-            foreach(UpgradeEffect effect in upgrade.Effects)
+            foreach (UpgradeEffect effect in upgrade.Effects)
             {
-                switch(effect.AffectedProperty)
+                switch (effect.AffectedProperty)
                 {
                     case EffectAffectedProperty.health:
                         Health = (int)effect.GetModifiedValue(Health, level);
@@ -111,6 +120,15 @@ public class WhoaCharacter
                         break;
                     case EffectAffectedProperty.klidRegen:
                         KlidEnergyRegen = effect.GetModifiedValue(KlidEnergyRegen, level);
+                        break;
+                    case EffectAffectedProperty.speed:
+                        Speed = effect.GetModifiedValue(Speed, level);
+                        break;
+                    case EffectAffectedProperty.flap:
+                        Flap = effect.GetModifiedValue(Flap, level);
+                        break;
+                    case EffectAffectedProperty.gravity:
+                        Gravity = effect.GetModifiedValue(Gravity, level);
                         break;
                 }
             }
@@ -122,7 +140,9 @@ public class WhoaCharacter
         Data = new WhoaCharacterData();
         Data.Statistics = new WhoaCharacterStatistics();
         Data.UpgradeLevelDatabase = new Dictionary<string, int>();
-        foreach(CharacterUpgrade upgrade in Upgrades)
+        Data.SelectedSelfSpellsIds = new List<int>();
+        Data.SelectedRangedSpellsIds = new List<int>();
+        foreach (CharacterUpgrade upgrade in Upgrades)
             Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
         Save();
     }
@@ -131,6 +151,8 @@ public class WhoaCharacter
     {
         if (WhoaPlayerProperties.Money >= upgrade.GetPrice())
         {
+            if(!Data.UpgradeLevelDatabase.ContainsKey(upgrade.Name))
+                Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
             if (Data.UpgradeLevelDatabase[upgrade.Name] < upgrade.MaxLevel)
             {
                 WhoaPlayerProperties.Money -= upgrade.GetPrice();
@@ -161,7 +183,6 @@ public class WhoaCharacter
 
     public void Load()
     {
-        Debug.Log(String.Format("Loading character {0}...", Name));
         if (!File.Exists(savePath))
         {
             SaveDefaults();
@@ -174,19 +195,41 @@ public class WhoaCharacter
                 BinaryFormatter formatter = new BinaryFormatter();
                 Data = (WhoaCharacterData)formatter.Deserialize(stream);
                 stream.Close();
+                if (Data.SelectedRangedSpellsIds == null || Data.SelectedSelfSpellsIds == null)
+                    throw new ArgumentNullException("Loaded old version of data. Converting to new one.");
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
                 stream.Close();
-                SaveDefaults();
+                try
+                {
+                    //Try To Load Old Version Of WhoaCharacterData And Convert To New One
+                    stream = File.Open(savePath, FileMode.Open);
+                    BinaryFormatter formatter = new BinaryFormatter();
+                    OLDWhoaCharacterData oldData = (OLDWhoaCharacterData)formatter.Deserialize(stream);
+                    stream.Close();
+                    Data = new WhoaCharacterData();
+                    Data.Purchased = oldData.Purchased;
+                    Data.Statistics = oldData.Statistics;
+                    Data.UpgradeLevelDatabase = oldData.UpgradeLevelDatabase;
+                    Data.SelectedRangedSpellsIds = new List<int>();
+                    Data.SelectedSelfSpellsIds = new List<int>();
+
+                    Save();
+                }
+                catch (Exception innerE)
+                {
+                    stream.Close();
+                    Debug.LogException(innerE);
+                    SaveDefaults();
+                }
             }
         }
     }
 
     public void Save()
     {
-        Debug.Log(String.Format("Saving character {0}...", Name));
         BinaryFormatter formatter = new BinaryFormatter();
         using (FileStream stream = File.Open(savePath, FileMode.OpenOrCreate))
         {

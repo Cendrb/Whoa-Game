@@ -13,7 +13,7 @@ public class CharacterShopScript : MonoBehaviour
 
     public Text NameText;
     public Text MultiplierText;
-    public Text HealthText; 
+    public Text HealthText;
     public Text KlidText;
     public Text KlidRegenText;
     public Text SpellSlotCountText;
@@ -52,6 +52,9 @@ public class CharacterShopScript : MonoBehaviour
             counter -= 80;
         }
 
+        RectTransform rekt = CharactersParent.GetComponent<RectTransform>();
+        rekt.sizeDelta = new Vector2(0, -counter);
+
         SelectCharacter(0);
     }
 
@@ -84,7 +87,7 @@ public class CharacterShopScript : MonoBehaviour
         NameText.text = selectedCharacter.Name;
         setValueAndColor(MultiplierText, selectedCharacter.Multiplier, active.Multiplier);
         setValueAndColor(HealthText, selectedCharacter.Health, active.Health);
-        setValueAndColor(SpellSlotCountText, selectedCharacter.SpellSlots, active.SpellSlots);
+        setValueAndColor(SpellSlotCountText, selectedCharacter.SelfSpellSlots, active.SelfSpellSlots);
         setValueAndColor(WeightText, selectedCharacter.Gravity, active.Gravity);
         setValueAndColor(WhoaPowerText, selectedCharacter.Flap, active.Flap);
         setValueAndColor(SpeedText, selectedCharacter.Speed, active.Speed);
@@ -96,12 +99,12 @@ public class CharacterShopScript : MonoBehaviour
 
     private void setValueAndColor(Text target, float selected, float active)
     {
-        if(selected > active)
+        if (selected > active)
         {
             target.color = new Color32(0, 220, 0, 255);
             target.text = String.Format("{0} (+{1})", selected, selected - active);
-        } 
-        else if(selected < active)
+        }
+        else if (selected < active)
         {
             target.color = new Color32(150, 0, 0, 255);
             target.text = String.Format("{0} (-{1})", selected, active - selected);
@@ -115,7 +118,7 @@ public class CharacterShopScript : MonoBehaviour
 
     public void BuySelectedCharacter()
     {
-        if(!selectedCharacter.Data.Purchased && selectedCharacter.BuyCharacter() == BuyCharacterResult.success)
+        if (!selectedCharacter.Data.Purchased && selectedCharacter.BuyCharacter() == BuyCharacterResult.success)
         {
             ViewData();
         }

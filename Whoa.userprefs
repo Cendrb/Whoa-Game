@@ -1,9 +1,36 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Objects\Aspects\Self\NewBehaviourScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs">
     <Files>
-      <File FileName="Assets\Scripts\Whoa\Objects\Aspects\Self\NewBehaviourScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" Line="48" Column="74" />
+      <File FileName="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" Line="24" Column="39" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Assembly-CSharp" expanded="True">
+            <Node name="Scripts" expanded="True">
+              <Node name="Whoa" expanded="True">
+                <Node name="Game Scripts" expanded="True">
+                  <Node name="PlayerScript.cs" selected="True" />
+                </Node>
+                <Node name="Objects" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>WhoaPlayerProperties.Character</Value>
+          <Value>WhoaPlayerProperties.Spells</Value>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

@@ -2,6 +2,8 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using Aspects.Self.Effects;
+using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -17,16 +19,22 @@ public class PlayerScript : MonoBehaviour
     public Text obstaclesPassed;
     public Text openAreasPassed;
 
+    public GameObject activeEffectPrefab;
+    public GameObject activeEffectsContainer;
+    public GameObject castSelfSpellButtonPrefab;
+
+    public Dictionary<int, GameObject> selfSpellButtons;
+
+    public Canvas canvas;
+
     int obstaclesPassedCount;
     int openAreasPassedCount;
-
     PlayerDynamicProperties properties;
-
     bool flapped = false;
+    bool selfSpellCasted = false;
     bool bouncedOff = false;
     int bouncedOffTimer = 0;
     const int bouncedOffTimerLimit = 40;
-
     ParticleSystem[] particles;
 
     // Use this for initialization
@@ -42,11 +50,30 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentsInChildren<ParticleSystem>();
 
+        selfSpellButtons = new Dictionary<int, GameObject>();
+        int counter = 130;
+        foreach (int index in WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds)
+        {
+            SelfSpell spell = WhoaPlayerProperties.Spells.SelfSpells[index];
+            spell.GenerateEffects();
+            GameObject button = (GameObject)Instantiate(castSelfSpellButtonPrefab);
+            RectTransform rectTransform = button.GetComponent<RectTransform>();
+            rectTransform.parent = activeEffectsContainer.transform;
+            rectTransform.localScale = new Vector3(1, 1, 1);
+            rectTransform.anchoredPosition = new Vector2(120, counter);
+            Text abbreviateText = button.GetComponentInChildren<Text>();
+            abbreviateText.text = spell.Abbreviate;
+            selfSpellButtons.Add(index, button);
+            counter += 160;
+        }
+
         SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
 
         particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
         particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
+
+        StartCoroutine(KlidRegeneration());
 
         RefreshHealthLabel();
         RefreshKlidLabel();
@@ -55,30 +82,98 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.touchCount > 0 || Input.GetMouseButton(0))
+        if (Input.touchCount > 0)
         {
-            if (!flapped)
+            foreach (Touch touch in Input.touches)
             {
-                Flap();
-                flapped = true;
+                if (touch.phase == TouchPhase.Began)
+                {
+                    Vector2 pos = Camera.main.ScreenToWorldPoint(touch.position);
+                    bool casted = false;
+                    foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
+                    {
+                        if (pair.Value.collider2D.OverlapPoint(pos))
+                        {
+                            CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
+                            casted = true;
+                            break;
+                        }
+                    }
+                    if (!casted)
+                        Flap();
+                }
             }
         }
-        else
-            flapped = false;/*
-        Vector2 velocity = rigidbody2D.velocity;
-        if (bouncedOff)
-        {
-            bouncedOffTimer++;
-        }
-        else
-            velocity.x = speed * Time.fixedDeltaTime;
-        if (bouncedOffTimer == bouncedOffTimerLimit)
-        {
-            bouncedOffTimer = 0;
-            bouncedOff = false;
-        }
 
-        rigidbody2D.velocity = velocity;*/
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            bool casted = false;
+            foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
+            {
+                if (pair.Value.collider2D.OverlapPoint(pos))
+                {
+                    CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
+                    casted = true;
+                    break;
+                }
+            }
+            if (!casted)
+                Flap();
+        }
+        else
+        {
+            flapped = false;
+            selfSpellCasted = false;
+        }
+        Vector2 velocity = rigidbody2D.velocity;
+        velocity.x = properties.Speed * Time.fixedDeltaTime;
+        rigidbody2D.velocity = velocity;
+    }
+
+    public void CastSpell(SelfSpell spell)
+    {
+        float klidCost = spell.GetKlidCost(false);
+        if (klidCost <= properties.Klid)
+        {
+            properties.Klid -= klidCost;
+            foreach (SelfEffect effect in spell.Effects)
+            {
+                StartCoroutine(effect.ApplyEffect(properties));
+                StartCoroutine(AddEffectToScreen(effect));
+            }
+        }
+    }
+
+    public System.Collections.IEnumerator KlidRegeneration()
+    {
+        while (true)
+        {
+            properties.Klid += WhoaPlayerProperties.Character.KlidEnergyRegen;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    int counter = 0;
+
+    public System.Collections.IEnumerator AddEffectToScreen(SelfEffect effect)
+    {
+        GameObject screenEffect = (GameObject)Instantiate(activeEffectPrefab);
+        RectTransform rectTransform = screenEffect.GetComponent<RectTransform>();
+        rectTransform.parent = activeEffectsContainer.transform;
+        rectTransform.localScale = new Vector3(1, 1, 1);
+        rectTransform.anchoredPosition = new Vector3(counter, 0);
+        counter += 90;
+        Text secondsText = screenEffect.GetComponentInChildren<Text>();
+        Image image = screenEffect.GetComponentInChildren<Image>();
+        image.sprite = effect.Sprite;
+        for (int remainingSeconds = effect.Duration; remainingSeconds > 0; remainingSeconds--)
+        {
+            secondsText.text = remainingSeconds.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        counter -= 90;
+        GameObject.Destroy(screenEffect);
     }
 
     public void Flap()

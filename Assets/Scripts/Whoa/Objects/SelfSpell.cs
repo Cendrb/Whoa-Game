@@ -8,6 +8,9 @@ using System.Text;
 [Serializable]
 public class SelfSpell
 {
+    public string Name { get; set; }
+    public string Abbreviate { get; set; }
+
     public List<SelfAspect> Aspects { get; set; }
 
     [NonSerialized]
@@ -20,9 +23,6 @@ public class SelfSpell
     {
         Aspects = new List<SelfAspect>();
         Effects = new List<SelfEffect>();
-
-        foreach (SelfAspect aspect in Aspects)
-            Effects.Add(aspect.GetEffect());
     }
 
     public int GetKlidCost(bool calculate)
@@ -35,5 +35,11 @@ public class SelfSpell
         }
         return price;
     }
+
+	public void GenerateEffects(){
+		
+		foreach (SelfAspect aspect in Aspects)
+			Effects.Add(aspect.GetEffect());
+		}
 }
 

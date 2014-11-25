@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Aspects.Self.Effects
 {
     public class RegenerationSelfEffect : LoopSelfEffect
     {
-        public RegenerationSelfEffect(int duration, int HPPerSecond)
-            : base(duration, 0)
+        public RegenerationSelfEffect(Sprite sprite, int duration, int HPPerSecond)
+            : base(sprite, duration, HPPerSecond)
         {
 
         }

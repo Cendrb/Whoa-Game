@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public class SlownessSelfEffect : StartEndSelfEffect
     {
-        public SlownessSelfEffect(int duration, int speedAmount)
-            : base(duration, speedAmount)
+        public SlownessSelfEffect(Sprite sprite, int duration, int speedAmount)
+            : base(sprite, duration, speedAmount)
         {
 
         }

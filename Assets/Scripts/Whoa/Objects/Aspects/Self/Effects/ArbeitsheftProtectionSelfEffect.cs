@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public class ArbeitsheftProtectionSelfEffect : StartEndSelfEffect
     {
-        public ArbeitsheftProtectionSelfEffect(int duration)
-            : base(duration, 0)
+        public ArbeitsheftProtectionSelfEffect(Sprite sprite, int duration)
+            : base(sprite, duration, 0)
         {
 
         }

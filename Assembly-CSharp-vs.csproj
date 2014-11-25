@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_4_6_0;UNITY_4_6;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -59,12 +59,25 @@
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Spell parts\SelfAspect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Templates\ParkourTemplate.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Templates\SelfAspectTemplate.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\AspectsStorage.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ArbeitsheftProtectionSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\BablBamEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\CharacterValueCollisionSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\HealSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\LoopSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ParkourSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\RegenerationSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SlownessSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SpeedSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\StartEndSelfEffect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspect.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\PlayerEffects.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\OLDWhoaCharacterData.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\SpellManager.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
@@ -77,6 +90,7 @@
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsAcript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SpellsScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\UpgradesScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\WiperScript.cs" />
  <Reference Include="UnityEngine.UI">

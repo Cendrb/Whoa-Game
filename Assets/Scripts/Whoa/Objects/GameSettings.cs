@@ -18,6 +18,11 @@ public class GameSettings
     public float FreeAreaEntityOffset { get; set; }
 
 
+    // TEMPORARY!
+    public int currentAspect;
+    public int CADuration;
+    public int CAAmplifier;
+
     public static GameSettings LoadFromDrive()
     {
         GameSettings settings = new GameSettings();

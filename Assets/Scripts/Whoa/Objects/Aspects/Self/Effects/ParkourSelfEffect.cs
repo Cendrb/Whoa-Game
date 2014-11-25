@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Aspects.Self.Effects
 {
     public class ParkourSelfEffect : StartEndSelfEffect
     {
-        public ParkourSelfEffect(int duration)
-            : base(duration, 0)
+        public ParkourSelfEffect(Sprite sprite, int duration)
+            : base(sprite, duration, 0)
         {
 
         }

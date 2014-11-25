@@ -30,7 +30,7 @@ namespace Aspects.Self
             RequiredHighscore = requiredHighscore;
             RequiredMoney = requiredMoney;
 
-            Sprite = Resources.Load<Sprite>("Graphics/Aspects/Icons/Self/" + aspectData.Type.ToString());
+            Sprite = aspectData.icon;
         }
 
         public SelfAspect GetAspect()

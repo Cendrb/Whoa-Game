@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Aspects.Self.Effects
 {
@@ -10,11 +11,13 @@ namespace Aspects.Self.Effects
     {
         public int Duration { get; set; }
         public int Amplifier { get; set; }
+        public Sprite Sprite { get; set; }
 
-        public SelfEffect(int duration, int amplifier)
+        public SelfEffect(Sprite sprite, int duration, int amplifier)
         {
             Amplifier = amplifier;
             Duration = duration;
+            Sprite = sprite;
         }
         public abstract IEnumerator ApplyEffect(PlayerDynamicProperties properties);
     }

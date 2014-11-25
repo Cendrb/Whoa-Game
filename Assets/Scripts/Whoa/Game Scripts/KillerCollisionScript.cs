@@ -18,9 +18,9 @@ public class KillerCollisionScript : MonoBehaviour
     {
         if (col.CompareTag("Player"))
         {
-            if (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan)
+            bool result = playerScript.CollideWith(type);
+            if (result && (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan))
                 GetComponent<ExplodeScript>().Explode();
-            playerScript.CollideWith(type);
         }
     }
 }

@@ -32,9 +32,10 @@ public class WhoaCharacters
             float speed = float.Parse(row.Elements[5].Value);
             float whoaPower = float.Parse(row.Elements[6].Value);
             float weight = float.Parse(row.Elements[7].Value);
-            int spellSlotCount = int.Parse(row.Elements[8].Value);
+            int selfSpellSlots = int.Parse(row.Elements[8].Value);
             int price = int.Parse(row.Elements[9].Value);
-            WhoaCharacter character = new WhoaCharacter(name, multiplier, health, whoaPower, speed, weight, klid, klidRegen, spellSlotCount, price);
+            int rangedSpellSlots = int.Parse(row.Elements[10].Value);
+            WhoaCharacter character = new WhoaCharacter(name, multiplier, health, whoaPower, speed, weight, klid, klidRegen, selfSpellSlots, rangedSpellSlots, price);
             characters.Add(character);
         }
 

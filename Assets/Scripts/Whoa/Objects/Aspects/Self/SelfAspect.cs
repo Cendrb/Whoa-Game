@@ -17,9 +17,17 @@ namespace Aspects.Self
         public string AmplifierName { get; set; }
         public int Amplifier { get; set; }
         public int BasePrice { get; set; }
-        public int BaseKlidCost { get; set; }
+        public float BaseKlidCost { get; set; }
         public float ExpensesMultiplierPerDuration { get; set; }
         public float ExpensesMultiplierPerAmplifier { get; set; }
+
+        [NonSerialized]
+        public Sprite icon;
+
+        public SelfAspect()
+        {
+            icon = Resources.Load<Sprite>("Graphics/Aspects/Icons/Self/" + Type.ToString());
+        }
 
         public int GetPrice()
         {
@@ -34,19 +42,19 @@ namespace Aspects.Self
             switch(Type)
             {
                 case SelfTemplateType.BablBam:
-                    return new BablBamEffect(Duration);
+                    return new BablBamEffect(icon, Duration);
                 case SelfTemplateType.Speed:
-                    return new SpeedSelfEffect(Duration, Amplifier);
+                    return new SpeedSelfEffect(icon, Duration, Amplifier);
                 case SelfTemplateType.Slowness:
-                    return new SlownessSelfEffect(Duration, Amplifier);
-                case SelfTemplateType.Inteligence:
-                    return new ArbeitsheftProtectionSelfEffect(Duration);
+                    return new SlownessSelfEffect(icon, Duration, Amplifier);
+                case SelfTemplateType.Intelligence:
+                    return new ArbeitsheftProtectionSelfEffect(icon, Duration);
                 case SelfTemplateType.Parkour:
-                    return new ParkourSelfEffect(Duration);
+                    return new ParkourSelfEffect(icon, Duration);
                 case SelfTemplateType.Heal:
-                    return new HealSelfEffect(Amplifier);
+                    return new HealSelfEffect(icon, Amplifier);
                 case SelfTemplateType.Regeneration:
-                    return new RegenerationSelfEffect(Duration, Amplifier);
+                    return new RegenerationSelfEffect(icon, Duration, Amplifier);
             }
             return null;
         }

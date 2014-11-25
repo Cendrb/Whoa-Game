@@ -8,8 +8,8 @@ namespace Aspects.Self.Effects
 {
     public abstract class LoopSelfEffect : SelfEffect
     {
-        public LoopSelfEffect(int duration, int amplifier)
-            : base(duration, amplifier)
+        public LoopSelfEffect(Sprite sprite, int duration, int amplifier)
+            : base(sprite, duration, amplifier)
         {
 
         }
@@ -17,7 +17,7 @@ namespace Aspects.Self.Effects
         public override System.Collections.IEnumerator ApplyEffect(PlayerDynamicProperties properties)
         {
             int secondCounter = 0;
-            for (int remainingSeconds = Duration; Duration > 0; remainingSeconds--)
+			for (int remainingSeconds = Duration; remainingSeconds > 0; remainingSeconds--)
             {
                 Cycle(properties, secondCounter);
                 secondCounter++;

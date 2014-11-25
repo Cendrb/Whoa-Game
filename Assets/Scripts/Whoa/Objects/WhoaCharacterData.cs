@@ -12,5 +12,9 @@ public class WhoaCharacterData
     public WhoaCharacterStatistics Statistics { get; set; }
 
     public Dictionary<string, int> UpgradeLevelDatabase { get; set; }
+
+    public List<int> SelectedSelfSpellsIds { get; set; }
+
+    public List<int> SelectedRangedSpellsIds { get; set; }
 }
 
