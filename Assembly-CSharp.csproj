@@ -74,7 +74,6 @@
      <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\OLDWhoaCharacterData.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\SpellManager.cs" />

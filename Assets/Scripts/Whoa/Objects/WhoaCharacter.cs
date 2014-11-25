@@ -151,7 +151,7 @@ public class WhoaCharacter
     {
         if (WhoaPlayerProperties.Money >= upgrade.GetPrice())
         {
-            if(!Data.UpgradeLevelDatabase.ContainsKey(upgrade.Name))
+            if (!Data.UpgradeLevelDatabase.ContainsKey(upgrade.Name))
                 Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
             if (Data.UpgradeLevelDatabase[upgrade.Name] < upgrade.MaxLevel)
             {
@@ -194,36 +194,24 @@ public class WhoaCharacter
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 Data = (WhoaCharacterData)formatter.Deserialize(stream);
-                stream.Close();
                 if (Data.SelectedRangedSpellsIds == null || Data.SelectedSelfSpellsIds == null)
-                    throw new ArgumentNullException("Loaded old version of data. Converting to new one.");
+                {
+                    Data.SelectedRangedSpellsIds = new List<int>();
+                    Data.SelectedSelfSpellsIds = new List<int>();
+                    stream.Close();
+                    Save();
+                }
+                else
+                {
+                    stream.Close();
+                }
             }
             catch (Exception e)
             {
-                Debug.LogException(e);
                 stream.Close();
-                try
-                {
-                    //Try To Load Old Version Of WhoaCharacterData And Convert To New One
-                    stream = File.Open(savePath, FileMode.Open);
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    OLDWhoaCharacterData oldData = (OLDWhoaCharacterData)formatter.Deserialize(stream);
-                    stream.Close();
-                    Data = new WhoaCharacterData();
-                    Data.Purchased = oldData.Purchased;
-                    Data.Statistics = oldData.Statistics;
-                    Data.UpgradeLevelDatabase = oldData.UpgradeLevelDatabase;
-                    Data.SelectedRangedSpellsIds = new List<int>();
-                    Data.SelectedSelfSpellsIds = new List<int>();
+                Debug.LogException(e);
+                SaveDefaults();
 
-                    Save();
-                }
-                catch (Exception innerE)
-                {
-                    stream.Close();
-                    Debug.LogException(innerE);
-                    SaveDefaults();
-                }
             }
         }
     }

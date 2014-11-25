@@ -1,10 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs">
     <Files>
-      <File FileName="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" Line="48" Column="74" />
-      <File FileName="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" Line="24" Column="39" />
+      <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" Line="217" Column="1" />
+      <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" Line="16" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -12,10 +11,11 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
               <Node name="Whoa" expanded="True">
-                <Node name="Game Scripts" expanded="True">
-                  <Node name="PlayerScript.cs" selected="True" />
+                <Node name="Game Scripts" expanded="True" />
+                <Node name="Google Drive" expanded="True" />
+                <Node name="Objects" expanded="True">
+                  <Node name="NEWWhoaCharacterData.cs" selected="True" />
                 </Node>
-                <Node name="Objects" expanded="True" />
               </Node>
             </Node>
           </Node>
@@ -26,8 +26,7 @@
       </Pad>
       <Pad Id="MonoDevelop.Debugger.WatchPad">
         <State>
-          <Value>WhoaPlayerProperties.Character</Value>
-          <Value>WhoaPlayerProperties.Spells</Value>
+          <Value>Name</Value>
         </State>
       </Pad>
     </Pads>
