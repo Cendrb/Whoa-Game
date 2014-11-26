@@ -140,8 +140,8 @@ public class WhoaCharacter
         Data = new WhoaCharacterData();
         Data.Statistics = new WhoaCharacterStatistics();
         Data.UpgradeLevelDatabase = new Dictionary<string, int>();
-        Data.SelectedSelfSpellsIds = new List<int>();
-        Data.SelectedRangedSpellsIds = new List<int>();
+        Data.SelectedSelfSpellsIds = new Dictionary<int, int>();
+        Data.SelectedRangedSpellsIds = new Dictionary<int, int>();
         foreach (CharacterUpgrade upgrade in Upgrades)
             Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
         Save();
@@ -196,8 +196,8 @@ public class WhoaCharacter
                 Data = (WhoaCharacterData)formatter.Deserialize(stream);
                 if (Data.SelectedRangedSpellsIds == null || Data.SelectedSelfSpellsIds == null)
                 {
-                    Data.SelectedRangedSpellsIds = new List<int>();
-                    Data.SelectedSelfSpellsIds = new List<int>();
+                    Data.SelectedRangedSpellsIds = new Dictionary<int, int>();
+                    Data.SelectedSelfSpellsIds = new Dictionary<int, int>();
                     stream.Close();
                     Save();
                 }

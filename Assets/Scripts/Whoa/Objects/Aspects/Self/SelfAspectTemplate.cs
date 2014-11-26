@@ -17,9 +17,9 @@ namespace Aspects.Self
         }
 
         SelfAspect AspectData { get; set; }
-        WhoaCharacter RequiredCharacter { get; set; }
-        int RequiredHighscore { get; set; }
-        int RequiredMoney { get; set; }
+        public WhoaCharacter RequiredCharacter { get; set; }
+        public int RequiredHighscore { get; set; }
+        public int RequiredMoney { get; set; }
 
         public Sprite Sprite { get; private set; }
 

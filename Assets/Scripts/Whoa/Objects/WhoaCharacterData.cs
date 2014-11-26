@@ -13,8 +13,8 @@ public class WhoaCharacterData
 
     public Dictionary<string, int> UpgradeLevelDatabase { get; set; }
 
-    public List<int> SelectedSelfSpellsIds { get; set; }
+    public Dictionary<int, int> SelectedSelfSpellsIds { get; set; }
 
-    public List<int> SelectedRangedSpellsIds { get; set; }
+    public Dictionary<int, int> SelectedRangedSpellsIds { get; set; }
 }
 

@@ -36,10 +36,12 @@ public class SelfSpell
         return price;
     }
 
-	public void GenerateEffects(){
-		
-		foreach (SelfAspect aspect in Aspects)
-			Effects.Add(aspect.GetEffect());
-		}
+    public void GenerateEffects()
+    {
+        if (Effects == null)
+            Effects = new List<SelfEffect>();
+        foreach (SelfAspect aspect in Aspects)
+            Effects.Add(aspect.GetEffect());
+    }
 }
 

@@ -50,11 +50,14 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentsInChildren<ParticleSystem>();
 
+        foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
+            selfSpell.Value.GetKlidCost(true);
+
         selfSpellButtons = new Dictionary<int, GameObject>();
         int counter = 130;
-        foreach (int index in WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds)
+        foreach (KeyValuePair<int, int> index in WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds)
         {
-            SelfSpell spell = WhoaPlayerProperties.Spells.SelfSpells[index];
+            SelfSpell spell = WhoaPlayerProperties.Spells.SelfSpells[index.Value];
             spell.GenerateEffects();
             GameObject button = (GameObject)Instantiate(castSelfSpellButtonPrefab);
             RectTransform rectTransform = button.GetComponent<RectTransform>();
@@ -63,7 +66,7 @@ public class PlayerScript : MonoBehaviour
             rectTransform.anchoredPosition = new Vector2(120, counter);
             Text abbreviateText = button.GetComponentInChildren<Text>();
             abbreviateText.text = spell.Abbreviate;
-            selfSpellButtons.Add(index, button);
+            selfSpellButtons.Add(index.Value, button);
             counter += 160;
         }
 

@@ -57,7 +57,6 @@
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstacleGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstaclePassedScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\WhoaPlayerProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\AspectsStorage.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ArbeitsheftProtectionSelfEffect.cs" />
@@ -82,11 +81,13 @@
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterStatistics.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacters.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaPlayerProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\Static.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ChangeSceneScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\CharacterShopScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\NewSelfSpellScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ScoreScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsAcript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\SpellsScript.cs" />

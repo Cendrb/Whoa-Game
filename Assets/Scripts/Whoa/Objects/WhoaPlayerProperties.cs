@@ -22,7 +22,7 @@ public static class WhoaPlayerProperties
     public static WhoaCharacters Characters { get; private set; }
 
     public static GameSettings Settings { get; private set; }
-    public static AspectsTemplatesStorage Aspects { get; private set; }
+    public static AspectsTemplatesStorage AspectsTemplates { get; private set; }
     public static SpellManager Spells { get; private set; }
 
     public static int HighScore { get; set; }
@@ -38,7 +38,7 @@ public static class WhoaPlayerProperties
         Characters = new WhoaCharacters();
         Settings = GameSettings.LoadFromDrive();
         Spells = new SpellManager();
-        Aspects = new AspectsTemplatesStorage();
+        AspectsTemplates = new AspectsTemplatesStorage();
         Load();
     }
 

@@ -16,7 +16,8 @@ public class CharacterShopScript : MonoBehaviour
     public Text HealthText;
     public Text KlidText;
     public Text KlidRegenText;
-    public Text SpellSlotCountText;
+    public Text SelfSpellSlotCount;
+    public Text RangedSpellSlotCount;
     public Text WeightText;
     public Text WhoaPowerText;
     public Text SpeedText;
@@ -87,7 +88,8 @@ public class CharacterShopScript : MonoBehaviour
         NameText.text = selectedCharacter.Name;
         setValueAndColor(MultiplierText, selectedCharacter.Multiplier, active.Multiplier);
         setValueAndColor(HealthText, selectedCharacter.Health, active.Health);
-        setValueAndColor(SpellSlotCountText, selectedCharacter.SelfSpellSlots, active.SelfSpellSlots);
+        setValueAndColor(SelfSpellSlotCount, selectedCharacter.SelfSpellSlots, active.SelfSpellSlots);
+        setValueAndColor(RangedSpellSlotCount, selectedCharacter.RangedSpellSlots, active.RangedSpellSlots);
         setValueAndColor(WeightText, selectedCharacter.Gravity, active.Gravity);
         setValueAndColor(WhoaPowerText, selectedCharacter.Flap, active.Flap);
         setValueAndColor(SpeedText, selectedCharacter.Speed, active.Speed);

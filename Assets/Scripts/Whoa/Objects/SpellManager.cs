@@ -21,6 +21,7 @@ public class SpellManager
     {
         SelfSpells.Add(SelfSpellIdCounter, spell);
         SelfSpellIdCounter++;
+        WhoaPlayerProperties.SavePrefs();
     }
 
     public void SaveSpells()
