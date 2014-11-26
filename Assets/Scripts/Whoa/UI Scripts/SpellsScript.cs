@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Aspects.Self;
 
 public class SpellsScript : MonoBehaviour
 {
@@ -27,8 +28,6 @@ public class SpellsScript : MonoBehaviour
         SlotButtonsManager.Start();
         SpellButtonManager.Start();
 
-        Debug.Log(WhoaPlayerProperties.Spells.SelfSpellIdCounter);
-
         GenerateSpellGameobjects();
 
         if (WhoaPlayerProperties.Character.SelfSpellSlots > 0)
@@ -38,7 +37,7 @@ public class SpellsScript : MonoBehaviour
     private void GenerateSpellGameobjects()
     {
         foreach (KeyValuePair<int, Button> button in SpellButtonManager.spellButtons)
-            GameObject.Destroy(button.Value.gameObject.transform.parent.gameObject);
+            GameObject.Destroy(button.Value.gameObject);
         SpellButtonManager.spellButtons.Clear();
 
         float counter = 0;
@@ -65,14 +64,48 @@ public class SpellsScript : MonoBehaviour
             if (WhoaPlayerProperties.Character.SelfSpellSlots == 0)
                 setButton.interactable = false;
             else
-                setButton.onClick.AddListener(new UnityAction(() => SetSpellToSelectedSlot(spell.Key)));
+                setButton.onClick.AddListener(new UnityAction(() => SetSpellToSelectedSlot(index)));
 
             counter -= 80;
         }
 
-        RectTransform rekt = spellsParent.GetComponent<RectTransform>();
-        rekt.sizeDelta = new Vector2(0, -counter);
-        rekt.anchoredPosition = new Vector2(0, 0);
+        //RectTransform rekt = spellsParent.GetComponent<RectTransform>();
+        //rekt.sizeDelta = new Vector2(0, -counter);
+        //rekt.anchoredPosition = new Vector2(0, 0);
+    }
+
+    public void CreateSampleSpell()
+    {
+        SelfSpell speedSpell = new SelfSpell();
+        SelfAspect speed = WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[4].GetAspect();
+        speed.Amplifier = 40;
+        speedSpell.Aspects.Add(speed);
+        speedSpell.Name = "Wheeee";
+        speedSpell.Abbreviate = "SP";
+        speedSpell.GenerateEffects();
+        WhoaPlayerProperties.Spells.AddSelfSpell(speedSpell);
+
+        SelfSpell bablBamSpell = new SelfSpell();
+        bablBamSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[0].GetAspect());
+        bablBamSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[2].GetAspect());
+        bablBamSpell.Name = "E babl bam";
+        bablBamSpell.Abbreviate = "BUM";
+        bablBamSpell.GenerateEffects();
+        WhoaPlayerProperties.Spells.AddSelfSpell(bablBamSpell);
+
+        SelfSpell intelligenceSpell = new SelfSpell();
+        intelligenceSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[6].GetAspect());
+        intelligenceSpell.Name = "Inteligence";
+        intelligenceSpell.Abbreviate = "I";
+        intelligenceSpell.GenerateEffects();
+        WhoaPlayerProperties.Spells.AddSelfSpell(intelligenceSpell);
+
+        GenerateSpellGameobjects();
+    }
+
+    public void ClearActiveSlot()
+    {
+        SlotButtonsManager.ClearActiveSlot(this);
     }
 
     private void SelectSpell(int index)
@@ -131,6 +164,8 @@ public class SpellsScript : MonoBehaviour
 
     public void DeleteSelectedSpell()
     {
+        if (WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.ContainsValue(selectedIndex))
+            WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.Remove(WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.FirstOrDefault(x => x.Value == selectedIndex).Key);
         WhoaPlayerProperties.Spells.SelfSpells.Remove(selectedIndex);
         GenerateSpellGameobjects();
         DeselectSpell();
@@ -209,6 +244,13 @@ public class SpellsScript : MonoBehaviour
             {
                 Debug.LogException(e);
             }
+        }
+
+        public void ClearActiveSlot(SpellsScript script)
+        {
+            script.DeselectSpell();
+            WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.Remove(selectedIndex);
+            WhoaPlayerProperties.Character.Save();
         }
 
         private void SelectButton(Button button)

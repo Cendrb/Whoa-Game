@@ -50,6 +50,14 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
         particles = GetComponentsInChildren<ParticleSystem>();
 
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
+
+        particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
+        particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
+
+        StartCoroutine(KlidRegeneration());
+
         foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
             selfSpell.Value.GetKlidCost(true);
 
@@ -69,14 +77,6 @@ public class PlayerScript : MonoBehaviour
             selfSpellButtons.Add(index.Value, button);
             counter += 160;
         }
-
-        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
-
-        particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
-        particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
-
-        StartCoroutine(KlidRegeneration());
 
         RefreshHealthLabel();
         RefreshKlidLabel();
