@@ -23,16 +23,21 @@ namespace Aspects
                 string description = row.Elements[3].Value;
                 int duration = int.Parse(row.Elements[4].Value);
                 int amplifier = int.Parse(row.Elements[5].Value);
-                string requiredCharacterString = row.Elements[6].Value;
+                int minDuration = int.Parse(row.Elements[6].Value);
+                int maxDuration = int.Parse(row.Elements[7].Value);
+                int minAmplifier = int.Parse(row.Elements[8].Value);
+                int maxAmplifier = int.Parse(row.Elements[9].Value);
+                string requiredCharacterString = row.Elements[10].Value;
                 WhoaCharacter requiredCharacter = null;
                 if (requiredCharacterString != null && requiredCharacterString != String.Empty)
                     requiredCharacter = WhoaPlayerProperties.Characters.FindByName(requiredCharacterString);
-                int requiredHighscore = int.Parse(row.Elements[7].Value);
-                int requiredMoney = int.Parse(row.Elements[8].Value);
-                int basePrice = int.Parse(row.Elements[9].Value);
-                float baseKlidCost = float.Parse(row.Elements[10].Value);
-                float expensesMultiplierPerDuration = float.Parse(row.Elements[11].Value);
-                float expensesMultiplierPerAmplifier = float.Parse(row.Elements[12].Value);
+                int requiredHighscore = int.Parse(row.Elements[11].Value);
+                int requiredMoney = int.Parse(row.Elements[12].Value);
+                int basePrice = int.Parse(row.Elements[13].Value);
+                float baseKlidCost = float.Parse(row.Elements[14].Value);
+                float expensesMultiplierPerDuration = float.Parse(row.Elements[15].Value);
+                float expensesMultiplierPerAmplifier = float.Parse(row.Elements[16].Value);
+
                 SelfAspect aspectData = new SelfAspect();
                 aspectData.Amplifier = amplifier;
                 aspectData.AmplifierName = amplifierName;
@@ -44,7 +49,7 @@ namespace Aspects
                 aspectData.ExpensesMultiplierPerDuration = expensesMultiplierPerDuration;
                 aspectData.Name = name;
                 aspectData.Type = type;
-                SelfAspectsTemplates.Add(new SelfAspectTemplate(aspectData, requiredCharacter, requiredHighscore, requiredMoney));
+                SelfAspectsTemplates.Add(new SelfAspectTemplate(aspectData, requiredCharacter, requiredHighscore, requiredMoney, minDuration, maxDuration, minAmplifier, maxAmplifier));
             }
         }
 
