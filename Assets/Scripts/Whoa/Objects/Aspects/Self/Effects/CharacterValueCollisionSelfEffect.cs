@@ -9,9 +9,9 @@ namespace Aspects.Self.Effects
 {
     public abstract class SelfEffect
     {
-        public int Duration { get; set; }
-        public int Amplifier { get; set; }
-        public Sprite Sprite { get; set; }
+        public int Duration { get; private set; }
+        public int Amplifier { get; private set; }
+        public Sprite Sprite { get; private set; }
 
         public SelfEffect(Sprite sprite, int duration, int amplifier)
         {

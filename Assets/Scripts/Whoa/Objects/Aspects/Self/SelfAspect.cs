@@ -26,6 +26,11 @@ namespace Aspects.Self
 
         public SelfAspect()
         {
+            LoadIcon();
+        }
+
+        public void LoadIcon()
+        {
             icon = Resources.Load<Sprite>("Graphics/Aspects/Icons/Self/" + Type.ToString());
         }
 

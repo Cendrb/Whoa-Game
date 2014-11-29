@@ -46,7 +46,7 @@ public class SpellsScript : MonoBehaviour
         {
             GameObject spellObject = (GameObject)Instantiate(spellPrefab);
             RectTransform rectTransform = spellObject.GetComponent<RectTransform>();
-            rectTransform.parent = spellsParent.transform;
+            rectTransform.SetParent(spellsParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 

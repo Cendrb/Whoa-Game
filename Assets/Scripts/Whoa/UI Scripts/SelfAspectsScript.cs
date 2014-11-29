@@ -98,12 +98,12 @@ public class SelfAspectsScript : MonoBehaviour
             requiredCharacterText.text = selectedTemplate.RequiredCharacter.Name;
 
         bool characterAvailable = false;
-        if(selectedTemplate.RequiredCharacter != null)
+        if (selectedTemplate.RequiredCharacter != null)
         {
-        foreach(WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
-            if(character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
-                characterAvailable = true;
-                }
+            foreach (WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
+                if (character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
+                    characterAvailable = true;
+        }
         else
             characterAvailable = true;
 
@@ -125,15 +125,15 @@ public class SelfAspectsScript : MonoBehaviour
     public void BuySelectedTemplate()
     {
         bool characterAvailable = false;
-        if(selectedTemplate.RequiredCharacter != null)
+        if (selectedTemplate.RequiredCharacter != null)
         {
-        foreach(WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
-            if(character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
-                characterAvailable = true;
-                }
+            foreach (WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
+                if (character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
+                    characterAvailable = true;
+        }
         else
             characterAvailable = true;
-        if(selectedTemplate.RequiredHighscore <= WhoaPlayerProperties.HighScore && selectedTemplate.RequiredMoney <= WhoaPlayerProperties.Money && !selectedTemplate.Data.Purchased && characterAvailable)
+        if (selectedTemplate.RequiredHighscore <= WhoaPlayerProperties.HighScore && selectedTemplate.RequiredMoney <= WhoaPlayerProperties.Money && !selectedTemplate.Data.Purchased && characterAvailable)
         {
             WhoaPlayerProperties.Money -= selectedTemplate.RequiredMoney;
             WhoaPlayerProperties.SavePrefs();

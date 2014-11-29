@@ -226,7 +226,7 @@ public class NewSelfSpellScript : MonoBehaviour
 
     public void CreateSpell()
     {
-        int cost = constructedSpell.GetKlidCost();
+        int cost = constructedSpell.GetADCost();
         if (cost <= WhoaPlayerProperties.Money)
         {
             WhoaPlayerProperties.Money -= cost;

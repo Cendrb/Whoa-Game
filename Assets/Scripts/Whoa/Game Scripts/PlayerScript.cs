@@ -61,6 +61,7 @@ public class PlayerScript : MonoBehaviour
         particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
 
         StartCoroutine(KlidRegeneration());
+        StartCoroutine(CollectiblesGenerator());
 
         foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
             selfSpell.Value.GetKlidCost();
@@ -168,16 +169,30 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    int counter = 0;
+    public System.Collections.IEnumerator CollectiblesGenerator()
+    {
+        while (true)
+        {
+            
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    List<bool> activeEffectsFreePositions = new List<bool>();
 
     public System.Collections.IEnumerator AddEffectToScreen(SelfEffect effect)
     {
+        int index = activeEffectsFreePositions.IndexOf(true);
+        if (index == -1)
+            activeEffectsFreePositions.Add(true);
+        index = activeEffectsFreePositions.IndexOf(true);
+        activeEffectsFreePositions[index] = false;
+
         GameObject screenEffect = (GameObject)Instantiate(activeEffectPrefab);
         RectTransform rectTransform = screenEffect.GetComponent<RectTransform>();
-        rectTransform.parent = activeEffectsContainer.transform;
+        rectTransform.SetParent(activeEffectsContainer.transform);
         rectTransform.localScale = new Vector3(1, 1, 1);
-        rectTransform.anchoredPosition = new Vector3(counter, 0);
-        counter += 90;
+        rectTransform.anchoredPosition = new Vector3(index * 90, 0);
         Text secondsText = screenEffect.GetComponentInChildren<Text>();
         Image image = screenEffect.GetComponentInChildren<Image>();
         image.sprite = effect.Sprite;
@@ -186,7 +201,7 @@ public class PlayerScript : MonoBehaviour
             secondsText.text = remainingSeconds.ToString();
             yield return new WaitForSeconds(1);
         }
-        counter -= 90;
+        activeEffectsFreePositions[index] = true;
         GameObject.Destroy(screenEffect);
     }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aspects.Self;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,6 +44,10 @@ public class SpellManager
             BinaryFormatter formatter = new BinaryFormatter();
             SelfSpells = (Dictionary<int, SelfSpell>)formatter.Deserialize(stream);
             stream.Close();
+
+            foreach (KeyValuePair<int, SelfSpell> spell in SelfSpells)
+                foreach (SelfAspect aspect in spell.Value.Aspects)
+                    aspect.LoadIcon();
         }
         catch (Exception e)
         {
