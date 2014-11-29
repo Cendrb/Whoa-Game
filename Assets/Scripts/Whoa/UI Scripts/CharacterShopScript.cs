@@ -81,7 +81,7 @@ public class CharacterShopScript : MonoBehaviour
         }
         else
         {
-            PriceText.text = selectedCharacter.Price.ToString();
+            PriceText.text = selectedCharacter.Price.Format();
             BuyButton.interactable = true;
         }
         if (selectedCharacter == WhoaPlayerProperties.Character)

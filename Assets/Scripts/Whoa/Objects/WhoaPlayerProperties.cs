@@ -26,6 +26,9 @@ public static class WhoaPlayerProperties
     public static AspectsTemplatesStorage AspectsTemplates { get; private set; }
     public static SpellManager Spells { get; private set; }
 
+    public static Dictionary<CollectibleType, Range> CollectiblesProbabilities { get; private set; }
+    public static int TotalProbability { get; private set; }
+
     public static int HighScore { get; set; }
     public static int LastScore { get; set; }
     public static int LastMoney { get; set; }
@@ -39,12 +42,33 @@ public static class WhoaPlayerProperties
 
     static WhoaPlayerProperties()
     {
+        CollectiblesProbabilities = new Dictionary<CollectibleType, Range>();
+        SetupCollectiblesProbabilities();
         Culture = new CultureInfo("cs-CZ");
         Characters = new WhoaCharacters();
         Settings = GameSettings.LoadFromDrive();
         Spells = new SpellManager();
         AspectsTemplates = new AspectsTemplatesStorage();
         Load();
+    }
+
+    private static void SetupCollectiblesProbabilities()
+    {
+        Dictionary<CollectibleType, int> probabilities = new Dictionary<CollectibleType, int>();
+        probabilities.Add(CollectibleType.illuminati, 10);
+        probabilities.Add(CollectibleType.areaEffect, 40);
+        probabilities.Add(CollectibleType.klid, 20);
+        probabilities.Add(CollectibleType.health, 20);
+
+        int counter = 0;
+        foreach(KeyValuePair<CollectibleType, int> pair in probabilities)
+        {
+            int before = counter;
+            counter += pair.Value;
+
+            CollectiblesProbabilities.Add(pair.Key, new Range(before, counter));
+        }
+        TotalProbability = counter;
     }
 
     public static void SetCharacter(WhoaCharacter character)

@@ -46,9 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CollectibleScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\BordersGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\CharacterStatsScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\CollectibleScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ConstantVelocityScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyByTime.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyOnTouch.cs" />
@@ -75,6 +75,7 @@
      <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\Range.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\SpellManager.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />

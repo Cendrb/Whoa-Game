@@ -24,6 +24,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject activeEffectPrefab;
     public GameObject activeEffectsContainer;
     public GameObject castSelfSpellButtonPrefab;
+    public GameObject collectiblePrefab;
 
     public GameObject canvasParent;
 
