@@ -53,6 +53,14 @@ namespace Aspects.Self
             }
         }
 
+        public string Description
+        {
+            get
+            {
+                return AspectData.Description;
+            }
+        }
+
         public Sprite Sprite { get; private set; }
 
         public SelfAspectTemplate(SelfAspect aspectData, WhoaCharacter requiredCharacter, int requiredHighscore, int requiredMoney, int minDuration, int maxDuration, int minAmplifier, int maxAmplifier)
@@ -101,7 +109,7 @@ namespace Aspects.Self
         private void SaveDefaults()
         {
             Data = new SelfAspectTemplateData();
-            Data.Bought = false;
+            Data.Purchased = false;
             Save();
         }
 
@@ -134,7 +142,7 @@ namespace Aspects.Self
         [Serializable]
         public class SelfAspectTemplateData
         {
-            public bool Bought { get; set; }
+            public bool Purchased { get; set; }
         }
     }
 }

@@ -25,7 +25,7 @@ public class UpgradesScript : MonoBehaviour
     {
         currentCharacter = WhoaPlayerProperties.Character;
 
-        float counter = 0;
+        float counter = -8;
         foreach (CharacterUpgrade upgrade in WhoaPlayerProperties.Character.Upgrades)
         {
             GameObject upgradeObject = (GameObject)Instantiate(upgradeLinePrefab);
@@ -33,7 +33,7 @@ public class UpgradesScript : MonoBehaviour
             RectTransform rectTransform = upgradeObject.GetComponent<RectTransform>();
             rectTransform.SetParent(upgradesParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
-            rectTransform.anchoredPosition = new Vector3(0, counter);
+            rectTransform.anchoredPosition = new Vector3(6, counter);
 
             Text nameText = upgradeObject.transform.FindChild("NameText").gameObject.GetComponent<Text>();
             nameText.text = upgrade.Name;
@@ -143,7 +143,7 @@ public class UpgradesScript : MonoBehaviour
                 Text ratioText = effectObject.transform.FindChild("Ratio").gameObject.GetComponent<Text>();
                 ratioText.text = "1 unit per " + (selectedUpgrade.GetPrice() / difference).ToString("0.##") + " AD";
 
-                counter -= 135;
+                counter -= 148;
             }
         }
         

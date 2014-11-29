@@ -45,14 +45,14 @@ public class NewSelfSpellScript : MonoBehaviour
         basicInformation.SetActive(false);
         nameInput = infrectTransform.FindChild("SpellName").gameObject.GetComponent<InputField>();
         idInput = infrectTransform.FindChild("SpellID").gameObject.GetComponent<InputField>();
-        //nameInput.onSubmit.AddListener(new UnityAction<string>((text) => constructedSpell.Name = text));
-        //idInput.onSubmit.AddListener(new UnityAction<string>((text) => constructedSpell.Abbreviate = text));
+        nameInput.onValueChange.AddListener(new UnityAction<string>((text) => constructedSpell.Name = text));
+        idInput.onValueChange.AddListener(new UnityAction<string>((text) => constructedSpell.Abbreviate = text));
 
         int indexCounter = 0;
         int counter = 7;
         foreach (SelfAspectTemplate template in WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates)
         {
-            if (true || template.Data.Bought)
+            if (template.Data.Purchased)
             {
                 GameObject templateObject = (GameObject)Instantiate(AvailableAspectPrefab);
                 RectTransform rectTransform = templateObject.GetComponent<RectTransform>();

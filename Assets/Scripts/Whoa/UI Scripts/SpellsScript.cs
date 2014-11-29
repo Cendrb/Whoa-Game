@@ -19,6 +19,7 @@ public class SpellsScript : MonoBehaviour
     public Slots SlotButtonsManager;
     public Spells SpellButtonManager;
 
+    public ScrollRect scrollRect;
 
     int selectedIndex;
     SelfSpell selectedSpell;
@@ -58,7 +59,7 @@ public class SpellsScript : MonoBehaviour
             text.text = spell.Value.Name;
 
             Text klidText = spellObject.transform.FindChild("KlidCost").gameObject.GetComponent<Text>();
-            klidText.text = spell.Value.GetKlidCost().ToString();
+            klidText.text = spell.Value.GetKlidCost().FormatKlid();
 
             Button setButton = spellObject.transform.FindChild("SetButton").gameObject.GetComponent<Button>();
             if (WhoaPlayerProperties.Character.SelfSpellSlots == 0)
@@ -69,38 +70,10 @@ public class SpellsScript : MonoBehaviour
             counter -= 80;
         }
 
-        //RectTransform rekt = spellsParent.GetComponent<RectTransform>();
-        //rekt.sizeDelta = new Vector2(0, -counter);
-        //rekt.anchoredPosition = new Vector2(0, 0);
-    }
+        RectTransform rekt = spellsParent.GetComponent<RectTransform>();
+        rekt.sizeDelta = new Vector2(0, -counter);
 
-    public void CreateSampleSpell()
-    {
-        SelfSpell speedSpell = new SelfSpell();
-        SelfAspect speed = WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[4].GetAspect();
-        speed.Amplifier = 40;
-        speedSpell.Aspects.Add(speed);
-        speedSpell.Name = "Wheeee";
-        speedSpell.Abbreviate = "SP";
-        speedSpell.GenerateEffects();
-        WhoaPlayerProperties.Spells.AddSelfSpell(speedSpell);
-
-        SelfSpell bablBamSpell = new SelfSpell();
-        bablBamSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[0].GetAspect());
-        bablBamSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[2].GetAspect());
-        bablBamSpell.Name = "E babl bam";
-        bablBamSpell.Abbreviate = "BUM";
-        bablBamSpell.GenerateEffects();
-        WhoaPlayerProperties.Spells.AddSelfSpell(bablBamSpell);
-
-        SelfSpell intelligenceSpell = new SelfSpell();
-        intelligenceSpell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[6].GetAspect());
-        intelligenceSpell.Name = "Inteligence";
-        intelligenceSpell.Abbreviate = "I";
-        intelligenceSpell.GenerateEffects();
-        WhoaPlayerProperties.Spells.AddSelfSpell(intelligenceSpell);
-
-        GenerateSpellGameobjects();
+        scrollRect.normalizedPosition = new Vector2(0, 1);
     }
 
     public void ClearActiveSlot()

@@ -11,11 +11,21 @@ public class SelfAspectsScript : MonoBehaviour
     public GameObject aspectsParent;
     public GameObject aspectLinePrefab;
 
+    public Text nameText;
+    public Text descriptionText;
+    public Text priceText;
+    public Text requiredCharacterText;
+    public Text requiredHighscoreText;
+    public Text statusText;
+    public Button buyButton;
+
     Color normalColor;
     public Color selectedColor;
 
     List<Button> templateButtons = new List<Button>();
     Button lastSelectedButton;
+
+    SelfAspectTemplate selectedTemplate;
 
     // Use this for initialization
     private void Start()
@@ -54,6 +64,7 @@ public class SelfAspectsScript : MonoBehaviour
 
     private void SelectTemplate(int index)
     {
+        selectedTemplate = WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[index];
         SelectButton(templateButtons[index]);
         ViewData();
     }
@@ -73,38 +84,63 @@ public class SelfAspectsScript : MonoBehaviour
 
     private void ViewData()
     {
-        /*
-        if (selectedCharacter.Data.Purchased)
+        buyButton.interactable = false;
+        nameText.text = selectedTemplate.Name;
+        descriptionText.text = selectedTemplate.Description;
+        if (selectedTemplate.RequiredMoney == 0)
+            priceText.text = "Free";
+        else
+            priceText.text = selectedTemplate.RequiredMoney.FormatAD();
+        requiredHighscoreText.text = selectedTemplate.RequiredHighscore.ToString();
+        if (selectedTemplate.RequiredCharacter == null)
+            requiredCharacterText.text = "None";
+        else
+            requiredCharacterText.text = selectedTemplate.RequiredCharacter.Name;
+
+        bool characterAvailable = false;
+        if(selectedTemplate.RequiredCharacter != null)
         {
-            PriceText.text = "Purchased";
-            BuyButton.interactable = false;
-            SelectButton.interactable = true;
-        }
+        foreach(WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
+            if(character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
+                characterAvailable = true;
+                }
+        else
+            characterAvailable = true;
+
+        if (selectedTemplate.Data.Purchased)
+            statusText.text = "Purchased";
+        else if (selectedTemplate.RequiredHighscore > WhoaPlayerProperties.HighScore)
+            statusText.text = "Insufficient highscore";
+        else if (!characterAvailable)
+            statusText.text = selectedTemplate.RequiredCharacter.Name + " is not purchased";
+        else if (selectedTemplate.RequiredMoney > WhoaPlayerProperties.Money)
+            statusText.text = "Insufficient AD";
         else
         {
-            PriceText.text = selectedCharacter.Price.ToString();
-            BuyButton.interactable = true;
+            statusText.text = "Available";
+            buyButton.interactable = true;
         }
-        if (selectedCharacter == WhoaPlayerProperties.Character)
-            SelectButton.interactable = false;
-
-        WhoaCharacter active = WhoaPlayerProperties.Character;
-
-        CurrentCharacterNameLabel.text = active.Name;*/
     }
 
-    public void BuySelectedCharacter()
+    public void BuySelectedTemplate()
     {
-
-    }
-
-    public void SelectSelectedCharacter()
-    {/*
-        if (selectedCharacter.Data.Purchased)
+        bool characterAvailable = false;
+        if(selectedTemplate.RequiredCharacter != null)
         {
-            WhoaPlayerProperties.SetCharacter(selectedCharacter);
+        foreach(WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
+            if(character == selectedTemplate.RequiredCharacter && character.Data.Purchased)
+                characterAvailable = true;
+                }
+        else
+            characterAvailable = true;
+        if(selectedTemplate.RequiredHighscore <= WhoaPlayerProperties.HighScore && selectedTemplate.RequiredMoney <= WhoaPlayerProperties.Money && !selectedTemplate.Data.Purchased && characterAvailable)
+        {
+            WhoaPlayerProperties.Money -= selectedTemplate.RequiredMoney;
+            WhoaPlayerProperties.SavePrefs();
+            selectedTemplate.Data.Purchased = true;
+            selectedTemplate.Save();
             ViewData();
-        }*/
+        }
     }
 }
 

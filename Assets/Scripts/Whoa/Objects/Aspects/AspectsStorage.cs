@@ -43,7 +43,7 @@ namespace Aspects
                 aspectData.AmplifierName = amplifierName;
                 aspectData.BaseKlidCost = baseKlidCost;
                 aspectData.BasePrice = basePrice;
-                aspectData.Description =  description;
+                aspectData.Description = description;
                 aspectData.Duration = duration;
                 aspectData.ExpensesMultiplierPerAmplifier = expensesMultiplierPerAmplifier;
                 aspectData.ExpensesMultiplierPerDuration = expensesMultiplierPerDuration;
@@ -52,6 +52,18 @@ namespace Aspects
                 SelfAspectsTemplates.Add(new SelfAspectTemplate(aspectData, requiredCharacter, requiredHighscore, requiredMoney, minDuration, maxDuration, minAmplifier, maxAmplifier));
             }
         }
+
+        public void Load()
+        {
+            foreach (SelfAspectTemplate template in SelfAspectsTemplates)
+                template.Load();
+        }
+        public void Save()
+        {
+            foreach (SelfAspectTemplate template in SelfAspectsTemplates)
+                template.Save();
+        }
+
 
 
     }

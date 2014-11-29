@@ -174,7 +174,8 @@ public class WhoaCharacter
         {
             WhoaPlayerProperties.Money -= Price;
             Data.Purchased = true;
-            WhoaPlayerProperties.Save();
+            WhoaPlayerProperties.SavePrefs();
+            Save();
             return BuyCharacterResult.success;
         }
         else

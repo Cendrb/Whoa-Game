@@ -83,12 +83,14 @@ public static class WhoaPlayerProperties
         Characters.Save();
         SavePrefs();
         Spells.SaveSpells();
+        AspectsTemplates.Save();
     }
     public static void Load()
     {
         Characters.Load();
         LoadPrefs();
         Spells.LoadSpells();
+        AspectsTemplates.Load();
     }
 
     public static void ReloadFromDrive()

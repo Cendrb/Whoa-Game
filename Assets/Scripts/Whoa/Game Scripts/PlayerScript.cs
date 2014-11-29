@@ -13,6 +13,8 @@ public class PlayerScript : MonoBehaviour
     public AudioClip obstaclePassedSound;
     public AudioClip startupSound;
 
+    public Slider healthSlider;
+    public Slider klidSlider;
     public Text healthText;
     public Text klidText;
     public Text scoreText;
@@ -22,6 +24,8 @@ public class PlayerScript : MonoBehaviour
     public GameObject activeEffectPrefab;
     public GameObject activeEffectsContainer;
     public GameObject castSelfSpellButtonPrefab;
+
+    public GameObject canvasParent;
 
     public Dictionary<int, GameObject> selfSpellButtons;
 
@@ -69,7 +73,7 @@ public class PlayerScript : MonoBehaviour
             spell.GenerateEffects();
             GameObject button = (GameObject)Instantiate(castSelfSpellButtonPrefab);
             RectTransform rectTransform = button.GetComponent<RectTransform>();
-            rectTransform.parent = activeEffectsContainer.transform;
+            rectTransform.SetParent(canvasParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector2(120, counter);
             Text abbreviateText = button.GetComponentInChildren<Text>();
@@ -77,6 +81,12 @@ public class PlayerScript : MonoBehaviour
             selfSpellButtons.Add(index.Value, button);
             counter += 160;
         }
+
+        healthSlider.maxValue = WhoaPlayerProperties.Character.Health;
+        healthSlider.minValue = 0;
+
+        klidSlider.maxValue = WhoaPlayerProperties.Character.KlidEnergy;
+        klidSlider.minValue = 0;
 
         RefreshHealthLabel();
         RefreshKlidLabel();
@@ -108,27 +118,28 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            bool casted = false;
-            foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
+        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+            if (Input.GetMouseButtonDown(0))
             {
-                if (pair.Value.collider2D.OverlapPoint(pos))
+                Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                bool casted = false;
+                foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
                 {
-                    CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
-                    casted = true;
-                    break;
+                    if (pair.Value.collider2D.OverlapPoint(pos))
+                    {
+                        CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
+                        casted = true;
+                        break;
+                    }
                 }
+                if (!casted)
+                    Flap();
             }
-            if (!casted)
-                Flap();
-        }
-        else
-        {
-            flapped = false;
-            selfSpellCasted = false;
-        }
+            else
+            {
+                flapped = false;
+                selfSpellCasted = false;
+            }
         Vector2 velocity = rigidbody2D.velocity;
         velocity.x = properties.Speed * Time.fixedDeltaTime;
         rigidbody2D.velocity = velocity;
@@ -236,12 +247,14 @@ public class PlayerScript : MonoBehaviour
 
     private void RefreshHealthLabel()
     {
-        healthText.text = String.Format("{0}/{1}", properties.Health, properties.MaxHealth);
+        healthSlider.value = properties.Health;
+        healthText.text = properties.Health.ToString();
     }
 
     private void RefreshKlidLabel()
     {
-        klidText.text = String.Format("{0}/{1}", properties.Klid, properties.MaxKlid);
+        klidSlider.value = properties.Klid;
+        klidText.text = properties.Klid.ToString();
     }
 
     private bool getDamaged(int damage)
