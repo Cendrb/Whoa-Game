@@ -85,14 +85,16 @@
      <Compile Include="Assets\Scripts\Whoa\Static.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ChangeSceneScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\CharacterShopScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\DataManagerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\NewSelfSpellScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ScoreScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectValueChangerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SetTextToValueScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\SpellsScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\UI Scripts\UpgradesScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\WiperScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.0/UnityEngine.UI.dll</HintPath>
  </Reference>

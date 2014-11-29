@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 [Serializable]
 public class SelfSpell
@@ -16,24 +17,28 @@ public class SelfSpell
     [NonSerialized]
     public List<SelfEffect> Effects;
 
-    [NonSerialized]
-    int price = -1;
-
     public SelfSpell()
     {
         Aspects = new List<SelfAspect>();
         Effects = new List<SelfEffect>();
     }
 
-    public int GetKlidCost(bool calculate)
+    public int GetKlidCost()
     {
-        if (calculate || price == -1)
-        {
-            price = 0;
-            foreach (SelfAspect aspect in Aspects)
-                price += aspect.GetKlidCost();
-        }
-        return price;
+        int klidPrice = 0;
+        foreach (SelfAspect aspect in Aspects)
+            klidPrice += aspect.GetKlidCost();
+        klidPrice = (int)(klidPrice * Mathf.Pow(1.05f, Aspects.Count));
+        return klidPrice;
+    }
+
+    public int GetADCost()
+    {
+        int adPrice = 0;
+        foreach (SelfAspect aspect in Aspects)
+            adPrice += aspect.GetPrice();
+        adPrice = (int)(adPrice * Mathf.Pow(1.05f, Aspects.Count));
+        return adPrice;
     }
 
     public void GenerateEffects()

@@ -20,21 +20,33 @@ public class NewSelfSpellScript : MonoBehaviour
     public GameObject AspectsList;
     public GameObject AvailableAspects;
 
-    List<SelfAspectTemplate> templates = new List<SelfAspectTemplate>();
-    List<SelfAspect> aspects = new List<SelfAspect>();
+    //List<string> addedAspectsNames = new List<string>();
+    Dictionary<string, SelfAspect> aspects = new Dictionary<string, SelfAspect>();
     List<GameObject> aspectsList = new List<GameObject>();
+    Dictionary<string, GameObject> aspectsScreens = new Dictionary<string, GameObject>();
 
-    GameObject detailsWindowContent;
-    GameObject basicInformations;
+    GameObject basicInformation;
+    GameObject lastScreen;
+
+    InputField nameInput;
+    InputField idInput;
+
+    SelfSpell constructedSpell;
 
     void Start()
     {
-        basicInformations = (GameObject)Instantiate(BasicInformationPrefab);
-        RectTransform infrectTransform = basicInformations.GetComponent<RectTransform>();
+        constructedSpell = new SelfSpell();
+
+        basicInformation = (GameObject)Instantiate(BasicInformationPrefab);
+        RectTransform infrectTransform = basicInformation.GetComponent<RectTransform>();
         infrectTransform.parent = AspectDetails.transform;
         infrectTransform.localScale = new Vector3(1, 1, 1);
         infrectTransform.anchoredPosition = new Vector2(8, -7);
-        basicInformations.SetActive(false);
+        basicInformation.SetActive(false);
+        nameInput = infrectTransform.FindChild("SpellName").gameObject.GetComponent<InputField>();
+        idInput = infrectTransform.FindChild("SpellID").gameObject.GetComponent<InputField>();
+        //nameInput.onSubmit.AddListener(new UnityAction<string>((text) => constructedSpell.Name = text));
+        //idInput.onSubmit.AddListener(new UnityAction<string>((text) => constructedSpell.Abbreviate = text));
 
         int indexCounter = 0;
         int counter = 7;
@@ -52,13 +64,15 @@ public class NewSelfSpellScript : MonoBehaviour
                 image.sprite = template.Sprite;
 
                 Button button = templateObject.GetComponent<Button>();
-                int index = indexCounter;
-                button.onClick.AddListener(new UnityAction(() => AvailableAspectClicked(index)));
+                SelfAspectTemplate templateCopy = template;
+                button.onClick.AddListener(new UnityAction(() => OnAvailableAspectClicked(templateCopy)));
 
                 counter += 97;
                 indexCounter++;
             }
         }
+
+        RefreshCostLabels();
     }
 
     private void GenerateAspectsList()
@@ -67,9 +81,11 @@ public class NewSelfSpellScript : MonoBehaviour
             GameObject.Destroy(go);
         aspectsList.Clear();
 
+        int indexCounter = 0;
         int counter = -80;
-        foreach (SelfAspect aspect in aspects)
+        foreach (KeyValuePair<string, SelfAspect> aspectPair in aspects)
         {
+            SelfAspect aspect = aspectPair.Value;
             GameObject templateObject = (GameObject)Instantiate(AspectLinePrefab);
             RectTransform rectTransform = templateObject.GetComponent<RectTransform>();
             rectTransform.parent = AspectsList.transform;
@@ -83,33 +99,147 @@ public class NewSelfSpellScript : MonoBehaviour
             name.text = aspect.Name;
 
             Text constructionCost = rectTransform.FindChild("ConstructionCost").GetComponent<Text>();
-            constructionCost.text = aspect.GetPrice().ToString() + " AD";
+            constructionCost.text = aspect.GetPrice().FormatAD();
 
             Text castCost = rectTransform.FindChild("CastCost").GetComponent<Text>();
-            castCost.text = aspect.GetKlidCost().ToString() + " K";
+            castCost.text = aspect.GetKlidCost().FormatKlid();
+
+            Button button = templateObject.GetComponent<Button>();
+            SelfAspect aspectCopy = aspect;
+            button.onClick.AddListener(new UnityAction(() => OnSelfAspectLineClicked(aspectCopy)));
 
             aspectsList.Add(templateObject);
 
+            SelfAspectValueChangerScript changerScript = aspectsScreens[aspect.Name].GetComponent<SelfAspectValueChangerScript>();
+            changerScript.ListADCost = constructionCost;
+            changerScript.ListKlidCost = castCost;
+
             counter -= 80;
+            indexCounter++;
         }
     }
 
-    private void AvailableAspectClicked(int indexCounter)
+    private void OnAvailableAspectClicked(SelfAspectTemplate template)
     {
         try
         {
-            templates.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[indexCounter]);
-            aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[indexCounter].GetAspect());
-            GenerateAspectsList();
+            if (!aspects.ContainsKey(template.Name))
+            {
+                SelfAspect aspect = template.GetAspect();
+                aspects.Add(template.Name, aspect);
+                constructedSpell.Aspects.Add(aspect);
+
+                if (!aspectsScreens.ContainsKey(template.Name))
+                {
+                    GameObject aspectScreenObject = (GameObject)Instantiate(AspectDetailsPrefab);
+                    aspectScreenObject.SetActive(false);
+                    RectTransform rectTransform = aspectScreenObject.GetComponent<RectTransform>();
+                    rectTransform.parent = AspectDetails.transform;
+                    rectTransform.localScale = new Vector3(1, 1, 1);
+                    rectTransform.anchoredPosition = new Vector3(17, -16);
+
+                    SelfAspectValueChangerScript script = aspectScreenObject.GetComponent<SelfAspectValueChangerScript>();
+                    script.Aspect = aspect;
+                    script.Script = this;
+                    script.SetLabels();
+
+                    Text name = rectTransform.FindChild("Text").gameObject.GetComponent<Text>();
+                    name.text = template.Name;
+
+                    Button removeButton = rectTransform.FindChild("RemoveButton").gameObject.GetComponent<Button>();
+                    SelfAspect aspectCopy = aspect;
+                    removeButton.onClick.AddListener(new UnityAction(() => OnRemoveButtonClick(aspectCopy)));
+
+                    GameObject amplifier = rectTransform.FindChild("Amplifier").gameObject;
+                    if (template.MinAmplifier != 0)
+                    {
+                        Text amplifierName = amplifier.GetComponent<Text>();
+                        amplifierName.text = template.AmplifierName;
+
+                        Slider amplifierSlider = amplifier.transform.FindChild("Slider").gameObject.GetComponent<Slider>();
+                        amplifierSlider.value = template.DefaultAmplifier;
+                        amplifierSlider.maxValue = template.MaxAmplifier;
+                        amplifierSlider.minValue = template.MinAmplifier;
+                    }
+                    else
+                        GameObject.Destroy(amplifier);
+
+                    GameObject duration = rectTransform.FindChild("Duration").gameObject;
+                    if (template.MinDuration != 0)
+                    {
+                        Slider durationSlider = duration.transform.FindChild("Slider").gameObject.GetComponent<Slider>();
+                        durationSlider.value = template.DefaultDuration;
+                        durationSlider.maxValue = template.MaxDuration;
+                        durationSlider.minValue = template.MinDuration;
+                    }
+                    else
+                    {
+                        RectTransform transform = amplifier.GetComponent<RectTransform>();
+                        transform.anchoredPosition = new Vector3(26, -66);
+                        GameObject.Destroy(duration);
+                    }
+
+                    aspectsScreens[template.Name] = aspectScreenObject;
+                }
+                GenerateAspectsList();
+                OnSelfAspectLineClicked(aspect);
+            }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogException(e);
         }
     }
 
+    private void OnRemoveButtonClick(SelfAspect aspect)
+    {
+        SelfAspect removedAspect = aspects[aspect.Name];
+        constructedSpell.Aspects.Remove(removedAspect);
+        aspects.Remove(aspect.Name);
+        aspectsScreens.Remove(aspect.Name);
+        ClearDetailsScreen();
+        GenerateAspectsList();
+        RefreshCostLabels();
+    }
+
+    private void OnSelfAspectLineClicked(SelfAspect aspect)
+    {
+        if (lastScreen != null)
+            lastScreen.SetActive(false);
+        GameObject screen = aspectsScreens[aspect.Name];
+        screen.SetActive(true);
+        lastScreen = screen;
+    }
+
     public void OnBasicInformationClicked()
     {
-        basicInformations.SetActive(true);
+        ClearDetailsScreen();
+        basicInformation.SetActive(true);
+        lastScreen = basicInformation;
+    }
+
+    private void ClearDetailsScreen()
+    {
+        if (lastScreen != null)
+            lastScreen.SetActive(false);
+    }
+
+    public void CreateSpell()
+    {
+        int cost = constructedSpell.GetKlidCost();
+        if (cost <= WhoaPlayerProperties.Money)
+        {
+            WhoaPlayerProperties.Money -= cost;
+            WhoaPlayerProperties.SavePrefs();
+            WhoaPlayerProperties.Spells.AddSelfSpell(constructedSpell);
+            WhoaPlayerProperties.Spells.SaveSpells();
+            Application.LoadLevel("SelfSpells");
+        }
+    }
+
+    public void RefreshCostLabels()
+    {
+        KlidCostPerCast.text = constructedSpell.GetKlidCost().FormatKlid() + " per cast";
+        ADCostForConstruction.text = constructedSpell.GetADCost().FormatAD() + " for creating";
     }
 }

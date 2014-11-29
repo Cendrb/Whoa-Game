@@ -30,6 +30,28 @@ namespace Aspects.Self
         public int MaxDuration { get; private set; }
         public int MinAmplifier { get; private set; }
         public int MaxAmplifier { get; private set; }
+        public int DefaultAmplifier
+        {
+            get
+            {
+                return AspectData.Amplifier;
+            }
+        }
+        public int DefaultDuration
+        {
+            get
+            {
+                return AspectData.Duration;
+            }
+        }
+
+        public string AmplifierName
+        {
+            get
+            {
+                return AspectData.AmplifierName;
+            }
+        }
 
         public Sprite Sprite { get; private set; }
 

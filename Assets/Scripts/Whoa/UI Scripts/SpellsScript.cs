@@ -58,7 +58,7 @@ public class SpellsScript : MonoBehaviour
             text.text = spell.Value.Name;
 
             Text klidText = spellObject.transform.FindChild("KlidCost").gameObject.GetComponent<Text>();
-            klidText.text = spell.Value.GetKlidCost(true).ToString();
+            klidText.text = spell.Value.GetKlidCost().ToString();
 
             Button setButton = spellObject.transform.FindChild("SetButton").gameObject.GetComponent<Button>();
             if (WhoaPlayerProperties.Character.SelfSpellSlots == 0)

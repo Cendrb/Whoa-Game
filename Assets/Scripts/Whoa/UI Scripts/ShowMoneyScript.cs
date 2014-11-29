@@ -15,6 +15,6 @@ public class ShowMoneyScript : MonoBehaviour
 
     public void ShowMoney()
     {
-        moneyText.text = WhoaPlayerProperties.Money.ToString() + " AD";
+        moneyText.text = WhoaPlayerProperties.Money.FormatAD();
     }
 }

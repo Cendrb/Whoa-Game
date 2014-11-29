@@ -26,6 +26,8 @@ public class CharacterShopScript : MonoBehaviour
     public Button BuyButton;
     public Button SelectButton;
 
+    public ScrollRect scrollRect;
+
     WhoaCharacter selectedCharacter;
 
     // Use this for initialization
@@ -36,16 +38,16 @@ public class CharacterShopScript : MonoBehaviour
         {
             GameObject characterObject = (GameObject)Instantiate(CharacterLinePrefab);
             RectTransform rectTransform = characterObject.GetComponent<RectTransform>();
-            rectTransform.parent = CharactersParent.transform;
+            rectTransform.SetParent(CharactersParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
             Text text = characterObject.transform.FindChild("Text").gameObject.GetComponent<Text>();
             text.text = character.Name;
 
-            Button button = characterObject.transform.FindChild("Button").gameObject.GetComponent<Button>();
-            int index = WhoaPlayerProperties.Characters.characters.IndexOf(character);
-            button.onClick.AddListener(new UnityAction(() => SelectCharacter(index)));
+            Button button = characterObject.GetComponent<Button>();
+            WhoaCharacter characterCopy = character;
+            button.onClick.AddListener(new UnityAction(() => SelectCharacter(characterCopy)));
 
             Image image = characterObject.transform.FindChild("Image").gameObject.GetComponent<Image>();
             image.sprite = character.Sprite;
@@ -56,13 +58,15 @@ public class CharacterShopScript : MonoBehaviour
         RectTransform rekt = CharactersParent.GetComponent<RectTransform>();
         rekt.sizeDelta = new Vector2(0, -counter);
 
-        SelectCharacter(0);
+        scrollRect.normalizedPosition = new Vector2(0, 1);
+
+        SelectCharacter(WhoaPlayerProperties.Characters.characters[0]);
     }
 
 
-    private void SelectCharacter(int index)
+    private void SelectCharacter(WhoaCharacter character)
     {
-        selectedCharacter = WhoaPlayerProperties.Characters.characters[index];
+        selectedCharacter = character;
         ViewData();
     }
 

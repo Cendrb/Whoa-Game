@@ -2,6 +2,7 @@
 using Aspects.Self;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -31,10 +32,14 @@ public static class WhoaPlayerProperties
     public static int Money { get; set; }
     public static bool LastWasHighscore { get; set; }
 
+    public static string NumberFormat = "N";
+    public static CultureInfo Culture;
+
     private static int selectedCharacterIndex;
 
     static WhoaPlayerProperties()
     {
+        Culture = new CultureInfo("cs-CZ");
         Characters = new WhoaCharacters();
         Settings = GameSettings.LoadFromDrive();
         Spells = new SpellManager();
@@ -84,5 +89,27 @@ public static class WhoaPlayerProperties
         Characters.Load();
         LoadPrefs();
         Spells.LoadSpells();
+    }
+
+    public static void ReloadFromDrive()
+    {
+        Characters.SetupCharacters();
+        Settings = GameSettings.LoadFromDrive();
+        AspectsTemplates = new AspectsTemplatesStorage();
+    }
+
+    public static string Format(this int source)
+    {
+        return source.ToString("N0", Culture);
+    }
+
+    public static string FormatAD(this int source)
+    {
+        return source.ToString("N0", Culture) + " AD";
+    }
+
+    public static string FormatKlid(this int source)
+    {
+        return source.ToString("N0", Culture) + " K";
     }
 }

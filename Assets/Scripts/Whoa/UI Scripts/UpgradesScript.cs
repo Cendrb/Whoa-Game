@@ -31,7 +31,7 @@ public class UpgradesScript : MonoBehaviour
             GameObject upgradeObject = (GameObject)Instantiate(upgradeLinePrefab);
             upgradeObject.name = upgrade.Name;
             RectTransform rectTransform = upgradeObject.GetComponent<RectTransform>();
-            rectTransform.parent = upgradesParent.transform;
+            rectTransform.SetParent(upgradesParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
@@ -108,9 +108,9 @@ public class UpgradesScript : MonoBehaviour
                 GameObject effectObject = (GameObject)Instantiate(effectLinePrefab);
                 effectObject.name = Static.GetName(effect.AffectedProperty);
                 RectTransform rectTransform = effectObject.GetComponent<RectTransform>();
-                rectTransform.parent = effectsParent.transform;
+                rectTransform.SetParent(effectsParent.transform);
                 rectTransform.localScale = new Vector3(1, 1, 1);
-                rectTransform.anchoredPosition = new Vector3(0, counter);
+                rectTransform.anchoredPosition = new Vector3(5, counter);
 
                 float currentValue = 0;
                 switch (effect.AffectedProperty)
@@ -143,7 +143,7 @@ public class UpgradesScript : MonoBehaviour
                 Text ratioText = effectObject.transform.FindChild("Ratio").gameObject.GetComponent<Text>();
                 ratioText.text = "1 unit per " + (selectedUpgrade.GetPrice() / difference).ToString("0.##") + " AD";
 
-                counter -= 125;
+                counter -= 135;
             }
         }
         

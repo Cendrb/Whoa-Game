@@ -59,7 +59,7 @@ public class PlayerScript : MonoBehaviour
         StartCoroutine(KlidRegeneration());
 
         foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
-            selfSpell.Value.GetKlidCost(true);
+            selfSpell.Value.GetKlidCost();
 
         selfSpellButtons = new Dictionary<int, GameObject>();
         int counter = 130;
@@ -136,7 +136,7 @@ public class PlayerScript : MonoBehaviour
 
     public void CastSpell(SelfSpell spell)
     {
-        float klidCost = spell.GetKlidCost(false);
+        float klidCost = spell.GetKlidCost();
         if (klidCost <= properties.Klid)
         {
             properties.Klid -= klidCost;
