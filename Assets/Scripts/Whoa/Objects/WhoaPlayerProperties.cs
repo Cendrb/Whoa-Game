@@ -55,8 +55,7 @@ public static class WhoaPlayerProperties
     private static void SetupCollectiblesProbabilities()
     {
         Dictionary<CollectibleType, int> probabilities = new Dictionary<CollectibleType, int>();
-        probabilities.Add(CollectibleType.illuminati, 10);
-        probabilities.Add(CollectibleType.areaEffect, 40);
+        probabilities.Add(CollectibleType.areaEffect, 20);
         probabilities.Add(CollectibleType.klid, 20);
         probabilities.Add(CollectibleType.health, 20);
 

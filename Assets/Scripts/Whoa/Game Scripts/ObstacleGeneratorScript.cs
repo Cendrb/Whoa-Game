@@ -21,6 +21,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     public GameObject Zidan;
 
     public PlayerScript playerScript;
+    public Transform playerTransform;
 
     // Use this for initialization
     void Start()

@@ -2,11 +2,14 @@
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using System.Linq;
 using Aspects.Self.Effects;
 using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour
 {
+    public CollectiblesPrefabs collectibles;
+
     public AudioClip flapSound;
     public AudioClip deathSound;
     public AudioClip crashSound;
@@ -24,7 +27,6 @@ public class PlayerScript : MonoBehaviour
     public GameObject activeEffectPrefab;
     public GameObject activeEffectsContainer;
     public GameObject castSelfSpellButtonPrefab;
-    public GameObject collectiblePrefab;
 
     public GameObject canvasParent;
 
@@ -38,8 +40,6 @@ public class PlayerScript : MonoBehaviour
     bool flapped = false;
     bool selfSpellCasted = false;
     bool bouncedOff = false;
-    int bouncedOffTimer = 0;
-    const int bouncedOffTimerLimit = 40;
     ParticleSystem[] particles;
 
     // Use this for initialization
@@ -52,7 +52,7 @@ public class PlayerScript : MonoBehaviour
         properties = new PlayerDynamicProperties(WhoaPlayerProperties.Character);
         properties.HealthChanged += RefreshHealthLabel;
         properties.KlidChanged += RefreshKlidLabel;
-        rigidbody2D.gravityScale = WhoaPlayerProperties.Character.Gravity;
+        rigidbody2D.mass = WhoaPlayerProperties.Character.Mass;
         particles = GetComponentsInChildren<ParticleSystem>();
 
         SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -142,9 +142,10 @@ public class PlayerScript : MonoBehaviour
                 flapped = false;
                 selfSpellCasted = false;
             }
-        Vector2 velocity = rigidbody2D.velocity;
-        velocity.x = properties.Speed * Time.fixedDeltaTime;
-        rigidbody2D.velocity = velocity;
+        if (!bouncedOff)
+        {
+            rigidbody2D.AddForce(new Vector2(properties.Speed, 0), ForceMode2D.Force);
+        }
     }
 
     public void CastSpell(SelfSpell spell)
@@ -161,60 +162,14 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public System.Collections.IEnumerator KlidRegeneration()
-    {
-        while (true)
-        {
-            properties.Klid += WhoaPlayerProperties.Character.KlidEnergyRegen;
-            yield return new WaitForSeconds(1);
-        }
-    }
-
-    public System.Collections.IEnumerator CollectiblesGenerator()
-    {
-        while (true)
-        {
-            
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
-    List<bool> activeEffectsFreePositions = new List<bool>();
-
-    public System.Collections.IEnumerator AddEffectToScreen(SelfEffect effect)
-    {
-        int index = activeEffectsFreePositions.IndexOf(true);
-        if (index == -1)
-            activeEffectsFreePositions.Add(true);
-        index = activeEffectsFreePositions.IndexOf(true);
-        activeEffectsFreePositions[index] = false;
-
-        GameObject screenEffect = (GameObject)Instantiate(activeEffectPrefab);
-        RectTransform rectTransform = screenEffect.GetComponent<RectTransform>();
-        rectTransform.SetParent(activeEffectsContainer.transform);
-        rectTransform.localScale = new Vector3(1, 1, 1);
-        rectTransform.anchoredPosition = new Vector3(index * 90, 0);
-        Text secondsText = screenEffect.GetComponentInChildren<Text>();
-        Image image = screenEffect.GetComponentInChildren<Image>();
-        image.sprite = effect.Sprite;
-        for (int remainingSeconds = effect.Duration; remainingSeconds > 0; remainingSeconds--)
-        {
-            secondsText.text = remainingSeconds.ToString();
-            yield return new WaitForSeconds(1);
-        }
-        activeEffectsFreePositions[index] = true;
-        GameObject.Destroy(screenEffect);
-    }
-
     public void Flap()
     {
-        Vector2 velocity = rigidbody2D.velocity;
         WhoaPlayerProperties.Character.Data.Statistics.WhoaFlaps++;
         flapped = true;
-        velocity.y = properties.Flap;
+        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
+        rigidbody2D.AddForce(new Vector2(0, properties.Flap), ForceMode2D.Impulse);
         audio.PlayOneShot(flapSound);
         particles[0].Emit(10);
-        rigidbody2D.velocity = velocity;
     }
 
     void GetRekt()
@@ -254,10 +209,12 @@ public class PlayerScript : MonoBehaviour
 
     public bool CollideWith(KillerCollisionScript.CollisionType type)
     {
+        if (type == KillerCollisionScript.CollisionType.basicObstacle)
+        {
+            StartCoroutine(BounceOff());
+        }
         bool result = getDamaged(properties.GetCollisionHandling(type));
 
-        if (result)
-            RefreshHealthLabel();
         return result;
     }
 
@@ -286,5 +243,124 @@ public class PlayerScript : MonoBehaviour
             GetRekt();
 
         return true;
+    }
+
+    public void CollectCollectible(CollectibleType type)
+    {
+        switch (type)
+        {
+            case CollectibleType.health:
+                properties.Health += properties.MaxHealth / 2;
+                break;
+            case CollectibleType.klid:
+                properties.Klid += properties.MaxKlid / 2;
+                break;
+            case CollectibleType.areaEffect:
+                audio.PlayOneShot(startupSound);
+                StartCoroutine(CameraJaggling());
+                break;
+        }
+    }
+
+    #region Coroutines
+
+    public System.Collections.IEnumerator KlidRegeneration()
+    {
+        while (true)
+        {
+            properties.Klid += WhoaPlayerProperties.Character.KlidEnergyRegen;
+            yield return new WaitForSeconds(1);
+        }
+    }
+
+    public System.Collections.IEnumerator CollectiblesGenerator()
+    {
+        while (true)
+        {
+            if (UnityEngine.Random.Range(0, 10) == 8)
+            {
+                GameObject prefab;
+                int result = UnityEngine.Random.Range(0, WhoaPlayerProperties.TotalProbability);
+                CollectibleType type = WhoaPlayerProperties.CollectiblesProbabilities.First<KeyValuePair<CollectibleType, Range>>(new Func<KeyValuePair<CollectibleType, Range>, bool>((pair) => pair.Value.IsInRange(result))).Key;
+
+                switch (type)
+                {
+                    case CollectibleType.areaEffect:
+                        prefab = collectibles.AreaEffect;
+                        break;
+                    case CollectibleType.health:
+                        prefab = collectibles.Health;
+                        break;
+                    case CollectibleType.klid:
+                        prefab = collectibles.Klid;
+                        break;
+                    default:
+                        prefab = collectibles.AreaEffect;
+                        break;
+                }
+
+                float yPosition = UnityEngine.Random.Range(-7f, 7f);
+                GameObject collectible = (GameObject)Instantiate(prefab, new Vector2(rigidbody2D.position.x + 40, yPosition), new Quaternion());
+                CollectibleScript script = collectible.GetComponent<CollectibleScript>();
+                script.Setup(this);
+            }
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    List<bool> activeEffectsFreePositions = new List<bool>();
+
+    public System.Collections.IEnumerator AddEffectToScreen(SelfEffect effect)
+    {
+        int index = activeEffectsFreePositions.IndexOf(true);
+        if (index == -1)
+            activeEffectsFreePositions.Add(true);
+        index = activeEffectsFreePositions.IndexOf(true);
+        activeEffectsFreePositions[index] = false;
+
+        GameObject screenEffect = (GameObject)Instantiate(activeEffectPrefab);
+        RectTransform rectTransform = screenEffect.GetComponent<RectTransform>();
+        rectTransform.SetParent(activeEffectsContainer.transform);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+        rectTransform.anchoredPosition = new Vector3(index * 90, 0);
+        Text secondsText = screenEffect.GetComponentInChildren<Text>();
+        Image image = screenEffect.GetComponentInChildren<Image>();
+        image.sprite = effect.Sprite;
+        for (int remainingSeconds = effect.Duration; remainingSeconds > 0; remainingSeconds--)
+        {
+            secondsText.text = remainingSeconds.ToString();
+            yield return new WaitForSeconds(1);
+        }
+        activeEffectsFreePositions[index] = true;
+        GameObject.Destroy(screenEffect);
+    }
+
+    private System.Collections.IEnumerator BounceOff()
+    {
+        bouncedOff = true;
+        yield return new WaitForSeconds(1);
+        //rigidbody2D.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
+        bouncedOff = false;
+    }
+
+    private System.Collections.IEnumerator CameraJaggling()
+    {
+        int direction = 1;
+        if (UnityEngine.Random.Range(0, 1) == 1)
+            direction = -1;
+        Camera.main.rigidbody2D.angularVelocity = 90 * direction;
+        yield return new WaitForSeconds(2);
+        Camera.main.rigidbody2D.angularVelocity = -90 * direction;
+        yield return new WaitForSeconds(2);
+        Camera.main.rigidbody2D.angularVelocity = 0;
+    }
+    #endregion
+
+    [Serializable]
+    public class CollectiblesPrefabs
+    {
+        public GameObject AreaEffect;
+        public GameObject Health;
+        public GameObject Klid;
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 
-public enum EffectAffectedProperty { health, klid, klidRegen, speed, flap, gravity }
+public enum EffectAffectedProperty { health, klid, klidRegen, speed, flap, mass }
 public enum EffectMethod { plus, times }
 
 public class UpgradeEffect

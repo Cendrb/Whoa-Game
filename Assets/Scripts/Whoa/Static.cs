@@ -17,6 +17,12 @@ public static class Static
                 return "Klid";
             case EffectAffectedProperty.klidRegen:
                 return "Klid regen";
+            case EffectAffectedProperty.flap:
+                return "Whoa power";
+            case EffectAffectedProperty.mass:
+                return "Mass";
+            case EffectAffectedProperty.speed:
+                return "Speed";
             default:
                 return "Enum not implemented";
         }

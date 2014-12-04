@@ -18,7 +18,7 @@ public class WhoaCharacter
     public string Name { get; private set; }
     public float Flap { get; private set; }
     public float Speed { get; private set; }
-    public float Gravity { get; private set; }
+    public float Mass { get; private set; }
     public float KlidEnergy { get; private set; }
     public float KlidEnergyRegen { get; private set; }
     public int SelfSpellSlots { get; private set; }
@@ -29,7 +29,7 @@ public class WhoaCharacter
     private float baseKlidEnergyRegen;
     private float baseSpeed;
     private float baseFlap;
-    private float baseGravity;
+    private float baseMass;
 
     public List<CharacterUpgrade> Upgrades { get; private set; }
 
@@ -55,20 +55,22 @@ public class WhoaCharacter
         }
     }
 
-    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float gravity, float klidEnergy, float klidEnergyRegen, int selfSpellSlots, int rangedSpellSlots, int price)
+    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float mass, float klidEnergy, float klidEnergyRegen, int selfSpellSlots, int rangedSpellSlots, int price)
     {
         Multiplier = multiplier;
-        baseHealth = health;
         Name = name;
         Price = price;
         Flap = flap;
         baseFlap = flap;
         Speed = speed;
         baseSpeed = speed;
-        Gravity = gravity;
-        baseGravity = gravity;
+        Mass = mass;
+        baseMass = mass;
+        baseHealth = health;
         baseKlidEnergyRegen = klidEnergyRegen;
         baseKlidEnergy = klidEnergy;
+        baseFlap = flap;
+        baseSpeed = speed;
         SelfSpellSlots = selfSpellSlots;
         RangedSpellSlots = rangedSpellSlots;
 
@@ -87,6 +89,8 @@ public class WhoaCharacter
 
     private int getLevelOf(string upgradeName)
     {
+        if (!Data.UpgradeLevelDatabase.ContainsKey(upgradeName))
+            Data.UpgradeLevelDatabase.Add(upgradeName, 0);
         return Data.UpgradeLevelDatabase[upgradeName];
     }
 
@@ -101,12 +105,14 @@ public class WhoaCharacter
         Health = baseHealth;
         KlidEnergy = baseKlidEnergy;
         KlidEnergyRegen = baseKlidEnergyRegen;
-        Gravity = baseGravity;
+        Mass = baseMass;
         Flap = baseFlap;
         Speed = baseSpeed;
 
         foreach (CharacterUpgrade upgrade in Upgrades)
         {
+            if (!Data.UpgradeLevelDatabase.ContainsKey(upgrade.Name))
+                Data.UpgradeLevelDatabase.Add(upgrade.Name, 0);
             int level = Data.UpgradeLevelDatabase[upgrade.Name];
             foreach (UpgradeEffect effect in upgrade.Effects)
             {
@@ -127,11 +133,12 @@ public class WhoaCharacter
                     case EffectAffectedProperty.flap:
                         Flap = effect.GetModifiedValue(Flap, level);
                         break;
-                    case EffectAffectedProperty.gravity:
-                        Gravity = effect.GetModifiedValue(Gravity, level);
+                    case EffectAffectedProperty.mass:
+                        Mass = effect.GetModifiedValue(Mass, level);
                         break;
                 }
             }
+
         }
     }
 
@@ -157,8 +164,9 @@ public class WhoaCharacter
             {
                 WhoaPlayerProperties.Money -= upgrade.GetPrice();
                 Data.UpgradeLevelDatabase[upgrade.Name]++;
-                WhoaPlayerProperties.Save();
+                WhoaPlayerProperties.SavePrefs();
                 applyUpgrades();
+                Save();
                 return BuyUpgradeResult.success;
             }
             else

@@ -124,6 +124,15 @@ public class UpgradesScript : MonoBehaviour
                     case EffectAffectedProperty.klidRegen:
                         currentValue = currentCharacter.KlidEnergyRegen;
                         break;
+                    case EffectAffectedProperty.speed:
+                        currentValue = currentCharacter.Speed;
+                        break;
+                    case EffectAffectedProperty.mass:
+                        currentValue = currentCharacter.Mass;
+                        break;
+                    case EffectAffectedProperty.flap:
+                        currentValue = currentCharacter.Flap;
+                        break;
                 }
                 float newValue = effect.GetModifiedValue(currentValue, selectedUpgrade.GetLevel() + 1);
                 float difference = newValue - currentValue;
@@ -143,7 +152,7 @@ public class UpgradesScript : MonoBehaviour
                 Text ratioText = effectObject.transform.FindChild("Ratio").gameObject.GetComponent<Text>();
                 ratioText.text = "1 unit per " + (selectedUpgrade.GetPrice() / difference).ToString("0.##") + " AD";
 
-                counter -= 148;
+                counter -= 155;
             }
         }
         

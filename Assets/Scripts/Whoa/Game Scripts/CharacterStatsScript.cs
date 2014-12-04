@@ -23,7 +23,7 @@ public class CharacterStatsScript : MonoBehaviour
         multiplierText.text = currentCharacter.Multiplier.ToString();
         flapStrengthText.text = currentCharacter.Flap.ToString();
         speedText.text = currentCharacter.Speed.ToString();
-        gravityText.text = currentCharacter.Gravity.ToString();
+        gravityText.text = currentCharacter.Mass.ToString();
         obstaclesPassedText.text = currentCharacter.Data.Statistics.ObstaclesPassed.ToString();
         moneyEarnedText.text = currentCharacter.Data.Statistics.MoneyEarned.ToString();
         whoaFlapsText.text = currentCharacter.Data.Statistics.WhoaFlaps.ToString();

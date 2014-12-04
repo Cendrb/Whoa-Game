@@ -57,7 +57,7 @@ public class PlayerDynamicProperties
         Klid = character.KlidEnergy;
         Speed = character.Speed;
         Flap = character.Flap;
-        Gravity = character.Gravity;
+        Gravity = character.Mass;
 
         collisionHandling[KillerCollisionScript.CollisionType.basicObstacle] = 10;
         collisionHandling[KillerCollisionScript.CollisionType.wall] = 5;

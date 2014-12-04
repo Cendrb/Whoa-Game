@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-public struct Range
+public class Range
 {
     public int Min { get; set; }
     public int Max { get; set; }
 
     public Range(int min, int max)
     {
-        if (Max >= Min)
+        if (max >= min)
         {
             Min = min;
             Max = max;

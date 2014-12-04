@@ -31,11 +31,11 @@ public class WhoaCharacters
             float klidRegen = float.Parse(row.Elements[4].Value);
             float speed = float.Parse(row.Elements[5].Value);
             float whoaPower = float.Parse(row.Elements[6].Value);
-            float weight = float.Parse(row.Elements[7].Value);
+            float mass = float.Parse(row.Elements[7].Value);
             int selfSpellSlots = int.Parse(row.Elements[8].Value);
             int price = int.Parse(row.Elements[9].Value);
             int rangedSpellSlots = int.Parse(row.Elements[10].Value);
-            WhoaCharacter character = new WhoaCharacter(name, multiplier, health, whoaPower, speed, weight, klid, klidRegen, selfSpellSlots, rangedSpellSlots, price);
+            WhoaCharacter character = new WhoaCharacter(name, multiplier, health, whoaPower, speed, mass, klid, klidRegen, selfSpellSlots, rangedSpellSlots, price);
             characters.Add(character);
         }
 

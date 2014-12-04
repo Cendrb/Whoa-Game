@@ -14,9 +14,9 @@ public class KillerCollisionScript : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.CompareTag("Player"))
+        if (col.collider.CompareTag("Player"))
         {
             bool result = playerScript.CollideWith(type);
             if (result && (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan))
