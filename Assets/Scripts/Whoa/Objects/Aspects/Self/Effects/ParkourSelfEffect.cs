@@ -16,12 +16,12 @@ namespace Aspects.Self.Effects
 
         public override void Start(PlayerDynamicProperties properties)
         {
-            properties.SetCollisionHandling(KillerCollisionScript.CollisionType.wall, 0);
+            properties.SetCollisionHandling(CollisionType.wall, 0);
         }
 
         public override void End(PlayerDynamicProperties properties)
         {
-            properties.RevertCollisionHandling(KillerCollisionScript.CollisionType.wall);
+            properties.RevertCollisionHandling(CollisionType.wall);
         }
     }
 }

@@ -74,6 +74,8 @@
      <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\GameSettings.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\ObstacleData.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Objects\ObstaclesData.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\Range.cs" />
      <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />

@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum CollisionType { basicObstacle, wall, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
+
 public class KillerCollisionScript : MonoBehaviour
 {
-    public enum CollisionType { basicObstacle, wall, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
+   
 
     public CollisionType type;
     PlayerScript playerScript;

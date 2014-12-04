@@ -6,8 +6,8 @@ using System.Text;
 
 public class PlayerDynamicProperties
 {
-    Dictionary<KillerCollisionScript.CollisionType, int> collisionHandling = new Dictionary<KillerCollisionScript.CollisionType, int>();
-    Dictionary<KillerCollisionScript.CollisionType, int> defaultCollisionHandling = new Dictionary<KillerCollisionScript.CollisionType, int>();
+    Dictionary<CollisionType, int> collisionHandling = new Dictionary<CollisionType, int>();
+    Dictionary<CollisionType, int> defaultCollisionHandling = new Dictionary<CollisionType, int>();
 
     int health;
     public int Health
@@ -59,32 +59,33 @@ public class PlayerDynamicProperties
         Flap = character.Flap;
         Gravity = character.Mass;
 
-        collisionHandling[KillerCollisionScript.CollisionType.basicObstacle] = 10;
-        collisionHandling[KillerCollisionScript.CollisionType.wall] = 5;
-        collisionHandling[KillerCollisionScript.CollisionType.zidan] = 20;
-        collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft1] = 3;
-        collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft2] = 5;
-        collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft3] = 7;
+        collisionHandling[CollisionType.basicObstacle] = 10;
+        collisionHandling[CollisionType.wall] = 5;
+        
+        foreach(KeyValuePair<CollisionType, ObstacleData> pair in WhoaPlayerProperties.ObstaclesData.Data)
+        {
+            collisionHandling[pair.Key] = pair.Value.Damage;
+        }
 
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.basicObstacle] = collisionHandling[KillerCollisionScript.CollisionType.basicObstacle];
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.wall] = collisionHandling[KillerCollisionScript.CollisionType.wall];
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.zidan] = collisionHandling[KillerCollisionScript.CollisionType.zidan];
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft1] = collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft1];
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft2] = collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft2];
-        defaultCollisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft3] = collisionHandling[KillerCollisionScript.CollisionType.njarbeitsheft3];
+        defaultCollisionHandling[CollisionType.basicObstacle] = collisionHandling[CollisionType.basicObstacle];
+        defaultCollisionHandling[CollisionType.wall] = collisionHandling[CollisionType.wall];
+        defaultCollisionHandling[CollisionType.zidan] = collisionHandling[CollisionType.zidan];
+        defaultCollisionHandling[CollisionType.njarbeitsheft1] = collisionHandling[CollisionType.njarbeitsheft1];
+        defaultCollisionHandling[CollisionType.njarbeitsheft2] = collisionHandling[CollisionType.njarbeitsheft2];
+        defaultCollisionHandling[CollisionType.njarbeitsheft3] = collisionHandling[CollisionType.njarbeitsheft3];
     }
 
-    public void SetCollisionHandling(KillerCollisionScript.CollisionType type, int value)
+    public void SetCollisionHandling(CollisionType type, int value)
     {
         collisionHandling[type] = value;
     }
 
-    public void RevertCollisionHandling(KillerCollisionScript.CollisionType type)
+    public void RevertCollisionHandling(CollisionType type)
     {
         collisionHandling[type] = defaultCollisionHandling[type];
     }
 
-    public int GetCollisionHandling(KillerCollisionScript.CollisionType type)
+    public int GetCollisionHandling(CollisionType type)
     {
         return collisionHandling[type];
     }

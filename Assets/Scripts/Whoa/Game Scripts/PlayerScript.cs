@@ -207,12 +207,8 @@ public class PlayerScript : MonoBehaviour
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
-    public bool CollideWith(KillerCollisionScript.CollisionType type)
+    public bool CollideWith(CollisionType type)
     {
-        if (type == KillerCollisionScript.CollisionType.basicObstacle)
-        {
-            StartCoroutine(BounceOff());
-        }
         bool result = getDamaged(properties.GetCollisionHandling(type));
 
         return result;
@@ -333,14 +329,6 @@ public class PlayerScript : MonoBehaviour
         }
         activeEffectsFreePositions[index] = true;
         GameObject.Destroy(screenEffect);
-    }
-
-    private System.Collections.IEnumerator BounceOff()
-    {
-        bouncedOff = true;
-        yield return new WaitForSeconds(1);
-        //rigidbody2D.AddForce(new Vector2(10, 0), ForceMode2D.Impulse);
-        bouncedOff = false;
     }
 
     private System.Collections.IEnumerator CameraJaggling()

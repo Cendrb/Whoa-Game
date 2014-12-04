@@ -26,6 +26,8 @@ public static class WhoaPlayerProperties
     public static AspectsTemplatesStorage AspectsTemplates { get; private set; }
     public static SpellManager Spells { get; private set; }
 
+    public static ObstaclesData ObstaclesData { get; private set; }
+
     public static Dictionary<CollectibleType, Range> CollectiblesProbabilities { get; private set; }
     public static int TotalProbability { get; private set; }
 
@@ -42,6 +44,7 @@ public static class WhoaPlayerProperties
 
     static WhoaPlayerProperties()
     {
+        ObstaclesData = new global::ObstaclesData();
         CollectiblesProbabilities = new Dictionary<CollectibleType, Range>();
         SetupCollectiblesProbabilities();
         Culture = new CultureInfo("cs-CZ");

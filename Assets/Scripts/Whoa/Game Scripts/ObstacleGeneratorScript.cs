@@ -8,6 +8,11 @@ public class ObstacleGeneratorScript : MonoBehaviour
     public GameObject singleObstaclePrefab;
     public GameObject obstaclePassedPrefab;
     public int offset;
+
+    int arbeitsheft1Count;
+    int arbeitsheft2Count;
+    int arbeitsheft3Count;
+    int zidanCount;
     float spaceBetweenObstacles;
     int obstaclesPerSection;
 
@@ -98,8 +103,8 @@ public class ObstacleGeneratorScript : MonoBehaviour
         }
         else
         {
-            Debug.Log(Time.fixedDeltaTime);
-            int zidanCount = WhoaPlayerProperties.Settings.ZidanCount + areasPassed / 2;
+            #region Old entity summoner
+            /*int zidanCount = WhoaPlayerProperties.Settings.ZidanCount + areasPassed / 2;
             float minimumArbeitsheftDistance = 0.001f;
             float maximumArbeitsheftDistance = 1.8f;
 
@@ -124,7 +129,8 @@ public class ObstacleGeneratorScript : MonoBehaviour
                 SummonNJArbeitsheft2(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
 
             for (float distance = minimumArbeitsheftDistance; distance < maximumArbeitsheftDistance; distance += 0.4f)
-                SummonNJArbeitsheft1(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
+                SummonNJArbeitsheft1(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));*/
+            #endregion
         }
         transform.position = lastpos;
     }
@@ -132,6 +138,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     private GameObject SummonNJArbeitsheft3(Vector2 pos)
     {
         GameObject arbeitsheft = Instantiate(NJArbeitsheft3, pos, new Quaternion()) as GameObject;
+        arbeitsheft.transform.SetParent(playerTransform, true);
         arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-12, -8), Random.Range(-7, 7));
         return arbeitsheft;
     }
@@ -139,6 +146,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     private GameObject SummonNJArbeitsheft2(Vector2 pos)
     {
         GameObject arbeitsheft = Instantiate(NJArbeitsheft2, pos, new Quaternion()) as GameObject;
+        arbeitsheft.transform.SetParent(playerTransform, true);
         arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-14, -9), Random.Range(-8, 8));
         return arbeitsheft;
     }
@@ -146,6 +154,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     private GameObject SummonNJArbeitsheft1(Vector2 pos)
     {
         GameObject arbeitsheft = Instantiate(NJArbeitsheft1, pos, new Quaternion()) as GameObject;
+        arbeitsheft.transform.SetParent(playerTransform, true);
         arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(-15, -10), Random.Range(-10, 10));
         return arbeitsheft;
     }
@@ -153,6 +162,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     private GameObject SummonZidan(Vector2 pos, Quaternion quat, Vector2 velocity)
     {
         GameObject zidan = Instantiate(Zidan, pos, quat) as GameObject;
+        zidan.transform.SetParent(playerTransform, true);
         zidan.rigidbody2D.velocity = velocity;
         return zidan;
     }
