@@ -8,6 +8,7 @@ public class PlayerDynamicProperties
 {
     Dictionary<CollisionType, int> collisionHandling = new Dictionary<CollisionType, int>();
     Dictionary<CollisionType, int> defaultCollisionHandling = new Dictionary<CollisionType, int>();
+    Dictionary<CollisionType, int> collisionHandlingOverrideCount = new Dictionary<CollisionType, int>();
 
     int health;
     public int Health
@@ -61,28 +62,30 @@ public class PlayerDynamicProperties
 
         collisionHandling[CollisionType.basicObstacle] = 10;
         collisionHandling[CollisionType.wall] = 5;
-        
-        foreach(KeyValuePair<CollisionType, ObstacleData> pair in WhoaPlayerProperties.ObstaclesData.Data)
-        {
-            collisionHandling[pair.Key] = pair.Value.Damage;
-        }
 
-        defaultCollisionHandling[CollisionType.basicObstacle] = collisionHandling[CollisionType.basicObstacle];
-        defaultCollisionHandling[CollisionType.wall] = collisionHandling[CollisionType.wall];
-        defaultCollisionHandling[CollisionType.zidan] = collisionHandling[CollisionType.zidan];
-        defaultCollisionHandling[CollisionType.njarbeitsheft1] = collisionHandling[CollisionType.njarbeitsheft1];
-        defaultCollisionHandling[CollisionType.njarbeitsheft2] = collisionHandling[CollisionType.njarbeitsheft2];
-        defaultCollisionHandling[CollisionType.njarbeitsheft3] = collisionHandling[CollisionType.njarbeitsheft3];
+        foreach (KeyValuePair<CollisionType, ObstacleData> pair in WhoaPlayerProperties.ObstaclesData.Data)
+            collisionHandling[pair.Key] = pair.Value.Damage;
+
+        foreach (KeyValuePair<CollisionType, int> pair in collisionHandling)
+        {
+            defaultCollisionHandling[pair.Key] = pair.Value;
+            collisionHandlingOverrideCount[pair.Key] = 0;
+        }
     }
 
     public void SetCollisionHandling(CollisionType type, int value)
     {
+        if (collisionHandling[type] != defaultCollisionHandling[type])
+            collisionHandlingOverrideCount[type]++;
         collisionHandling[type] = value;
     }
 
     public void RevertCollisionHandling(CollisionType type)
     {
-        collisionHandling[type] = defaultCollisionHandling[type];
+        if (collisionHandlingOverrideCount[type] > 0)
+            collisionHandlingOverrideCount[type]--;
+        else
+            collisionHandling[type] = defaultCollisionHandling[type];
     }
 
     public int GetCollisionHandling(CollisionType type)

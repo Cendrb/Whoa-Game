@@ -7,7 +7,7 @@ using System.Linq;
 using System;
 using Aspects.Self;
 
-public class SpellsScript : MonoBehaviour
+public class SelfSpellsScript : MonoBehaviour
 {
     public GameObject spellsParent;
     public GameObject spellPrefab;
@@ -27,7 +27,7 @@ public class SpellsScript : MonoBehaviour
     void Start()
     {
         SlotButtonsManager.Start();
-        SpellButtonManager.Start();
+        SpellButtonManager.Start(spellPrefab.GetComponent<Button>().image.color);
 
         GenerateSpellGameobjects();
 
@@ -52,7 +52,7 @@ public class SpellsScript : MonoBehaviour
 
             Button button = spellObject.GetComponent<Button>();
             int index = spell.Key;
-            button.onClick.AddListener(new UnityAction(() => SelectSpellButton(index)));
+            button.onClick.AddListener(new UnityAction(() => SelectSpell(index)));
             SpellButtonManager.spellButtons.Add(spell.Key, button);
 
             Text text = spellObject.transform.FindChild("Name").gameObject.GetComponent<Text>();
@@ -88,6 +88,7 @@ public class SpellsScript : MonoBehaviour
         SelfSpell selectedSpell = WhoaPlayerProperties.Spells.SelfSpells[index];
         spellName.text = selectedSpell.Name;
         spellAbbreviate.text = selectedSpell.Abbreviate;
+        SpellButtonManager.SelectSpell(index, this);
     }
 
     private void SetSpellToSelectedSlot(int index)
@@ -110,16 +111,12 @@ public class SpellsScript : MonoBehaviour
         SlotButtonsManager.SelectSlot(index, this);
     }
 
-    public void SelectSpellButton(int index)
-    {
-        SpellButtonManager.SelectSpell(index, this);
-    }
-
     private void DeselectSpell()
     {
         deleteButton.interactable = false;
         spellName.text = "Select spell to view";
         spellAbbreviate.text = "";
+        SpellButtonManager.DeselectSpell();
     }
 
     public void CreateNewSpell()
@@ -137,8 +134,9 @@ public class SpellsScript : MonoBehaviour
 
     public void DeleteSelectedSpell()
     {
-        if (WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.ContainsValue(selectedIndex))
-            WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.Remove(WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.FirstOrDefault(x => x.Value == selectedIndex).Key);
+        foreach (WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
+            if (character.Data.SelectedRangedSpellsIds.ContainsValue(selectedIndex))
+                character.Data.SelectedSelfSpellsIds.Remove(character.Data.SelectedSelfSpellsIds.FirstOrDefault(x => x.Value == selectedIndex).Key);
         WhoaPlayerProperties.Spells.SelfSpells.Remove(selectedIndex);
         GenerateSpellGameobjects();
         DeselectSpell();
@@ -149,25 +147,32 @@ public class SpellsScript : MonoBehaviour
     public class Spells
     {
         public Dictionary<int, Button> spellButtons { get; private set; }
-        public Color normalColor;
+        Color normalColor;
         public Color selectedColor;
         Button lastSelectedButton;
 
-        public void Start()
+        public void Start(Color defaultColor)
         {
+            normalColor = defaultColor;
             spellButtons = new Dictionary<int, Button>();
         }
 
-        public void SelectSpell(int index, SpellsScript script)
+        public void SelectSpell(int index, SelfSpellsScript script)
         {
             try
             {
-                script.SelectSpell(index);
+                SelectButton(spellButtons[index]);
             }
             catch (Exception e)
             {
                 Debug.LogException(e);
             }
+        }
+
+        public void DeselectSpell()
+        {
+            if (lastSelectedButton != null)
+                DeselectButton(lastSelectedButton);
         }
 
         private void SelectButton(Button button)
@@ -202,7 +207,7 @@ public class SpellsScript : MonoBehaviour
         }
 
 
-        public void SelectSlot(int index, SpellsScript script)
+        public void SelectSlot(int index, SelfSpellsScript script)
         {
             try
             {
@@ -219,7 +224,7 @@ public class SpellsScript : MonoBehaviour
             }
         }
 
-        public void ClearActiveSlot(SpellsScript script)
+        public void ClearActiveSlot(SelfSpellsScript script)
         {
             script.DeselectSpell();
             WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds.Remove(selectedIndex);

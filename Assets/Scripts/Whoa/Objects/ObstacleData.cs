@@ -29,5 +29,10 @@ public class ObstacleData
         Damage = damage;
         Mass = mass;
     }
+
+    public ObstacleData Clone()
+    {
+        return new ObstacleData(Count, ObstaclesAddedPerLevel, XVelocityMin, XVelocityMax, YVelocityMin, YVelocityMax, Offset, Damage, Mass);
+    }
 }
 

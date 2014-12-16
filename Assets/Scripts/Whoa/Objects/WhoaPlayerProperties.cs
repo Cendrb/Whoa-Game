@@ -133,7 +133,7 @@ public static class WhoaPlayerProperties
 
     public static string FormatAD(this int source)
     {
-        return source.ToString("N0", Culture) + " AD";
+        return source.ToString("N0", Culture) + " ∅";
     }
 
     public static string FormatKlid(this int source)

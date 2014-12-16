@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System;
+using System.Collections.Generic;
 
 public class CharacterShopScript : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class CharacterShopScript : MonoBehaviour
 
     public GameObject CharactersParent;
     public GameObject CharacterLinePrefab;
+
+    public MoneyAndCharacterScript characterAndMoneyScript;
 
     public Text NameText;
     public Text MultiplierText;
@@ -28,11 +31,18 @@ public class CharacterShopScript : MonoBehaviour
 
     public ScrollRect scrollRect;
 
+    public Color selectedColor;
+    Color normalColor;
+
+    Button lastSelectedButton;
+    List<Button> buttons = new List<Button>();
+
     WhoaCharacter selectedCharacter;
 
     // Use this for initialization
     private void Start()
     {
+        normalColor = CharacterLinePrefab.GetComponent<Button>().image.color;
         float counter = 0;
         foreach (WhoaCharacter character in WhoaPlayerProperties.Characters.characters)
         {
@@ -46,6 +56,7 @@ public class CharacterShopScript : MonoBehaviour
             text.text = character.Name;
 
             Button button = characterObject.GetComponent<Button>();
+            buttons.Add(button);
             WhoaCharacter characterCopy = character;
             button.onClick.AddListener(new UnityAction(() => SelectCharacter(characterCopy)));
 
@@ -60,19 +71,22 @@ public class CharacterShopScript : MonoBehaviour
 
         scrollRect.normalizedPosition = new Vector2(0, 1);
 
-        SelectCharacter(WhoaPlayerProperties.Characters.characters[0]);
+        SelectCharacter(WhoaPlayerProperties.Character);
     }
 
 
     private void SelectCharacter(WhoaCharacter character)
     {
+        if (lastSelectedButton != null)
+            lastSelectedButton.image.color = normalColor;
+        lastSelectedButton = buttons[WhoaPlayerProperties.Characters.characters.IndexOf(character)];
+        lastSelectedButton.image.color = selectedColor;
         selectedCharacter = character;
         ViewData();
     }
 
     private void ViewData()
     {
-
         if (selectedCharacter.Data.Purchased)
         {
             PriceText.text = "Purchased";
@@ -81,7 +95,7 @@ public class CharacterShopScript : MonoBehaviour
         }
         else
         {
-            PriceText.text = selectedCharacter.Price.Format();
+            PriceText.text = selectedCharacter.Price.FormatAD();
             BuyButton.interactable = true;
         }
         if (selectedCharacter == WhoaPlayerProperties.Character)
@@ -101,6 +115,8 @@ public class CharacterShopScript : MonoBehaviour
         setValueAndColor(KlidText, selectedCharacter.KlidEnergy, active.KlidEnergy);
 
         CurrentCharacterNameLabel.text = active.Name;
+        characterAndMoneyScript.ShowCharacterSprite();
+        characterAndMoneyScript.ShowMoney();
     }
 
     private void setValueAndColor(Text target, float selected, float active)

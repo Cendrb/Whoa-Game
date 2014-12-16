@@ -13,12 +13,7 @@ public class GameSettings
     public float FreeAreaSize { get; set; }
 
     public float FreeAreaEntityOffset { get; set; }
-
-
-    // TEMPORARY!
-    public int currentAspect;
-    public int CADuration;
-    public int CAAmplifier;
+    public float MinimalCollectiblesDistance { get; set; }
 
     public static GameSettings LoadFromDrive()
     {
@@ -29,6 +24,7 @@ public class GameSettings
         settings.SpaceBetweenObstacles = float.Parse(row.Elements[1].Value);
         settings.FreeAreaSize = float.Parse(row.Elements[2].Value);
         settings.FreeAreaEntityOffset = float.Parse(row.Elements[3].Value);
+        settings.MinimalCollectiblesDistance = float.Parse(row.Elements[4].Value);
         return settings;
     }
 }

@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviour
 
     public Slider healthSlider;
     public Slider klidSlider;
+
     public Text healthText;
     public Text klidText;
     public Text scoreText;
@@ -27,12 +28,18 @@ public class PlayerScript : MonoBehaviour
     public GameObject activeEffectPrefab;
     public GameObject activeEffectsContainer;
     public GameObject castSelfSpellButtonPrefab;
+    public Color enoughKlidToCastColor;
+    public Color insufficientKlidToCastColor;
 
     public GameObject canvasParent;
+
+    public OnPlayerPassedExecutorScript collectiblesGenerator;
 
     public Dictionary<int, GameObject> selfSpellButtons;
 
     public Canvas canvas;
+
+    List<Text> spellKlidCostAmountsOnButtons = new List<Text>();
 
     int obstaclesPassedCount;
     int openAreasPassedCount;
@@ -51,6 +58,7 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.LastMoney = 0;
         properties = new PlayerDynamicProperties(WhoaPlayerProperties.Character);
         properties.HealthChanged += RefreshHealthLabel;
+        properties.KlidChanged += RefreshKlidCostLabels;
         properties.KlidChanged += RefreshKlidLabel;
         rigidbody2D.mass = WhoaPlayerProperties.Character.Mass;
         particles = GetComponentsInChildren<ParticleSystem>();
@@ -60,9 +68,6 @@ public class PlayerScript : MonoBehaviour
 
         particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
         particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
-
-        StartCoroutine(KlidRegeneration());
-        StartCoroutine(CollectiblesGenerator());
 
         foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
             selfSpell.Value.GetKlidCost();
@@ -78,11 +83,21 @@ public class PlayerScript : MonoBehaviour
             rectTransform.SetParent(canvasParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector2(120, counter);
-            Text abbreviateText = button.GetComponentInChildren<Text>();
+            Text abbreviateText = button.transform.FindChild("Abbreviate").gameObject.GetComponentInChildren<Text>();
             abbreviateText.text = spell.Abbreviate;
+            Text klidCostText = button.transform.FindChild("KlidCost").gameObject.GetComponentInChildren<Text>();
+            klidCostText.text = spell.GetKlidCost().FormatKlid();
+            spellKlidCostAmountsOnButtons.Add(klidCostText);
             selfSpellButtons.Add(index.Value, button);
             counter += 160;
         }
+
+        if (WhoaPlayerProperties.Character.KlidEnergy <= 0)
+        {
+            klidSlider.gameObject.SetActive(false);
+        }
+        else
+            StartCoroutine(KlidRegeneration());
 
         healthSlider.maxValue = WhoaPlayerProperties.Character.Health;
         healthSlider.minValue = 0;
@@ -90,8 +105,12 @@ public class PlayerScript : MonoBehaviour
         klidSlider.maxValue = WhoaPlayerProperties.Character.KlidEnergy;
         klidSlider.minValue = 0;
 
+        collectiblesGenerator.OnCollisionWithPlayer += GenerateCollectibleGeneratorTriggered;
+        collectiblesGenerator.PositionMovementAfterCollision = new Vector2(WhoaPlayerProperties.Settings.MinimalCollectiblesDistance, 0);
+
         RefreshHealthLabel();
         RefreshKlidLabel();
+        RefreshKlidCostLabels();
     }
 
     // Update is called once per frame
@@ -120,7 +139,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
+        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsWebPlayer || Application.platform == RuntimePlatform.OSXWebPlayer)
             if (Input.GetMouseButtonDown(0))
             {
                 Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -226,6 +245,22 @@ public class PlayerScript : MonoBehaviour
         klidText.text = properties.Klid.ToString();
     }
 
+    private void RefreshKlidCostLabels()
+    {
+        int indexCounter = 0;
+        foreach (KeyValuePair<int, int> index in WhoaPlayerProperties.Character.Data.SelectedSelfSpellsIds)
+        {
+            SelfSpell spell = WhoaPlayerProperties.Spells.SelfSpells[index.Value];
+            int klidCost = spell.GetKlidCost();
+            spellKlidCostAmountsOnButtons[indexCounter].text = klidCost.FormatKlid();
+            if (klidCost <= properties.Klid)
+                spellKlidCostAmountsOnButtons[indexCounter].color = enoughKlidToCastColor;
+            else
+                spellKlidCostAmountsOnButtons[indexCounter].color = insufficientKlidToCastColor;
+            indexCounter++;
+        }
+    }
+
     private bool getDamaged(int damage)
     {
         if (damage == -1)
@@ -258,6 +293,40 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    private void GenerateCollectibleGeneratorTriggered(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
+    {
+        if (UnityEngine.Random.Range(0, 3) == 0)
+        {
+            GameObject prefab;
+            int result = UnityEngine.Random.Range(0, WhoaPlayerProperties.TotalProbability);
+            CollectibleType type = WhoaPlayerProperties.CollectiblesProbabilities.First<KeyValuePair<CollectibleType, Range>>(new Func<KeyValuePair<CollectibleType, Range>, bool>((pair) => pair.Value.IsInRange(result))).Key;
+
+            switch (type)
+            {
+                case CollectibleType.areaEffect:
+                    prefab = collectibles.AreaEffect;
+                    break;
+                case CollectibleType.health:
+                    prefab = collectibles.Health;
+                    break;
+                case CollectibleType.klid:
+                    if (WhoaPlayerProperties.Character.KlidEnergy > 0)
+                        prefab = collectibles.Klid;
+                    else
+                        prefab = collectibles.AreaEffect;
+                    break;
+                default:
+                    prefab = collectibles.AreaEffect;
+                    break;
+            }
+
+            float yPosition = UnityEngine.Random.Range(-7f, 7f);
+            GameObject collectible = (GameObject)Instantiate(prefab, new Vector2(rigidbody2D.position.x + 40, yPosition), new Quaternion());
+            CollectibleScript script = collectible.GetComponent<CollectibleScript>();
+            script.Setup(this);
+        }
+    }
+
     #region Coroutines
 
     public System.Collections.IEnumerator KlidRegeneration()
@@ -266,41 +335,6 @@ public class PlayerScript : MonoBehaviour
         {
             properties.Klid += WhoaPlayerProperties.Character.KlidEnergyRegen;
             yield return new WaitForSeconds(1);
-        }
-    }
-
-    public System.Collections.IEnumerator CollectiblesGenerator()
-    {
-        while (true)
-        {
-            if (UnityEngine.Random.Range(0, 10) == 8)
-            {
-                GameObject prefab;
-                int result = UnityEngine.Random.Range(0, WhoaPlayerProperties.TotalProbability);
-                CollectibleType type = WhoaPlayerProperties.CollectiblesProbabilities.First<KeyValuePair<CollectibleType, Range>>(new Func<KeyValuePair<CollectibleType, Range>, bool>((pair) => pair.Value.IsInRange(result))).Key;
-
-                switch (type)
-                {
-                    case CollectibleType.areaEffect:
-                        prefab = collectibles.AreaEffect;
-                        break;
-                    case CollectibleType.health:
-                        prefab = collectibles.Health;
-                        break;
-                    case CollectibleType.klid:
-                        prefab = collectibles.Klid;
-                        break;
-                    default:
-                        prefab = collectibles.AreaEffect;
-                        break;
-                }
-
-                float yPosition = UnityEngine.Random.Range(-7f, 7f);
-                GameObject collectible = (GameObject)Instantiate(prefab, new Vector2(rigidbody2D.position.x + 40, yPosition), new Quaternion());
-                CollectibleScript script = collectible.GetComponent<CollectibleScript>();
-                script.Setup(this);
-            }
-            yield return new WaitForSeconds(1f);
         }
     }
 
