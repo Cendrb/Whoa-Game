@@ -5,7 +5,7 @@ using System;
 
 public class UpgradesScript : MonoBehaviour
 {
-    public ShowMoneyScript MoneyScript;
+    public MoneyAndCharacterScript MoneyScript;
 
     public Button buyButton;
     public Text selectedUpgradeName;
