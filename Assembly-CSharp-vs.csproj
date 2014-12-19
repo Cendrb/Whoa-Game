@@ -54,6 +54,7 @@
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyOnTouch.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ExplodeScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\FollowObjectScript.cs" />
+     <Compile Include="Assets\Scripts\Whoa\Game Scripts\GameManagerScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\KillerCollisionScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstacleGeneratorScript.cs" />
      <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstaclePassedScript.cs" />

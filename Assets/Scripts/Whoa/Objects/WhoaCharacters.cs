@@ -67,7 +67,6 @@ public class WhoaCharacters
 
         foreach (WhoaCharacter character in characters)
             character.LoadEverything();
-
     }
     private UpgradeEffect parseEffect(ListEntry row)
     {

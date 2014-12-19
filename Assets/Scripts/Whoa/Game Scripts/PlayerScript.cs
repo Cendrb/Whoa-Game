@@ -16,30 +16,28 @@ public class PlayerScript : MonoBehaviour
     public AudioClip obstaclePassedSound;
     public AudioClip startupSound;
 
-    public Slider healthSlider;
-    public Slider klidSlider;
+    public Slider healthSlider { get; set; }
+    public Slider klidSlider { get; set; }
 
-    public Text healthText;
-    public Text klidText;
-    public Text scoreText;
-    public Text obstaclesPassed;
-    public Text openAreasPassed;
+    public Text healthText { get; set; }
+    public Text klidText { get; set; }
+    public Text scoreText { get; set; }
 
-    public GameObject activeEffectPrefab;
-    public GameObject activeEffectsContainer;
-    public GameObject castSelfSpellButtonPrefab;
-    public Color enoughKlidToCastColor;
-    public Color insufficientKlidToCastColor;
+    public GameObject activeEffectPrefab { get; set; }
+    public GameObject activeEffectsContainer { get; set; }
+    public GameObject castSelfSpellButtonPrefab { get; set; }
+    public Color enoughKlidToCastColor { get; set; }
+    public Color insufficientKlidToCastColor { get; set; }
 
-    public GameObject canvasParent;
+    public GameObject canvasParent { get; set; }
 
-    public OnPlayerPassedExecutorScript collectiblesGenerator;
+    public OnPlayerPassedExecutorScript collectiblesGenerator { get; set; }
 
-    public Dictionary<int, GameObject> selfSpellButtons;
-
-    public Canvas canvas;
+    public Canvas canvas { get; set; }
 
     List<Text> spellKlidCostAmountsOnButtons = new List<Text>();
+
+    Dictionary<int, GameObject> selfSpellButtons;
 
     int obstaclesPassedCount;
     int openAreasPassedCount;
@@ -212,7 +210,6 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.OpenAreasSurvived++;
         WhoaPlayerProperties.LastScore += value;
         openAreasPassedCount++;
-        openAreasPassed.text = openAreasPassedCount.ToString();
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
@@ -222,7 +219,6 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
         obstaclesPassedCount++;
-        obstaclesPassed.text = obstaclesPassedCount.ToString();
         scoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 

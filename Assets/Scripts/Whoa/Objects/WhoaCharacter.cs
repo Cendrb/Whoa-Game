@@ -33,6 +33,7 @@ public class WhoaCharacter
 
     public List<CharacterUpgrade> Upgrades { get; private set; }
 
+    public GameObject Prefab { get; private set; }
     public Sprite Sprite { get; private set; }
     public Texture2D Texture { get; private set; }
 
@@ -73,6 +74,8 @@ public class WhoaCharacter
         baseSpeed = speed;
         SelfSpellSlots = selfSpellSlots;
         RangedSpellSlots = rangedSpellSlots;
+
+        Prefab = Resources.Load<GameObject>("Prefabs/Characters/" + Name);
 
         Sprite = Resources.Load<Sprite>("Graphics/Characters/" + Name);
 
