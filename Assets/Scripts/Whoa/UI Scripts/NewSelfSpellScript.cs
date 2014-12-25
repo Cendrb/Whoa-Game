@@ -39,7 +39,7 @@ public class NewSelfSpellScript : MonoBehaviour
 
         basicInformation = (GameObject)Instantiate(BasicInformationPrefab);
         RectTransform infrectTransform = basicInformation.GetComponent<RectTransform>();
-        infrectTransform.parent = AspectDetails.transform;
+        infrectTransform.SetParent(AspectDetails.transform);
         infrectTransform.localScale = new Vector3(1, 1, 1);
         infrectTransform.anchoredPosition = new Vector2(8, -7);
         basicInformation.SetActive(false);
@@ -56,7 +56,7 @@ public class NewSelfSpellScript : MonoBehaviour
             {
                 GameObject templateObject = (GameObject)Instantiate(AvailableAspectPrefab);
                 RectTransform rectTransform = templateObject.GetComponent<RectTransform>();
-                rectTransform.parent = AvailableAspects.transform;
+                rectTransform.SetParent(AvailableAspects.transform);
                 rectTransform.localScale = new Vector3(1, 1, 1);
                 rectTransform.anchoredPosition = new Vector3(counter, -4);
 
@@ -71,6 +71,8 @@ public class NewSelfSpellScript : MonoBehaviour
                 indexCounter++;
             }
         }
+
+        OnBasicInformationClicked();
 
         RefreshCostLabels();
     }

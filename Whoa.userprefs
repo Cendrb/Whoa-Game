@@ -1,10 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs">
     <Files>
+      <File FileName="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" Line="53" Column="1" />
       <File FileName="Assets\Scripts\Whoa\UI Scripts\SelfSpellsScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Whoa\UI Scripts\ShowMoneyScript.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" Line="1" Column="1" />
     </Files>
@@ -14,11 +13,8 @@
           <Node name="Assembly-CSharp" expanded="True">
             <Node name="Scripts" expanded="True">
               <Node name="Whoa" expanded="True">
-                <Node name="Game Scripts" expanded="True" />
-                <Node name="Google Drive" expanded="True" />
-                <Node name="Objects" expanded="True" />
-                <Node name="UI Scripts" expanded="True">
-                  <Node name="ShowMoneyScript.cs" selected="True" />
+                <Node name="Game Scripts" expanded="True">
+                  <Node name="PlayerScript.cs" selected="True" />
                 </Node>
               </Node>
             </Node>

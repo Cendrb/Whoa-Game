@@ -9,8 +9,10 @@ using Aspects.Self;
 
 public class SelfSpellsScript : MonoBehaviour
 {
-    public GameObject spellsParent;
+    public GameObject spellLinesParent;
+    public GameObject selfSpellAspectRowsParent;
     public GameObject spellPrefab;
+    public GameObject selfSpellAspectRowPrefab;
     public GameObject spellDetailsParent;
     public Button deleteButton;
     public Text spellName;
@@ -21,21 +23,86 @@ public class SelfSpellsScript : MonoBehaviour
 
     public ScrollRect scrollRect;
 
+    List<GameObject> selfSpellAspectRows;
     int selectedIndex;
     SelfSpell selectedSpell;
+    GameObject infoRow;
 
     void Start()
     {
+        selfSpellAspectRows = new List<GameObject>();
+
         SlotButtonsManager.Start();
         SpellButtonManager.Start(spellPrefab.GetComponent<Button>().image.color);
 
-        GenerateSpellGameobjects();
+        GenerateSpellLinesGameObjects();
+
+        infoRow = (GameObject)Instantiate(selfSpellAspectRowPrefab);
+        RectTransform rectTransform = infoRow.GetComponent<RectTransform>();
+        rectTransform.SetParent(selfSpellAspectRowsParent.transform);
+        rectTransform.localScale = new Vector3(1, 1, 1);
+        rectTransform.anchoredPosition = new Vector3(13, -60);
+
+        Text aspectName = infoRow.transform.FindChild("AspectName").gameObject.GetComponent<Text>();
+        aspectName.fontStyle = FontStyle.Bold;
+        aspectName.text = "Name";
+
+        Text aspectDuration = infoRow.transform.FindChild("AspectDuration").gameObject.GetComponent<Text>();
+        aspectDuration.fontStyle = FontStyle.Bold;
+        aspectDuration.text = "Duration";
+
+        Text aspectAmplifier = infoRow.transform.FindChild("AspectAmplifier").gameObject.GetComponent<Text>();
+        aspectAmplifier.fontStyle = FontStyle.Bold;
+        aspectAmplifier.text = "Amplifier";
+
+        if (WhoaPlayerProperties.Spells.SelfSpells.Count > 0)
+        {
+            selectedSpell = WhoaPlayerProperties.Spells.SelfSpells.First().Value;
+            RefreshSpellAspectRowsGameObjects();
+        }
 
         if (WhoaPlayerProperties.Character.SelfSpellSlots > 0)
             SelectSlot(0);
     }
 
-    private void GenerateSpellGameobjects()
+    private void RefreshSpellAspectRowsGameObjects()
+    {
+        foreach (GameObject row in selfSpellAspectRows)
+            GameObject.Destroy(row);
+        infoRow.SetActive(false);
+
+        float counter = -105;
+        foreach (SelfAspect aspect in selectedSpell.Aspects)
+        {
+            infoRow.SetActive(true);
+            GameObject row = (GameObject)Instantiate(selfSpellAspectRowPrefab);
+            RectTransform rectTransform = row.GetComponent<RectTransform>();
+            rectTransform.SetParent(selfSpellAspectRowsParent.transform);
+            rectTransform.localScale = new Vector3(1, 1, 1);
+            rectTransform.anchoredPosition = new Vector3(16, counter);
+
+            Text aspectName = row.transform.FindChild("AspectName").gameObject.GetComponent<Text>();
+            aspectName.text = aspect.Name;
+
+            Text aspectDuration = row.transform.FindChild("AspectDuration").gameObject.GetComponent<Text>();
+            if (aspect.ExpensesMultiplierPerDuration == 1)
+                aspectDuration.text = "None";
+            else
+                aspectDuration.text = aspect.Duration.ToString() + " s";
+
+            Text aspectAmplifier = row.transform.FindChild("AspectAmplifier").gameObject.GetComponent<Text>();
+            if (aspect.ExpensesMultiplierPerAmplifier == 1)
+                aspectAmplifier.text = "None";
+            else
+                aspectAmplifier.text = aspect.Amplifier.ToString() + " (" + aspect.AmplifierName + ")";
+
+            selfSpellAspectRows.Add(row);
+
+            counter -= 45;
+        }
+    }
+
+    private void GenerateSpellLinesGameObjects()
     {
         foreach (KeyValuePair<int, Button> button in SpellButtonManager.spellButtons)
             GameObject.Destroy(button.Value.gameObject);
@@ -46,7 +113,7 @@ public class SelfSpellsScript : MonoBehaviour
         {
             GameObject spellObject = (GameObject)Instantiate(spellPrefab);
             RectTransform rectTransform = spellObject.GetComponent<RectTransform>();
-            rectTransform.SetParent(spellsParent.transform);
+            rectTransform.SetParent(spellLinesParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
@@ -70,7 +137,7 @@ public class SelfSpellsScript : MonoBehaviour
             counter -= 80;
         }
 
-        RectTransform rekt = spellsParent.GetComponent<RectTransform>();
+        RectTransform rekt = spellLinesParent.GetComponent<RectTransform>();
         rekt.sizeDelta = new Vector2(0, -counter);
 
         scrollRect.normalizedPosition = new Vector2(0, 1);
@@ -85,9 +152,10 @@ public class SelfSpellsScript : MonoBehaviour
     {
         selectedIndex = index;
         deleteButton.interactable = true;
-        SelfSpell selectedSpell = WhoaPlayerProperties.Spells.SelfSpells[index];
+        selectedSpell = WhoaPlayerProperties.Spells.SelfSpells[index];
         spellName.text = selectedSpell.Name;
         spellAbbreviate.text = selectedSpell.Abbreviate;
+        RefreshSpellAspectRowsGameObjects();
         SpellButtonManager.SelectSpell(index, this);
     }
 
@@ -116,20 +184,9 @@ public class SelfSpellsScript : MonoBehaviour
         deleteButton.interactable = false;
         spellName.text = "Select spell to view";
         spellAbbreviate.text = "";
+        selectedSpell = null;
         SpellButtonManager.DeselectSpell();
-    }
-
-    public void CreateNewSpell()
-    {
-        SelfSpell spell = new SelfSpell();
-        spell.Abbreviate = "BUM";
-        spell.Name = "Zeman";
-        spell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[0].GetAspect());
-        spell.Aspects.Add(WhoaPlayerProperties.AspectsTemplates.SelfAspectsTemplates[2].GetAspect());
-        spell.GenerateEffects();
-        WhoaPlayerProperties.Spells.AddSelfSpell(spell);
-        WhoaPlayerProperties.Spells.SaveSpells();
-        GenerateSpellGameobjects();
+        RefreshSpellAspectRowsGameObjects();
     }
 
     public void DeleteSelectedSpell()
@@ -138,7 +195,7 @@ public class SelfSpellsScript : MonoBehaviour
             if (character.Data.SelectedRangedSpellsIds.ContainsValue(selectedIndex))
                 character.Data.SelectedSelfSpellsIds.Remove(character.Data.SelectedSelfSpellsIds.FirstOrDefault(x => x.Value == selectedIndex).Key);
         WhoaPlayerProperties.Spells.SelfSpells.Remove(selectedIndex);
-        GenerateSpellGameobjects();
+        GenerateSpellLinesGameObjects();
         DeselectSpell();
         WhoaPlayerProperties.Spells.SaveSpells();
     }

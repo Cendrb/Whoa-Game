@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour
 {
-    public CollectiblesPrefabs collectibles;
+    public CollectiblesPrefabs Collectibles { get; set; }
 
     public AudioClip flapSound;
     public AudioClip deathSound;
@@ -16,24 +16,24 @@ public class PlayerScript : MonoBehaviour
     public AudioClip obstaclePassedSound;
     public AudioClip startupSound;
 
-    public Slider healthSlider { get; set; }
-    public Slider klidSlider { get; set; }
+    public Slider HealthSlider { get; set; }
+    public Slider KlidSlider { get; set; }
 
-    public Text healthText { get; set; }
-    public Text klidText { get; set; }
-    public Text scoreText { get; set; }
+    public Text HealthText { get; set; }
+    public Text KlidText { get; set; }
+    public Text ScoreText { get; set; }
 
-    public GameObject activeEffectPrefab { get; set; }
-    public GameObject activeEffectsContainer { get; set; }
-    public GameObject castSelfSpellButtonPrefab { get; set; }
-    public Color enoughKlidToCastColor { get; set; }
-    public Color insufficientKlidToCastColor { get; set; }
+    public GameObject ActiveEffectPrefab { get; set; }
+    public GameObject ActiveEffectsContainer { get; set; }
+    public GameObject CastSelfSpellButtonPrefab { get; set; }
+    public Color EnoughKlidToCastColor { get; set; }
+    public Color InsufficientKlidToCastColor { get; set; }
 
-    public GameObject canvasParent { get; set; }
+    public GameObject CanvasParent { get; set; }
 
-    public OnPlayerPassedExecutorScript collectiblesGenerator { get; set; }
+    public OnPlayerPassedExecutorScript CollectiblesGenerator { get; set; }
 
-    public Canvas canvas { get; set; }
+    public Transform Follower { get; set; }
 
     List<Text> spellKlidCostAmountsOnButtons = new List<Text>();
 
@@ -76,9 +76,9 @@ public class PlayerScript : MonoBehaviour
         {
             SelfSpell spell = WhoaPlayerProperties.Spells.SelfSpells[index.Value];
             spell.GenerateEffects();
-            GameObject button = (GameObject)Instantiate(castSelfSpellButtonPrefab);
+            GameObject button = (GameObject)Instantiate(CastSelfSpellButtonPrefab);
             RectTransform rectTransform = button.GetComponent<RectTransform>();
-            rectTransform.SetParent(canvasParent.transform);
+            rectTransform.SetParent(CanvasParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector2(120, counter);
             Text abbreviateText = button.transform.FindChild("Abbreviate").gameObject.GetComponentInChildren<Text>();
@@ -92,19 +92,19 @@ public class PlayerScript : MonoBehaviour
 
         if (WhoaPlayerProperties.Character.KlidEnergy <= 0)
         {
-            klidSlider.gameObject.SetActive(false);
+            KlidSlider.gameObject.SetActive(false);
         }
         else
             StartCoroutine(KlidRegeneration());
 
-        healthSlider.maxValue = WhoaPlayerProperties.Character.Health;
-        healthSlider.minValue = 0;
+        HealthSlider.maxValue = WhoaPlayerProperties.Character.Health;
+        HealthSlider.minValue = 0;
 
-        klidSlider.maxValue = WhoaPlayerProperties.Character.KlidEnergy;
-        klidSlider.minValue = 0;
+        KlidSlider.maxValue = WhoaPlayerProperties.Character.KlidEnergy;
+        KlidSlider.minValue = 0;
 
-        collectiblesGenerator.OnCollisionWithPlayer += GenerateCollectibleGeneratorTriggered;
-        collectiblesGenerator.PositionMovementAfterCollision = new Vector2(WhoaPlayerProperties.Settings.MinimalCollectiblesDistance, 0);
+        CollectiblesGenerator.OnCollisionWithPlayer += GenerateCollectibleGeneratorTriggered;
+        CollectiblesGenerator.PositionMovementAfterCollision = new Vector2(WhoaPlayerProperties.Settings.MinimalCollectiblesDistance, 0);
 
         RefreshHealthLabel();
         RefreshKlidLabel();
@@ -114,6 +114,10 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        Vector2 followerPos = Follower.position;
+        followerPos.x = transform.position.x;
+        Follower.position = followerPos;
+
         if (Input.touchCount > 0)
         {
             foreach (Touch touch in Input.touches)
@@ -210,7 +214,7 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.OpenAreasSurvived++;
         WhoaPlayerProperties.LastScore += value;
         openAreasPassedCount++;
-        scoreText.text = WhoaPlayerProperties.LastScore.ToString();
+        ScoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
     public void ObstaclePassed()
@@ -219,7 +223,7 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
         obstaclesPassedCount++;
-        scoreText.text = WhoaPlayerProperties.LastScore.ToString();
+        ScoreText.text = WhoaPlayerProperties.LastScore.ToString();
     }
 
     public bool CollideWith(CollisionType type)
@@ -231,14 +235,14 @@ public class PlayerScript : MonoBehaviour
 
     private void RefreshHealthLabel()
     {
-        healthSlider.value = properties.Health;
-        healthText.text = properties.Health.ToString();
+        HealthSlider.value = properties.Health;
+        HealthText.text = properties.Health.ToString();
     }
 
     private void RefreshKlidLabel()
     {
-        klidSlider.value = properties.Klid;
-        klidText.text = properties.Klid.ToString();
+        KlidSlider.value = properties.Klid;
+        KlidText.text = properties.Klid.ToString();
     }
 
     private void RefreshKlidCostLabels()
@@ -250,9 +254,9 @@ public class PlayerScript : MonoBehaviour
             int klidCost = spell.GetKlidCost();
             spellKlidCostAmountsOnButtons[indexCounter].text = klidCost.FormatKlid();
             if (klidCost <= properties.Klid)
-                spellKlidCostAmountsOnButtons[indexCounter].color = enoughKlidToCastColor;
+                spellKlidCostAmountsOnButtons[indexCounter].color = EnoughKlidToCastColor;
             else
-                spellKlidCostAmountsOnButtons[indexCounter].color = insufficientKlidToCastColor;
+                spellKlidCostAmountsOnButtons[indexCounter].color = InsufficientKlidToCastColor;
             indexCounter++;
         }
     }
@@ -300,19 +304,19 @@ public class PlayerScript : MonoBehaviour
             switch (type)
             {
                 case CollectibleType.areaEffect:
-                    prefab = collectibles.AreaEffect;
+                    prefab = Collectibles.AreaEffect;
                     break;
                 case CollectibleType.health:
-                    prefab = collectibles.Health;
+                    prefab = Collectibles.Health;
                     break;
                 case CollectibleType.klid:
                     if (WhoaPlayerProperties.Character.KlidEnergy > 0)
-                        prefab = collectibles.Klid;
+                        prefab = Collectibles.Klid;
                     else
-                        prefab = collectibles.AreaEffect;
+                        prefab = Collectibles.AreaEffect;
                     break;
                 default:
-                    prefab = collectibles.AreaEffect;
+                    prefab = Collectibles.AreaEffect;
                     break;
             }
 
@@ -344,9 +348,9 @@ public class PlayerScript : MonoBehaviour
         index = activeEffectsFreePositions.IndexOf(true);
         activeEffectsFreePositions[index] = false;
 
-        GameObject screenEffect = (GameObject)Instantiate(activeEffectPrefab);
+        GameObject screenEffect = (GameObject)Instantiate(ActiveEffectPrefab);
         RectTransform rectTransform = screenEffect.GetComponent<RectTransform>();
-        rectTransform.SetParent(activeEffectsContainer.transform);
+        rectTransform.SetParent(ActiveEffectsContainer.transform);
         rectTransform.localScale = new Vector3(1, 1, 1);
         rectTransform.anchoredPosition = new Vector3(index * 90, 0);
         Text secondsText = screenEffect.GetComponentInChildren<Text>();

@@ -3,7 +3,9 @@ using System.Collections;
 using System;
 using UnityEngine.UI;
 
-public class GameManagerScript : MonoBehaviour {
+public class GameManagerScript : MonoBehaviour
+{
+    public PlayerScript.CollectiblesPrefabs collectibles;
 
     public Slider healthSlider;
     public Slider klidSlider;
@@ -22,15 +24,39 @@ public class GameManagerScript : MonoBehaviour {
 
     public OnPlayerPassedExecutorScript collectiblesGenerator;
 
-    public Canvas canvas;
+    public Transform followers;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public ObstacleGeneratorScript obstacleGenerator;
+
+    GameObject player;
+    PlayerScript playerScript;
+
+    private void Awake()
+    {
+        player = (GameObject)Instantiate(WhoaPlayerProperties.Character.Prefab);
+        player.tag = "Player";
+        playerScript = player.GetComponent<PlayerScript>();
+        playerScript.ActiveEffectPrefab = activeEffectPrefab;
+        playerScript.ActiveEffectsContainer = activeEffectsContainer;
+        playerScript.CanvasParent = canvasParent;
+        playerScript.CastSelfSpellButtonPrefab = castSelfSpellButtonPrefab;
+        playerScript.Collectibles = collectibles;
+        playerScript.CollectiblesGenerator = collectiblesGenerator;
+        playerScript.EnoughKlidToCastColor = enoughKlidToCastColor;
+        playerScript.Follower = followers;
+        playerScript.HealthSlider = healthSlider;
+        playerScript.HealthText = healthText;
+        playerScript.InsufficientKlidToCastColor = insufficientKlidToCastColor;
+        playerScript.KlidSlider = klidSlider;
+        playerScript.KlidText = klidText;
+        playerScript.ScoreText = scoreText;
+
+        obstacleGenerator.playerScript = playerScript;
+        obstacleGenerator.playerTransform = player.transform;
+    }
+
+    private void Update()
+    {
+
+    }
 }
