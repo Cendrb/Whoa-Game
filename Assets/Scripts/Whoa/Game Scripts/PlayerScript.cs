@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour
     public AudioClip crashSound;
     public AudioClip obstaclePassedSound;
     public AudioClip startupSound;
+    public AudioClip selfSpellCastedSound;
 
     public Slider HealthSlider { get; set; }
     public Slider KlidSlider { get; set; }
@@ -50,6 +51,15 @@ public class PlayerScript : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        // Generic character initialization
+        gameObject.AddComponent<AudioSource>();
+        gameObject.AddComponent<Rigidbody2D>();
+        rigidbody2D.gravityScale = 6;
+        rigidbody2D.drag = 1;
+        rigidbody2D.fixedAngle = true;
+        rigidbody2D.angularDrag = 0.05f;
+        ((GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Characters/Generic/Farts"))).transform.parent = gameObject.transform;
+
         audio.PlayOneShot(startupSound);
         WhoaPlayerProperties.Load();
         WhoaPlayerProperties.LastScore = 0;
@@ -65,7 +75,8 @@ public class PlayerScript : MonoBehaviour
         spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
 
         particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
-        particles[1].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
+
+        particles[1].emissionRate = (int)WhoaPlayerProperties.Character.Speed;
 
         foreach (KeyValuePair<int, SelfSpell> selfSpell in WhoaPlayerProperties.Spells.SelfSpells)
             selfSpell.Value.GetKlidCost();
@@ -130,7 +141,7 @@ public class PlayerScript : MonoBehaviour
                     {
                         if (pair.Value.collider2D.OverlapPoint(pos))
                         {
-                            CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
+                            CastSelfSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
                             casted = true;
                             break;
                         }
@@ -150,7 +161,7 @@ public class PlayerScript : MonoBehaviour
                 {
                     if (pair.Value.collider2D.OverlapPoint(pos))
                     {
-                        CastSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
+                        CastSelfSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
                         casted = true;
                         break;
                     }
@@ -169,11 +180,12 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    public void CastSpell(SelfSpell spell)
+    public void CastSelfSpell(SelfSpell spell)
     {
         float klidCost = spell.GetKlidCost();
         if (klidCost <= properties.Klid)
         {
+            audio.PlayOneShot(selfSpellCastedSound);
             properties.Klid -= klidCost;
             foreach (SelfEffect effect in spell.Effects)
             {
@@ -190,7 +202,7 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
         rigidbody2D.AddForce(new Vector2(0, properties.Flap), ForceMode2D.Impulse);
         audio.PlayOneShot(flapSound);
-        particles[0].Emit(10);
+        particles[0].Emit((int)WhoaPlayerProperties.Character.Flap / 5);
     }
 
     void GetRekt()

@@ -5,8 +5,6 @@ public enum CollisionType { basicObstacle, wall, njarbeitsheft3, njarbeitsheft2,
 
 public class KillerCollisionScript : MonoBehaviour
 {
-   
-
     public CollisionType type;
     PlayerScript playerScript;
 

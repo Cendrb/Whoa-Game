@@ -1,4 +1,7 @@
 fileFormatVersion: 2
 guid: a6ab713063d8ecb429f7b5ee2f62149d
+labels:
+- Obstacle
+- Prop
 NativeFormatImporter:
   userData: 
