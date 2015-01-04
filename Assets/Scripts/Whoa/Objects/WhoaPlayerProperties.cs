@@ -28,8 +28,8 @@ public static class WhoaPlayerProperties
 
     public static ObstaclesData ObstaclesData { get; private set; }
 
-    public static Dictionary<CollectibleType, Range> CollectiblesProbabilities { get; private set; }
-    public static int TotalProbability { get; private set; }
+    public static RandomListWithChances<CollectibleType> CollectiblesProbabilities { get; private set; }
+    public static RandomListWithChances<int> CaveBorderAnglesProbabilities { get; private set; }
 
     public static int HighScore { get; set; }
     public static int LastScore { get; set; }
@@ -45,32 +45,23 @@ public static class WhoaPlayerProperties
     static WhoaPlayerProperties()
     {
         ObstaclesData = new global::ObstaclesData();
-        CollectiblesProbabilities = new Dictionary<CollectibleType, Range>();
-        SetupCollectiblesProbabilities();
+
+        CollectiblesProbabilities = new RandomListWithChances<CollectibleType>();
+        CollectiblesProbabilities.AddItem(CollectibleType.areaEffect, 2);
+        CollectiblesProbabilities.AddItem(CollectibleType.health, 2);
+        CollectiblesProbabilities.AddItem(CollectibleType.klid, 2);
+
+        CaveBorderAnglesProbabilities = new RandomListWithChances<int>();
+        CaveBorderAnglesProbabilities.AddItem(0, 1);
+        CaveBorderAnglesProbabilities.AddItem(45, 1);
+        CaveBorderAnglesProbabilities.AddItem(-45, 1);
+
         Culture = new CultureInfo("cs-CZ");
         Characters = new WhoaCharacters();
         Settings = GameSettings.LoadFromDrive();
         Spells = new SpellManager();
         AspectsTemplates = new AspectsTemplatesStorage();
         Load();
-    }
-
-    private static void SetupCollectiblesProbabilities()
-    {
-        Dictionary<CollectibleType, int> probabilities = new Dictionary<CollectibleType, int>();
-        probabilities.Add(CollectibleType.areaEffect, 20);
-        probabilities.Add(CollectibleType.klid, 20);
-        probabilities.Add(CollectibleType.health, 20);
-
-        int counter = 0;
-        foreach(KeyValuePair<CollectibleType, int> pair in probabilities)
-        {
-            int before = counter;
-            counter += pair.Value;
-
-            CollectiblesProbabilities.Add(pair.Key, new Range(before, counter));
-        }
-        TotalProbability = counter;
     }
 
     public static void SetCharacter(WhoaCharacter character)

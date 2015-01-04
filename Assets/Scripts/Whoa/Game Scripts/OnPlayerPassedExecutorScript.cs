@@ -8,18 +8,13 @@ public class OnPlayerPassedExecutorScript : MonoBehaviour {
     public Vector3 PositionMovementAfterCollision { get; set; }
     int passed;
 
-    void Start()
-    {
-        PositionMovementAfterCollision = new Vector3();
-    }
-
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.CompareTag("Player"))
         {
             passed++;
-            OnCollisionWithPlayer(transform.position, passed, this);
             transform.position = transform.position + PositionMovementAfterCollision;
+            OnCollisionWithPlayer(transform.position, passed, this);
         }
     }
 

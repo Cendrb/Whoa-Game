@@ -36,6 +36,8 @@ public class PlayerScript : MonoBehaviour
 
     public Transform Follower { get; set; }
 
+    public int distance;
+
     List<Text> spellKlidCostAmountsOnButtons = new List<Text>();
 
     Dictionary<int, GameObject> selfSpellButtons;
@@ -125,8 +127,18 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (transform.position.x > distance)
+        {
+            distance = (int)transform.position.x;
+        }
+
         Vector2 followerPos = Follower.position;
         followerPos.x = transform.position.x;
+        Vector2 difference = followerPos - (Vector2)transform.position;
+        if(Mathf.Abs(difference.y) >= 9)
+        {
+            followerPos.y -= difference.y / 50;
+        }
         Follower.position = followerPos;
 
         if (Input.touchCount > 0)
@@ -310,8 +322,8 @@ public class PlayerScript : MonoBehaviour
         if (UnityEngine.Random.Range(0, 3) == 0)
         {
             GameObject prefab;
-            int result = UnityEngine.Random.Range(0, WhoaPlayerProperties.TotalProbability);
-            CollectibleType type = WhoaPlayerProperties.CollectiblesProbabilities.First<KeyValuePair<CollectibleType, Range>>(new Func<KeyValuePair<CollectibleType, Range>, bool>((pair) => pair.Value.IsInRange(result))).Key;
+
+            CollectibleType type = WhoaPlayerProperties.CollectiblesProbabilities.GetRandomItem();
 
             switch (type)
             {
