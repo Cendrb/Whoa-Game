@@ -336,7 +336,7 @@ public class PlayerScript : MonoBehaviour
 
     private void GenerateCollectibleGeneratorTriggered(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
     {
-        if (UnityEngine.Random.Range(0, 3) == 0)
+        if (UnityEngine.Random.Range(0, 10) == 0)
         {
             GameObject prefab;
 

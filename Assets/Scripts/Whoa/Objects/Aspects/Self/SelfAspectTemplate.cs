@@ -132,8 +132,10 @@ namespace Aspects.Self
                 BasePrice = AspectData.BasePrice,
                 Description = AspectData.Description,
                 Duration = AspectData.Duration,
-                ExpensesMultiplierPerAmplifier = AspectData.ExpensesMultiplierPerAmplifier,
-                ExpensesMultiplierPerDuration = AspectData.ExpensesMultiplierPerDuration,
+                ADPerAmplifier = AspectData.ADPerAmplifier,
+                ADPerDuration = AspectData.ADPerDuration,
+                KlidPerAmplifier = AspectData.KlidPerAmplifier,
+                KlidPerDuration = AspectData.KlidPerDuration,
                 Name = AspectData.Name,
                 Type = AspectData.Type,
             };

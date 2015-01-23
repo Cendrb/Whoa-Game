@@ -18,8 +18,10 @@ namespace Aspects.Self
         public int Amplifier { get; set; }
         public int BasePrice { get; set; }
         public float BaseKlidCost { get; set; }
-        public float ExpensesMultiplierPerDuration { get; set; }
-        public float ExpensesMultiplierPerAmplifier { get; set; }
+        public float ADPerDuration { get; set; }
+        public float ADPerAmplifier { get; set; }
+        public float KlidPerDuration { get; set; }
+        public float KlidPerAmplifier { get; set; }
 
         [NonSerialized]
         public Sprite icon;
@@ -36,11 +38,11 @@ namespace Aspects.Self
 
         public int GetPrice()
         {
-            return (int)(BasePrice * Mathf.Pow(ExpensesMultiplierPerAmplifier, Amplifier) * Mathf.Pow(ExpensesMultiplierPerDuration, Duration));
+            return (int)(BasePrice + ADPerDuration * Duration + ADPerAmplifier * Amplifier);
         }
         public int GetKlidCost()
         {
-            return (int)(BaseKlidCost * Mathf.Pow(ExpensesMultiplierPerAmplifier, Amplifier) * Mathf.Pow(ExpensesMultiplierPerDuration, Duration));
+            return (int)(BaseKlidCost + KlidPerDuration * Duration + KlidPerAmplifier * Amplifier);
         }
         public SelfEffect GetEffect()
         {

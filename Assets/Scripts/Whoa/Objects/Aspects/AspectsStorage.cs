@@ -47,8 +47,10 @@ namespace Aspects
                 aspectData.BasePrice = basePrice;
                 aspectData.Description = description;
                 aspectData.Duration = duration;
-                aspectData.ExpensesMultiplierPerAmplifier = expensesMultiplierPerAmplifier;
-                aspectData.ExpensesMultiplierPerDuration = expensesMultiplierPerDuration;
+                aspectData.ADPerAmplifier = ADPerAmplifier;
+                aspectData.ADPerDuration = ADPerDuration;
+                aspectData.KlidPerAmplifier = KlidPerAmplifier;
+                aspectData.KlidPerDuration = KlidPerDuration;
                 aspectData.Name = name;
                 aspectData.Type = type;
                 SelfAspectsTemplates.Add(new SelfAspectTemplate(aspectData, requiredCharacter, requiredHighscore, requiredMoney, minDuration, maxDuration, minAmplifier, maxAmplifier));

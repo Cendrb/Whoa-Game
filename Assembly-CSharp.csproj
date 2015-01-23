@@ -1,151 +1,146 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-	<ProductVersion>10.0.20506</ProductVersion>
-	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{C2ED2E54-B9BB-D2EF-858A-19366AD40345}</ProjectGuid>
-	<OutputType>Library</OutputType>
-	<AppDesignerFolder>Properties</AppDesignerFolder>
-	<RootNamespace></RootNamespace>
-	<AssemblyName>Assembly-CSharp</AssemblyName>
-	<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-	<FileAlignment>512</FileAlignment>
-	<BaseDirectory>Assets</BaseDirectory>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2ED2E54-B9BB-D2EF-858A-19366AD40345}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <BaseDirectory>Assets</BaseDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	<DebugSymbols>true</DebugSymbols>
-	<DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_4_6_1;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;UNITY_4_6_1;UNITY_4_6;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_UNITYEVENTS;ENABLE_NEW_HIERARCHY ;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_TERRAIN;ENABLE_SUBSTANCE;ENABLE_GENERICS;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_4_6_FEATURES;INCLUDE_WP_BLUE_SUPPORT;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	<DebugType>pdbonly</DebugType>
-	<Optimize>true</Optimize>
-	<OutputPath>Temp\bin\Release\</OutputPath>
-	<DefineConstants>TRACE</DefineConstants>
-	<ErrorReport>prompt</ErrorReport>
-	<WarningLevel>4</WarningLevel>
-	<NoWarn>0169</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Temp\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <NoWarn>0169</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-	<Reference Include="System" />
+    <Reference Include="System" />
     <Reference Include="System.XML" />
-	<Reference Include="System.Core" />
-	<Reference Include="System.Xml.Linq" />
-	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
-	</Reference>
-	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
-	</Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\BordersGeneratorScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\CharacterStatsScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\CollectibleScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ConstantVelocityScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyByTime.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyOnTouch.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ExplodeScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\FollowObjectScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\GameManagerScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\KillerCollisionScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstacleGeneratorScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstaclePassedScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\OnPlayerPassedExecutorScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\AspectsStorage.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ArbeitsheftProtectionSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\BablBamEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\CharacterValueCollisionSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\HealSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\LoopSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ParkourSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\RegenerationSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SlownessSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SpeedSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\StartEndSelfEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\BorderTransformData.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\GameSettings.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\ObstaclesData.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\WhoaCharacters.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\ObstacleData.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\ObstacleGameObject.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\RandomListWithChances.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\Range.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\SpellManager.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterStatistics.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Objects\WhoaPlayerProperties.cs" />
-     <Compile Include="Assets\Scripts\Whoa\Static.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ChangeSceneScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\CharacterShopScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\DataManagerScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\MoneyAndCharacterScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\NewSelfSpellScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ScoreScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectValueChangerScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfSpellsScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\SetTextToValueScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\UI Scripts\UpgradesScript.cs" />
-     <Compile Include="Assets\Scripts\Whoa\World Generation\Cave.cs" />
-     <Compile Include="Assets\Scripts\Whoa\World Generation\TransformData.cs" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
-     <None Include="Assets\Plugins\Android\unityads\proguard-project.txt" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Background.shader" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Vertex Colored Shaders\Mobile Transparent Vertex Color.shader" />
-     <None Include="Assets\Plugins\Android\unityads\build.xml" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Detail.shader" />
-     <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
-     <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
-     <None Include="Assets\link.xml" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap Reflective.shader" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Particles Additive Culled.shader" />
-     <None Include="Assets\Plugins\Android\unityads\res\values\strings.xml" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Vertex Colored Shaders\Mobile Vertex Colored.shader" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap Only.shader" />
-     <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap AlphaTest.shader" />
-     <None Include="Assets\Plugins\Android\unityads\AndroidManifest.xml" />
- <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="Google.GData.AccessControl">
- <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.AccessControl.dll</HintPath>
- </Reference>
- <Reference Include="Google.GData.Client">
- <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Client.DLL</HintPath>
- </Reference>
- <Reference Include="Google.GData.Extensions">
- <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Extensions.dll</HintPath>
- </Reference>
- <Reference Include="Google.GData.Spreadsheets">
- <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Spreadsheets.dll</HintPath>
- </Reference>
- <Reference Include="Newtonsoft.Json">
- <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Newtonsoft.Json.dll</HintPath>
- </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{33134064-8262-B4E8-E42C-1DD58B6ED65F}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
-    <ProjectReference Include="Assembly-UnityScript-firstpass.unityproj">
-      <Project>{A01C225F-E524-4AB9-9347-669F2296EEB3}</Project>      <Name>Assembly-UnityScript-firstpass</Name>    </ProjectReference>
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\BordersGeneratorScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\CharacterStatsScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\CollectibleScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\ConstantVelocityScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyByTime.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\DestroyOnTouch.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\ExplodeScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\FollowObjectScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\GameManagerScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\KillerCollisionScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstacleGeneratorScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\ObstaclePassedScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\OnPlayerPassedExecutorScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Game Scripts\PlayerScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Google Drive\GDriveManager.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\AspectsStorage.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ArbeitsheftProtectionSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\BablBamEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\CharacterValueCollisionSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\HealSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\LoopSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\ParkourSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\RegenerationSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SlownessSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\SpeedSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\Effects\StartEndSelfEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Aspects\Self\SelfAspectTemplate.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\BorderTransformData.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\CharacterUpgrade.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\GameSettings.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\ObstaclesData.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Loaders\WhoaCharacters.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\ObstacleData.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\ObstacleGameObject.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\PlayerDynamicProperties.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\RandomListWithChances.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\Range.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\SelfSpell.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\SpellManager.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\UpgradeEffect.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacter.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterData.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\WhoaCharacterStatistics.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Objects\WhoaPlayerProperties.cs" />
+    <Compile Include="Assets\Scripts\Whoa\Static.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\ChangeSceneScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\CharacterShopScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\DataManagerScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\MoneyAndCharacterScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\NewSelfSpellScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\ScoreScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectValueChangerScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfAspectsScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\SelfSpellsScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\SetTextToValueScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\ShowMyCharacterNameScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\UI Scripts\UpgradesScript.cs" />
+    <Compile Include="Assets\Scripts\Whoa\World Generation\Cave.cs" />
+    <Compile Include="Assets\Scripts\Whoa\World Generation\TransformData.cs" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Multiply Culled.shader" />
+    <None Include="Assets\Plugins\Android\unityads\proguard-project.txt" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Background.shader" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Vertex Colored Shaders\Mobile Transparent Vertex Color.shader" />
+    <None Include="Assets\Plugins\Android\unityads\build.xml" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Miscellaneous Shaders\Mobile Detail.shader" />
+    <None Include="Assets\Standard Assets\Particles\Sources\Shaders\Particle Alpha Blend (Queue +100).shader" />
+    <None Include="Assets\Standard Assets\Skyboxes\_skybox info.txt" />
+    <None Include="Assets\link.xml" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap Reflective.shader" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Particle Shaders\Mobile Particles Additive Culled.shader" />
+    <None Include="Assets\Plugins\Android\unityads\res\values\strings.xml" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Vertex Colored Shaders\Mobile Vertex Colored.shader" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap Only.shader" />
+    <None Include="Assets\Standard Assets (Mobile)\Shaders\Lightmap Shaders (Legacy)\Mobile Lightmap AlphaTest.shader" />
+    <None Include="Assets\Plugins\Android\unityads\AndroidManifest.xml" />
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.AccessControl">
+      <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.AccessControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Client">
+      <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Client.DLL</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Extensions">
+      <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.GData.Spreadsheets">
+      <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Google.GData.Spreadsheets.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>E:/Documents/UnityProjects/Whoa/Assets/Scripts/Libraries/Google Drive/Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -155,5 +150,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

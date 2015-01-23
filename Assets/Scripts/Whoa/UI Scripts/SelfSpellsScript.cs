@@ -85,13 +85,13 @@ public class SelfSpellsScript : MonoBehaviour
             aspectName.text = aspect.Name;
 
             Text aspectDuration = row.transform.FindChild("AspectDuration").gameObject.GetComponent<Text>();
-            if (aspect.ExpensesMultiplierPerDuration == 1)
+            if (aspect.ADPerDuration == -1)
                 aspectDuration.text = "None";
             else
                 aspectDuration.text = aspect.Duration.ToString() + " s";
 
             Text aspectAmplifier = row.transform.FindChild("AspectAmplifier").gameObject.GetComponent<Text>();
-            if (aspect.ExpensesMultiplierPerAmplifier == 1)
+            if (aspect.ADPerAmplifier == -1)
                 aspectAmplifier.text = "None";
             else
                 aspectAmplifier.text = aspect.Amplifier.ToString() + " (" + aspect.AmplifierName + ")";
