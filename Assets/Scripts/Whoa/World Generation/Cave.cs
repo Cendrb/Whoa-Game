@@ -5,18 +5,6 @@ using System.Text;
 
 public class Cave
 {
-    enum BorderType
-    {
-        upper,
-        lower
-    }
-
-    enum StructureType
-    {
-        blower
-
-    }
-
     public float TargetLength { get; private set; }
     public float MaxHeight { get; private set; }
     public Vector2 BasePosition { get; private set; }
@@ -38,11 +26,11 @@ public class Cave
         lastUpperBorderY = 9;
     }
 
-    public TransformData[] GetBordersPair()
+    public BorderTransformData[] GetBordersPair()
     {
         if (Length < TargetLength)
         {
-            TransformData[] borders = new TransformData[2];
+            BorderTransformData[] borders = new BorderTransformData[2];
 
             // Beginning expansion
             if (Length < (MaxHeight / BorderLength) / 3)
@@ -89,9 +77,23 @@ public class Cave
             return null;
     }
 
-    private TransformData GenerateBorderWithAngle(float angleDeg, BorderType type)
+    private BorderTransformData GenerateBorderWithAngle(float angleDeg, BorderType type)
     {
-
+        BorderTransformData borderData;
+        if (type == BorderType.upper)
+        {
+            // UPPER
+            borderData = new BorderTransformData(BorderLength, type, new Vector2(BorderLength * Length, lastUpperBorderY) + BasePosition, angleDeg);
+            lastUpperBorderY += borderData.BorderHeight;
+            Height += borderData.BorderHeight;
+        }
+        else
+        {
+            // LOWER
+            borderData = new BorderTransformData(BorderLength, type, new Vector2(BorderLength * Length, lastUpperBorderY) + BasePosition, angleDeg);
+            lastLowerBorderY += borderData.BorderHeight;
+            Height += borderData.BorderHeight;
+        }/*
         TransformData data = new TransformData();
         float angleRad = Mathf.Deg2Rad * angleDeg;
         // Scale
@@ -118,9 +120,9 @@ public class Cave
         }
 
         // Rotation
-        data.Rotation = Quaternion.Euler(0, 0, angleDeg);
+        data.Rotation = Quaternion.Euler(0, 0, angleDeg);*/
 
-        return data;
+        return borderData;
     }
 
     public Vector2 GetLastPosition()

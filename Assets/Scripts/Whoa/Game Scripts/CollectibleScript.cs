@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-public enum CollectibleType { health, klid, areaEffect }
+public enum CollectibleType { health, klid, areaEffect, adcoin }
 
 public class CollectibleScript : MonoBehaviour
 {

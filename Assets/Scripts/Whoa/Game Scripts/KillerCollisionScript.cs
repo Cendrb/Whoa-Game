@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum CollisionType { basicObstacle, wall, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan }
+public enum CollisionType { basicObstacle, border, njarbeitsheft3, njarbeitsheft2, njarbeitsheft1, zidan, apple }
 
 public class KillerCollisionScript : MonoBehaviour
 {
@@ -18,8 +18,10 @@ public class KillerCollisionScript : MonoBehaviour
     {
         if (col.collider.CompareTag("Player"))
         {
+            if (playerScript == null)
+                playerScript = col.gameObject.GetComponent<PlayerScript>();
             bool result = playerScript.CollideWith(type);
-            if (result && (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan))
+            if (result && (type == CollisionType.njarbeitsheft1 || type == CollisionType.njarbeitsheft2 || type == CollisionType.njarbeitsheft3 || type == CollisionType.zidan || type == CollisionType.apple))
                 GetComponent<ExplodeScript>().Explode();
         }
     }

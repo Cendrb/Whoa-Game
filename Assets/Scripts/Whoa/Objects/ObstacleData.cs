@@ -5,8 +5,10 @@ using System.Text;
 
 public class ObstacleData
 {
-    public int Count { get; private set; }
-    public float ObstaclesAddedPerLevel { get; private set; }
+    public float SpaceBetweenMax { get; private set; }
+    public float SpaceBetweenMin { get; private set; }
+
+    public float ObstaclesAddedPer100m { get; private set; }
 
     public float XVelocityMin { get; private set; }
     public float XVelocityMax { get; private set; }
@@ -17,10 +19,11 @@ public class ObstacleData
     public int Damage { get; private set; }
     public float Mass { get; private set; }
 
-    public ObstacleData(int count, float perLevel, float xVelMin, float xVelMax, float yVelMin, float yVelMax, float offset, int damage, float mass)
+    public ObstacleData(float spaceBetweenMin, float spaceBetweenMax, float per100mAdded, float xVelMin, float xVelMax, float yVelMin, float yVelMax, float offset, int damage, float mass)
     {
-        Count = count;
-        ObstaclesAddedPerLevel = perLevel;
+        SpaceBetweenMax = spaceBetweenMax;
+        SpaceBetweenMin = spaceBetweenMin;
+        ObstaclesAddedPer100m = per100mAdded;
         XVelocityMin = xVelMin;
         XVelocityMax = xVelMax;
         YVelocityMin = yVelMin;
@@ -32,7 +35,7 @@ public class ObstacleData
 
     public ObstacleData Clone()
     {
-        return new ObstacleData(Count, ObstaclesAddedPerLevel, XVelocityMin, XVelocityMax, YVelocityMin, YVelocityMax, Offset, Damage, Mass);
+        return new ObstacleData(SpaceBetweenMin, SpaceBetweenMax, ObstaclesAddedPer100m, XVelocityMin, XVelocityMax, YVelocityMin, YVelocityMax, Offset, Damage, Mass);
     }
 }
 

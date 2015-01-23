@@ -35,8 +35,10 @@ namespace Aspects
                 int requiredMoney = int.Parse(row.Elements[12].Value);
                 int basePrice = int.Parse(row.Elements[13].Value);
                 float baseKlidCost = float.Parse(row.Elements[14].Value);
-                float expensesMultiplierPerDuration = float.Parse(row.Elements[15].Value);
-                float expensesMultiplierPerAmplifier = float.Parse(row.Elements[16].Value);
+                float ADPerDuration = float.Parse(row.Elements[15].Value);
+                float ADPerAmplifier = float.Parse(row.Elements[16].Value);
+                float KlidPerDuration = float.Parse(row.Elements[17].Value);
+                float KlidPerAmplifier = float.Parse(row.Elements[18].Value);
 
                 SelfAspect aspectData = new SelfAspect();
                 aspectData.Amplifier = amplifier;

@@ -31,6 +31,6 @@ public class CharacterStatsScript : MonoBehaviour
         healthText.text = currentCharacter.Health.ToString();
         klidEnergyText.text = currentCharacter.KlidEnergy.ToString();
         klidEnergyRegenText.text = currentCharacter.KlidEnergyRegen.ToString();
-        spellSlotCountText.text = currentCharacter.SelfSpellSlots.ToString();
+        spellSlotCountText.text = currentCharacter.SpellSlots.ToString();
     }
 }

@@ -9,35 +9,23 @@ public class ObstacleGeneratorScript : MonoBehaviour
     public GameObject onPlayerPassedExecutorPrefab;
     public GameObject singleObstaclePrefab;
     public GameObject obstaclePassedPrefab;
-    public int offset;
-
-    int arbeitsheft1Count;
-    int arbeitsheft2Count;
-    int arbeitsheft3Count;
-    int zidanCount;
-    float spaceBetweenObstacles;
-    int obstaclesPerSection;
-
-    public float borderWidth;
 
     private int areasPassed = -1;
-
-    Vector2 lastpos;
-
-    Vector2 borderGeneratorLastPos;
 
     public GameObject NJArbeitsheft3;
     public GameObject NJArbeitsheft2;
     public GameObject NJArbeitsheft1;
     public GameObject Zidan;
+    public GameObject Apple;
 
     public GameObject UpperBorder;
     public GameObject LowerBorder;
 
 
-    List<ObstacleGameObject> OpenAreaObstacles = new List<ObstacleGameObject>();
+    List<ObstacleGameObject> DynamicObstacles = new List<ObstacleGameObject>();
 
     ObstacleGameObject borders;
+    ObstacleGameObject obstacles;
 
     public PlayerScript playerScript;
     public Transform playerTransform;
@@ -47,58 +35,35 @@ public class ObstacleGeneratorScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        spaceBetweenObstacles = WhoaPlayerProperties.Settings.SpaceBetweenObstacles;
-        obstaclesPerSection = WhoaPlayerProperties.Settings.ObstaclesPerSection;
-
         disabledPos = new Vector2(0, 300);
 
-        OpenAreaObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, disabledPos, new Quaternion()), CollisionType.njarbeitsheft1));
-        OpenAreaObstacles[0].SummonerScript.OnCollisionWithPlayer += NJArbeitsheft1SummonerCollided;
+        Vector2 enabledPos = new Vector2(10, 0);
 
-        OpenAreaObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, disabledPos, new Quaternion()), CollisionType.njarbeitsheft2));
-        OpenAreaObstacles[1].SummonerScript.OnCollisionWithPlayer += NJArbeitsheft2SummonerCollided;
+        DynamicObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, enabledPos + new Vector2(Random.Range(0, 30), 0), new Quaternion()), CollisionType.njarbeitsheft1));
+        DynamicObstacles[0].SummonerScript.OnCollisionWithPlayer += (pos, y, script) => DynamicCollided(pos, CollisionType.njarbeitsheft1, script);
 
-        OpenAreaObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, disabledPos, new Quaternion()), CollisionType.njarbeitsheft3));
-        OpenAreaObstacles[2].SummonerScript.OnCollisionWithPlayer += NJArbeitsheft3SummonerCollided;
+        DynamicObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, enabledPos + new Vector2(Random.Range(0, 30), 0), new Quaternion()), CollisionType.njarbeitsheft2));
+        DynamicObstacles[1].SummonerScript.OnCollisionWithPlayer += (pos, y, script) => DynamicCollided(pos, CollisionType.njarbeitsheft2, script);
 
-        OpenAreaObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, disabledPos, new Quaternion()), CollisionType.zidan));
-        OpenAreaObstacles[3].SummonerScript.OnCollisionWithPlayer += ZidanSummonerCollided;
+        DynamicObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, enabledPos + new Vector2(Random.Range(0, 30), 0), new Quaternion()), CollisionType.njarbeitsheft3));
+        DynamicObstacles[2].SummonerScript.OnCollisionWithPlayer += (pos, y, script) => DynamicCollided(pos, CollisionType.njarbeitsheft3, script);
 
-        borders = new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, new Vector2(2, 0), new Quaternion()), CollisionType.wall);
-        borders.SummonerScript.PositionMovementAfterCollision = new Vector3(borderWidth, 0);
+        DynamicObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, enabledPos + new Vector2(0, -5) + new Vector2(Random.Range(0, 30), 0), new Quaternion()), CollisionType.zidan));
+        DynamicObstacles[3].SummonerScript.OnCollisionWithPlayer += (pos, y, script) => DynamicCollided(pos, CollisionType.zidan, script);
+
+        DynamicObstacles.Add(new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, enabledPos + new Vector2(Random.Range(0, 30), 0), new Quaternion()), CollisionType.apple));
+        DynamicObstacles[4].SummonerScript.OnCollisionWithPlayer += (pos, y, script) => DynamicCollided(pos, CollisionType.apple, script);
+
+        borders = new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, new Vector2(2, 0), new Quaternion()), CollisionType.border);
         borders.SummonerScript.OnCollisionWithPlayer += BordersSummonerCollided;
+
+        obstacles = new ObstacleGameObject((GameObject)Instantiate(onPlayerPassedExecutorPrefab, new Vector2(10, 0), new Quaternion()), CollisionType.basicObstacle);
+        obstacles.SummonerScript.OnCollisionWithPlayer += ObstaclesSummonerCollided;
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    private void ObstaclesSummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
     {
-        if (col.CompareTag("Player"))
-        {
-            GenerateLevel();
-            areasPassed++;
-        }
-    }
-
-    void GenerateObstaclesSet()
-    {
-        for (int i = 0; i < obstaclesPerSection; i++)
-        {
-            Vector2 pos = new Vector2();
-            pos.x = lastpos.x + offset + i * obstaclesPerSection;
-
-            pos.y = Random.Range(-5, 5);
-
-            pos.y -= 9;
-
-            GenerateObstacle(pos);
-
-            pos.y += 18;
-
-            GenerateObstacle(pos);
-
-            pos.y = 0;
-
-            GenerateObstaclePassedDetector(pos);
-        }
+        //GenerateObstacle(arg1);
     }
 
     void GenerateObstacle(Vector2 pos)
@@ -123,7 +88,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
     }
 
     private void GenerateLevel()
-    {
+    {/*
         lastpos = transform.position;
         if (areasPassed % 2 == 0)
         {
@@ -137,7 +102,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
         else
         {
             #region Old entity summoner
-            /*int zidanCount = WhoaPlayerProperties.Settings.ZidanCount + areasPassed / 2;
+            int zidanCount = WhoaPlayerProperties.Settings.ZidanCount + areasPassed / 2;
             float minimumArbeitsheftDistance = 0.001f;
             float maximumArbeitsheftDistance = 1.8f;
 
@@ -162,13 +127,13 @@ public class ObstacleGeneratorScript : MonoBehaviour
                 SummonNJArbeitsheft2(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
 
             for (float distance = minimumArbeitsheftDistance; distance < maximumArbeitsheftDistance; distance += 0.4f)
-                SummonNJArbeitsheft1(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));*/
+                SummonNJArbeitsheft1(new Vector2(lastpos.x + offset + distance * sizeOfArea, 0));
             #endregion
 
             float freeAreaSize = WhoaPlayerProperties.Settings.FreeAreaSize;
             float offset = WhoaPlayerProperties.Settings.FreeAreaEntityOffset;
 
-            foreach (ObstacleGameObject obstacle in OpenAreaObstacles)
+            foreach (ObstacleGameObject obstacle in DynamicObstacles)
             {
                 float freeSpaceBetweenEntities = (freeAreaSize - offset) / (GetCountOf(obstacle.Type) + 1);
                 obstacle.Summoner.transform.position = new Vector2(lastpos.x + offset + freeSpaceBetweenEntities, 0);
@@ -177,101 +142,48 @@ public class ObstacleGeneratorScript : MonoBehaviour
             }
             lastpos.x += freeAreaSize;
         }
-        transform.position = lastpos;
+        transform.position = lastpos;*/
     }
 
-    private void ZidanSummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
+    private GameObject GetPrefabFor(CollisionType collisionType)
     {
-        if (arg2 >= GetCountOf(CollisionType.zidan))
-            arg3.gameObject.transform.position = disabledPos;
-
-        SummonZidan(arg1);
+        switch(collisionType)
+        {
+            case CollisionType.njarbeitsheft1:
+                return NJArbeitsheft1;
+            case CollisionType.njarbeitsheft2:
+                return NJArbeitsheft2;
+            case CollisionType.njarbeitsheft3:
+                return NJArbeitsheft3;
+            case CollisionType.zidan:
+                return Zidan;
+            case CollisionType.apple:
+                return Apple;
+            default:
+                return null;
+        }
     }
 
-    private void NJArbeitsheft3SummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
+    private void DynamicCollided(Vector2 pos, CollisionType collisionType, OnPlayerPassedExecutorScript script)
     {
-        if (arg2 >= GetCountOf(CollisionType.njarbeitsheft3))
-            arg3.gameObject.transform.position = disabledPos;
-
-        SummonNJArbeitsheft3(arg1);
+        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[collisionType];
+        pos += new Vector2(data.Offset, 0);
+        script.PositionMovementAfterCollision = new Vector2(Random.Range(data.SpaceBetweenMin, data.SpaceBetweenMax), 0);
+        GameObject dynamicObstacle = Instantiate(GetPrefabFor(collisionType), pos, new Quaternion()) as GameObject;
+        dynamicObstacle.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
+        dynamicObstacle.transform.SetParent(playerTransform, true);
     }
-
-    private void NJArbeitsheft2SummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
-    {
-        if (arg2 >= GetCountOf(CollisionType.njarbeitsheft2))
-            arg3.gameObject.transform.position = disabledPos;
-
-        SummonNJArbeitsheft2(arg1);
-    }
-
-    private void NJArbeitsheft1SummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
-    {
-        if (arg2 >= GetCountOf(CollisionType.njarbeitsheft1))
-            arg3.gameObject.transform.position = disabledPos;
-
-        SummonNJArbeitsheft1(arg1);
-    }
-
 
     private void BordersSummonerCollided(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
     {
-
-        borderGeneratorLastPos += new Vector2(borderWidth, 0);
-        GenerateStandardBorders();
-
+        GenerateStandardBorders(arg1);
     }
 
-    private void GenerateStandardBorders()
+    private void GenerateStandardBorders(Vector2 pos)
     {
-        Instantiate(UpperBorder, borderGeneratorLastPos + new Vector2(0, -9), Quaternion.Euler(0, 0, 0));
-        Instantiate(LowerBorder, borderGeneratorLastPos + new Vector2(0, 9), Quaternion.Euler(0, 0, 180));
-    }
-
-    private int GetCountOf(CollisionType obstacleType)
-    {
-        return (int)(WhoaPlayerProperties.ObstaclesData.Data[obstacleType].Count + (WhoaPlayerProperties.ObstaclesData.Data[obstacleType].ObstaclesAddedPerLevel * (areasPassed / 2)));
-    }
-
-    private GameObject SummonNJArbeitsheft3(Vector2 pos)
-    {
-        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[CollisionType.njarbeitsheft3];
+        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[CollisionType.border];
         pos += new Vector2(data.Offset, 0);
-        GameObject arbeitsheft = Instantiate(NJArbeitsheft3, pos, new Quaternion()) as GameObject;
-        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
-        arbeitsheft.transform.SetParent(playerTransform, true);
-        return arbeitsheft;
-    }
-
-    private GameObject SummonNJArbeitsheft2(Vector2 pos)
-    {
-        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[CollisionType.njarbeitsheft2];
-        pos += new Vector2(data.Offset, 0);
-        GameObject arbeitsheft = Instantiate(NJArbeitsheft2, pos, new Quaternion()) as GameObject;
-        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
-        arbeitsheft.transform.SetParent(playerTransform, true);
-        return arbeitsheft;
-    }
-
-    private GameObject SummonNJArbeitsheft1(Vector2 pos)
-    {
-        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[CollisionType.njarbeitsheft1];
-        pos += new Vector2(data.Offset, 0);
-        GameObject arbeitsheft = Instantiate(NJArbeitsheft1, pos, new Quaternion()) as GameObject;
-
-        arbeitsheft.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
-        arbeitsheft.transform.SetParent(playerTransform, true);
-        return arbeitsheft;
-    }
-
-    private GameObject SummonZidan(Vector2 pos)
-    {
-        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[CollisionType.zidan];
-        pos += new Vector2(data.Offset, 0);
-        pos = new Vector2(pos.x, -5);
-        GameObject zidan = Instantiate(Zidan, pos, new Quaternion()) as GameObject;
-
-        zidan.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
-        zidan.transform.SetParent(playerTransform, true);
-        return zidan;
+        Instantiate(UpperBorder, pos + new Vector2(0, -9), Quaternion.Euler(0, 0, 0));
+        Instantiate(LowerBorder, pos + new Vector2(0, 9), Quaternion.Euler(0, 0, 180));
     }
 }

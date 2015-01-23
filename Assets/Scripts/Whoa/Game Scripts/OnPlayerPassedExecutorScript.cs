@@ -13,8 +13,8 @@ public class OnPlayerPassedExecutorScript : MonoBehaviour {
         if (col.CompareTag("Player"))
         {
             passed++;
-            transform.position = transform.position + PositionMovementAfterCollision;
             OnCollisionWithPlayer(transform.position, passed, this);
+            transform.position = transform.position + PositionMovementAfterCollision;
         }
     }
 

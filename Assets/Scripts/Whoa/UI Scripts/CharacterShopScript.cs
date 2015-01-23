@@ -106,8 +106,7 @@ public class CharacterShopScript : MonoBehaviour
         NameText.text = selectedCharacter.Name;
         setValueAndColor(MultiplierText, selectedCharacter.Multiplier, active.Multiplier);
         setValueAndColor(HealthText, selectedCharacter.Health, active.Health);
-        setValueAndColor(SelfSpellSlotCount, selectedCharacter.SelfSpellSlots, active.SelfSpellSlots);
-        setValueAndColor(RangedSpellSlotCount, selectedCharacter.RangedSpellSlots, active.RangedSpellSlots);
+        setValueAndColor(SelfSpellSlotCount, selectedCharacter.SpellSlots, active.SpellSlots);
         setValueAndColor(WeightText, selectedCharacter.Mass, active.Mass);
         setValueAndColor(WhoaPowerText, selectedCharacter.Flap, active.Flap);
         setValueAndColor(SpeedText, selectedCharacter.Speed, active.Speed);

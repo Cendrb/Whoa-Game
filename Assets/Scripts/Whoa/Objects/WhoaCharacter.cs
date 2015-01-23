@@ -21,8 +21,7 @@ public class WhoaCharacter
     public float Mass { get; private set; }
     public float KlidEnergy { get; private set; }
     public float KlidEnergyRegen { get; private set; }
-    public int SelfSpellSlots { get; private set; }
-    public int RangedSpellSlots { get; private set; }
+    public int SpellSlots { get; private set; }
 
     private int baseHealth;
     private float baseKlidEnergy;
@@ -56,7 +55,7 @@ public class WhoaCharacter
         }
     }
 
-    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float mass, float klidEnergy, float klidEnergyRegen, int selfSpellSlots, int rangedSpellSlots, int price)
+    public WhoaCharacter(string name, float multiplier, int health, float flap, float speed, float mass, float klidEnergy, float klidEnergyRegen, int spellSlots, int price)
     {
         Multiplier = multiplier;
         Name = name;
@@ -72,8 +71,7 @@ public class WhoaCharacter
         baseKlidEnergy = klidEnergy;
         baseFlap = flap;
         baseSpeed = speed;
-        SelfSpellSlots = selfSpellSlots;
-        RangedSpellSlots = rangedSpellSlots;
+        SpellSlots = spellSlots;
 
         Prefab = Resources.Load<GameObject>("Prefabs/Characters/" + Name);
 

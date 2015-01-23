@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 
-public class TransformData
+public struct TransformData
 {
     public Vector2 Position { get; set; }
     public Quaternion Rotation { get; set; }

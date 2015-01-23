@@ -18,7 +18,7 @@ public class ObstaclePassedScript : MonoBehaviour
         if (!passed && col.CompareTag("Player"))
         {
             passed = true;
-            playerScript.ObstaclePassed();
+            //playerScript.ObstaclePassed();
         }
     }
 }

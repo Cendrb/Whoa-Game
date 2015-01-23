@@ -61,7 +61,7 @@ public class SelfSpellsScript : MonoBehaviour
             RefreshSpellAspectRowsGameObjects();
         }
 
-        if (WhoaPlayerProperties.Character.SelfSpellSlots > 0)
+        if (WhoaPlayerProperties.Character.SpellSlots > 0)
             SelectSlot(0);
     }
 
@@ -129,7 +129,7 @@ public class SelfSpellsScript : MonoBehaviour
             klidText.text = spell.Value.GetKlidCost().FormatKlid();
 
             Button setButton = spellObject.transform.FindChild("SetButton").gameObject.GetComponent<Button>();
-            if (WhoaPlayerProperties.Character.SelfSpellSlots == 0)
+            if (WhoaPlayerProperties.Character.SpellSlots == 0)
                 setButton.interactable = false;
             else
                 setButton.onClick.AddListener(new UnityAction(() => SetSpellToSelectedSlot(index)));
@@ -258,7 +258,7 @@ public class SelfSpellsScript : MonoBehaviour
 
         public void Start()
         {
-            for (int spellSlotCount = WhoaPlayerProperties.Character.SelfSpellSlots; spellSlotCount > 0; spellSlotCount--)
+            for (int spellSlotCount = WhoaPlayerProperties.Character.SpellSlots; spellSlotCount > 0; spellSlotCount--)
                 slotButtons[spellSlotCount - 1].interactable = true;
             normalColor = slotButtons.First().GetComponent<Button>().image.color;
         }

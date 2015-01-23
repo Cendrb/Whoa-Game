@@ -13,8 +13,10 @@ public class ObstacleGameObject
 
     public ObstacleGameObject(GameObject summoner, CollisionType type)
     {
+        ObstacleData data = WhoaPlayerProperties.ObstaclesData.Data[type];
         Summoner = summoner;
         SummonerScript = Summoner.GetComponent<OnPlayerPassedExecutorScript>();
+        SummonerScript.PositionMovementAfterCollision = new Vector2(UnityEngine.Random.Range(data.SpaceBetweenMin, data.SpaceBetweenMax), 0);
         Type = type;
     }
 }

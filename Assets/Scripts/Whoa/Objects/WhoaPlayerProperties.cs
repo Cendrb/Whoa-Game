@@ -9,6 +9,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
+public enum AreaEffect { smokeWeedEveryday, illuminati, ADZone, school, billa, parking, superstars }
+
 public static class WhoaPlayerProperties
 {
     static readonly string MONEY_PREFS_KEY = "MONEY";
@@ -30,6 +32,7 @@ public static class WhoaPlayerProperties
 
     public static RandomListWithChances<CollectibleType> CollectiblesProbabilities { get; private set; }
     public static RandomListWithChances<int> CaveBorderAnglesProbabilities { get; private set; }
+    public static RandomListWithChances<AreaEffect> AreaEffectsProbabilities { get; private set; }
 
     public static int HighScore { get; set; }
     public static int LastScore { get; set; }
@@ -48,6 +51,7 @@ public static class WhoaPlayerProperties
 
         CollectiblesProbabilities = new RandomListWithChances<CollectibleType>();
         CollectiblesProbabilities.AddItem(CollectibleType.areaEffect, 2);
+        CollectiblesProbabilities.AddItem(CollectibleType.adcoin, 6);
         CollectiblesProbabilities.AddItem(CollectibleType.health, 2);
         CollectiblesProbabilities.AddItem(CollectibleType.klid, 2);
 
@@ -56,11 +60,25 @@ public static class WhoaPlayerProperties
         CaveBorderAnglesProbabilities.AddItem(45, 1);
         CaveBorderAnglesProbabilities.AddItem(-45, 1);
 
+        AreaEffectsProbabilities = new RandomListWithChances<AreaEffect>();
+        AreaEffectsProbabilities.AddItem(AreaEffect.ADZone, 0);
+        AreaEffectsProbabilities.AddItem(AreaEffect.billa, 1);
+        AreaEffectsProbabilities.AddItem(AreaEffect.illuminati, 0);
+        AreaEffectsProbabilities.AddItem(AreaEffect.parking, 0);
+        AreaEffectsProbabilities.AddItem(AreaEffect.school, 0);
+        AreaEffectsProbabilities.AddItem(AreaEffect.smokeWeedEveryday, 0);
+        AreaEffectsProbabilities.AddItem(AreaEffect.superstars, 0);
+
         Culture = new CultureInfo("cs-CZ");
         Characters = new WhoaCharacters();
-        Settings = GameSettings.LoadFromDrive();
+        Settings = new GameSettings();
+        Settings.MinimalCollectiblesDistance = 20;
         Spells = new SpellManager();
         AspectsTemplates = new AspectsTemplatesStorage();
+
+        WhoaPlayerProperties.ObstaclesData.Data.Add(CollisionType.border, new ObstacleData(30, 30, 0, 0, 0, 0, 0, 100, 5, float.MaxValue));
+        WhoaPlayerProperties.ObstaclesData.Data.Add(CollisionType.basicObstacle, new ObstacleData(30, 30, 0, 0, 0, 0, 0, 20, 5, float.MaxValue));
+
         Load();
     }
 
@@ -113,7 +131,6 @@ public static class WhoaPlayerProperties
     public static void ReloadFromDrive()
     {
         Characters.SetupCharacters();
-        Settings = GameSettings.LoadFromDrive();
         AspectsTemplates = new AspectsTemplatesStorage();
     }
 

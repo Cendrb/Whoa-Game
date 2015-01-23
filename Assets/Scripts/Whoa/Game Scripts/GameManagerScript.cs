@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManagerScript : MonoBehaviour
 {
     public PlayerScript.CollectiblesPrefabs collectibles;
+    public PlayerScript.AreaEffectsData areaEffects;
 
     public Slider healthSlider;
     public Slider klidSlider;
@@ -38,6 +39,7 @@ public class GameManagerScript : MonoBehaviour
         playerScript = player.GetComponent<PlayerScript>();
         playerScript.ActiveEffectPrefab = activeEffectPrefab;
         playerScript.ActiveEffectsContainer = activeEffectsContainer;
+        playerScript.AreaEffects = areaEffects;
         playerScript.CanvasParent = canvasParent;
         playerScript.CastSelfSpellButtonPrefab = castSelfSpellButtonPrefab;
         playerScript.Collectibles = collectibles;
@@ -53,10 +55,5 @@ public class GameManagerScript : MonoBehaviour
 
         obstacleGenerator.playerScript = playerScript;
         obstacleGenerator.playerTransform = player.transform;
-    }
-
-    private void Update()
-    {
-
     }
 }

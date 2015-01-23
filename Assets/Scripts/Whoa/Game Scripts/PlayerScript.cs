@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public class PlayerScript : MonoBehaviour
 {
     public CollectiblesPrefabs Collectibles { get; set; }
+    public AreaEffectsData AreaEffects { get; set; }
 
     public AudioClip flapSound;
     public AudioClip deathSound;
@@ -30,13 +31,13 @@ public class PlayerScript : MonoBehaviour
     public Color EnoughKlidToCastColor { get; set; }
     public Color InsufficientKlidToCastColor { get; set; }
 
+    public int additionalAD;
+
     public GameObject CanvasParent { get; set; }
 
     public OnPlayerPassedExecutorScript CollectiblesGenerator { get; set; }
 
     public Transform Follower { get; set; }
-
-    public int distance;
 
     List<Text> spellKlidCostAmountsOnButtons = new List<Text>();
 
@@ -50,6 +51,8 @@ public class PlayerScript : MonoBehaviour
     bool bouncedOff = false;
     ParticleSystem[] particles;
 
+    int numberOf100s = 0;
+
     // Use this for initialization
     private void Start()
     {
@@ -61,6 +64,7 @@ public class PlayerScript : MonoBehaviour
         rigidbody2D.fixedAngle = true;
         rigidbody2D.angularDrag = 0.05f;
         ((GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Characters/Generic/Farts"))).transform.parent = gameObject.transform;
+        gameObject.transform.localScale = new Vector3(0.84f, 0.84f, 0.84f);
 
         audio.PlayOneShot(startupSound);
         WhoaPlayerProperties.Load();
@@ -127,15 +131,21 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (transform.position.x > distance)
+        if (transform.position.x > WhoaPlayerProperties.LastScore)
         {
-            distance = (int)transform.position.x;
+            WhoaPlayerProperties.LastScore = (int)transform.position.x;
+            ScoreText.text = WhoaPlayerProperties.LastScore.Format();
+            if(numberOf100s * 100 < WhoaPlayerProperties.LastScore)
+            {
+                numberOf100s++;
+                properties.Speed++;
+            }
         }
 
         Vector2 followerPos = Follower.position;
-        followerPos.x = transform.position.x;
+        followerPos.x = transform.position.x + 7;
         Vector2 difference = followerPos - (Vector2)transform.position;
-        if(Mathf.Abs(difference.y) >= 9)
+        if (Mathf.Abs(difference.y) >= 9)
         {
             followerPos.y -= difference.y / 50;
         }
@@ -217,7 +227,7 @@ public class PlayerScript : MonoBehaviour
         particles[0].Emit((int)WhoaPlayerProperties.Character.Flap / 5);
     }
 
-    void GetRekt()
+    private void getRekt()
     {
         if (WhoaPlayerProperties.LastScore > WhoaPlayerProperties.HighScore)
         {
@@ -226,19 +236,19 @@ public class PlayerScript : MonoBehaviour
         }
         else
             WhoaPlayerProperties.LastWasHighscore = false;
-        WhoaPlayerProperties.LastMoney = (int)Mathf.Pow(WhoaPlayerProperties.LastScore, WhoaPlayerProperties.Character.Multiplier);
+        WhoaPlayerProperties.LastMoney = (int)Mathf.Pow((WhoaPlayerProperties.LastScore / 30f), WhoaPlayerProperties.Character.Multiplier) + additionalAD;
         WhoaPlayerProperties.Character.Data.Statistics.MoneyEarned += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Money += WhoaPlayerProperties.LastMoney;
         WhoaPlayerProperties.Save();
         Application.LoadLevel("Score");
     }
-
+    /*
     public void OpenAreaSurvived(int value)
     {
         WhoaPlayerProperties.Character.Data.Statistics.OpenAreasSurvived++;
         WhoaPlayerProperties.LastScore += value;
         openAreasPassedCount++;
-        ScoreText.text = WhoaPlayerProperties.LastScore.ToString();
+
     }
 
     public void ObstaclePassed()
@@ -247,8 +257,8 @@ public class PlayerScript : MonoBehaviour
         WhoaPlayerProperties.Character.Data.Statistics.ObstaclesPassed++;
         WhoaPlayerProperties.LastScore++;
         obstaclesPassedCount++;
-        ScoreText.text = WhoaPlayerProperties.LastScore.ToString();
-    }
+
+    }*/
 
     public bool CollideWith(CollisionType type)
     {
@@ -294,8 +304,8 @@ public class PlayerScript : MonoBehaviour
 
         properties.Health -= damage;
 
-        if (properties.Health < 1)
-            GetRekt();
+        if (properties.Health <= 0)
+            getRekt();
 
         return true;
     }
@@ -310,9 +320,16 @@ public class PlayerScript : MonoBehaviour
             case CollectibleType.klid:
                 properties.Klid += properties.MaxKlid / 2;
                 break;
+            case CollectibleType.adcoin:
+                additionalAD += 10;
+                break;
             case CollectibleType.areaEffect:
-                audio.PlayOneShot(startupSound);
-                StartCoroutine(CameraJaggling());
+                switch (AreaEffect.billa/*WhoaPlayerProperties.AreaEffectsProbabilities.GetRandomItem()*/)
+                {
+                    case AreaEffect.billa:
+                        StartCoroutine(BillaEffect());
+                        break;
+                }
                 break;
         }
     }
@@ -332,6 +349,9 @@ public class PlayerScript : MonoBehaviour
                     break;
                 case CollectibleType.health:
                     prefab = Collectibles.Health;
+                    break;
+                case CollectibleType.adcoin:
+                    prefab = Collectibles.ADCoin;
                     break;
                 case CollectibleType.klid:
                     if (WhoaPlayerProperties.Character.KlidEnergy > 0)
@@ -400,7 +420,40 @@ public class PlayerScript : MonoBehaviour
         yield return new WaitForSeconds(2);
         Camera.main.rigidbody2D.angularVelocity = 0;
     }
+
+    private System.Collections.IEnumerator BillaEffect()
+    {
+        audio.PlayOneShot(AreaEffects.MetrixSound);
+        GameObject background = (GameObject)Instantiate(AreaEffects.MetrixBackground);
+        background.transform.SetParent(Follower, false);
+
+        SpriteRenderer renderer = background.GetComponent<SpriteRenderer>();
+
+        // FADING IN
+        for (int alpha = 0; alpha < 150; alpha++)
+        {
+            renderer.color = new Color(255, 255, 255, alpha);
+            yield return new WaitForSeconds(0.012f);
+        }
+
+        yield return new WaitForSeconds(18);
+
+        // FADING OUT
+        for (int alpha = 150; alpha > 0; alpha--)
+        {
+            renderer.color = new Color(255, 255, 255, alpha);
+            yield return new WaitForSeconds(0.012f);
+        }
+        GameObject.Destroy(background);
+    }
     #endregion
+
+    [Serializable]
+    public class AreaEffectsData
+    {
+        public GameObject MetrixBackground;
+        public AudioClip MetrixSound;
+    }
 
     [Serializable]
     public class CollectiblesPrefabs
@@ -408,5 +461,6 @@ public class PlayerScript : MonoBehaviour
         public GameObject AreaEffect;
         public GameObject Health;
         public GameObject Klid;
+        public GameObject ADCoin;
     }
 }

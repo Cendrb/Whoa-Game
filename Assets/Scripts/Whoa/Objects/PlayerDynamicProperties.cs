@@ -61,7 +61,7 @@ public class PlayerDynamicProperties
         Gravity = character.Mass;
 
         collisionHandling[CollisionType.basicObstacle] = 10;
-        collisionHandling[CollisionType.wall] = 5;
+        collisionHandling[CollisionType.border] = 5;
 
         foreach (KeyValuePair<CollisionType, ObstacleData> pair in WhoaPlayerProperties.ObstaclesData.Data)
             collisionHandling[pair.Key] = pair.Value.Damage;

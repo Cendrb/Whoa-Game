@@ -1,0 +1,17 @@
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Assembly-CSharp-firstpass.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Google.GData.AccessControl.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Google.GData.Client.DLL
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Google.GData.Extensions.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Google.GData.Spreadsheets.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Newtonsoft.Json.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\UnityEditor.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\UnityEngine.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\UnityEngine.UI.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Mono.Cecil.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\nunit.framework.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\Unity.DataContract.dll
+E:\Documents\UnityProjects\Whoa\Temp\bin\Debug\ICSharpCode.NRefactory.dll
+E:\Documents\UnityProjects\Whoa\obj\Debug\Assembly-CSharp-firstpass.csprojResolveAssemblyReference.cache
+E:\Documents\UnityProjects\Whoa\obj\Debug\Assembly-CSharp-firstpass.dll
+E:\Documents\UnityProjects\Whoa\obj\Debug\Assembly-CSharp-firstpass.pdb

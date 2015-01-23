@@ -20,7 +20,7 @@ namespace Aspects.Self.Effects
             properties.SetCollisionHandling(CollisionType.njarbeitsheft1, -1);
             properties.SetCollisionHandling(CollisionType.njarbeitsheft2, -1);
             properties.SetCollisionHandling(CollisionType.njarbeitsheft3, -1);
-            properties.SetCollisionHandling(CollisionType.wall, -1);
+            properties.SetCollisionHandling(CollisionType.border, -1);
             properties.SetCollisionHandling(CollisionType.zidan, -1);
         }
 
@@ -30,7 +30,7 @@ namespace Aspects.Self.Effects
             properties.RevertCollisionHandling(CollisionType.njarbeitsheft1);
             properties.RevertCollisionHandling(CollisionType.njarbeitsheft2);
             properties.RevertCollisionHandling(CollisionType.njarbeitsheft3);
-            properties.RevertCollisionHandling(CollisionType.wall);
+            properties.RevertCollisionHandling(CollisionType.border);
             properties.RevertCollisionHandling(CollisionType.zidan);
         }
     }
