@@ -324,10 +324,13 @@ public class PlayerScript : MonoBehaviour
                 additionalAD += 10;
                 break;
             case CollectibleType.areaEffect:
-                switch (AreaEffect.billa/*WhoaPlayerProperties.AreaEffectsProbabilities.GetRandomItem()*/)
+                switch (WhoaPlayerProperties.AreaEffectsProbabilities.GetRandomItem())
                 {
                     case AreaEffect.billa:
                         StartCoroutine(BillaEffect());
+                        break;
+                    case AreaEffect.superstars:
+                        StartCoroutine(SuperstarsEffect());
                         break;
                 }
                 break;
@@ -336,7 +339,7 @@ public class PlayerScript : MonoBehaviour
 
     private void GenerateCollectibleGeneratorTriggered(Vector3 arg1, int arg2, OnPlayerPassedExecutorScript arg3)
     {
-        if (UnityEngine.Random.Range(0, 10) == 0)
+        if (UnityEngine.Random.Range(0, 3) == 0)
         {
             GameObject prefab;
 
@@ -423,25 +426,55 @@ public class PlayerScript : MonoBehaviour
 
     private System.Collections.IEnumerator BillaEffect()
     {
-        audio.PlayOneShot(AreaEffects.MetrixSound);
         GameObject background = (GameObject)Instantiate(AreaEffects.MetrixBackground);
         background.transform.SetParent(Follower, false);
 
-        SpriteRenderer renderer = background.GetComponent<SpriteRenderer>();
-
+        SpriteRenderer renderer = background.gameObject.GetComponent<SpriteRenderer>();
+        
         // FADING IN
-        for (int alpha = 0; alpha < 150; alpha++)
+        for (byte alpha = 0; alpha < 150; alpha++)
         {
-            renderer.color = new Color(255, 255, 255, alpha);
+            renderer.color = new Color32(255, 255, 255, alpha);
             yield return new WaitForSeconds(0.012f);
         }
 
+        audio.PlayOneShot(AreaEffects.MetrixSound);
+
         yield return new WaitForSeconds(18);
+        
+        // FADING OUT
+        for (byte alpha = 150; alpha > 0; alpha--)
+        {
+            renderer.color = new Color32(255, 255, 255, alpha);
+            yield return new WaitForSeconds(0.012f);
+        }
+        GameObject.Destroy(background);
+    }
+
+    private System.Collections.IEnumerator SuperstarsEffect()
+    {
+        GameObject background = (GameObject)Instantiate(AreaEffects.RokoBackground);
+        background.transform.SetParent(Follower, false);
+
+        SpriteRenderer renderer = background.gameObject.GetComponent<SpriteRenderer>();
+
+        // FADING IN
+        for (byte alpha = 0; alpha < 150; alpha++)
+        {
+            renderer.color = new Color32(255, 255, 255, alpha);
+            yield return new WaitForSeconds(0.012f);
+        }
+
+        audio.PlayOneShot(AreaEffects.RokoSound);
+
+        yield return new WaitForSeconds(19);
+
+        rigidbody2D.AddForce(new Vector2(0, -20), ForceMode2D.Impulse);
 
         // FADING OUT
-        for (int alpha = 150; alpha > 0; alpha--)
+        for (byte alpha = 150; alpha > 0; alpha--)
         {
-            renderer.color = new Color(255, 255, 255, alpha);
+            renderer.color = new Color32(255, 255, 255, alpha);
             yield return new WaitForSeconds(0.012f);
         }
         GameObject.Destroy(background);
@@ -453,6 +486,9 @@ public class PlayerScript : MonoBehaviour
     {
         public GameObject MetrixBackground;
         public AudioClip MetrixSound;
+
+        public GameObject RokoBackground;
+        public AudioClip RokoSound;
     }
 
     [Serializable]

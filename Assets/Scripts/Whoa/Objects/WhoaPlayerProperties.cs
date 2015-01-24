@@ -50,8 +50,8 @@ public static class WhoaPlayerProperties
         ObstaclesData = new global::ObstaclesData();
 
         CollectiblesProbabilities = new RandomListWithChances<CollectibleType>();
-        CollectiblesProbabilities.AddItem(CollectibleType.areaEffect, 2);
-        CollectiblesProbabilities.AddItem(CollectibleType.adcoin, 6);
+        CollectiblesProbabilities.AddItem(CollectibleType.areaEffect, 10);
+        CollectiblesProbabilities.AddItem(CollectibleType.adcoin, 18);
         CollectiblesProbabilities.AddItem(CollectibleType.health, 2);
         CollectiblesProbabilities.AddItem(CollectibleType.klid, 2);
 
@@ -61,13 +61,8 @@ public static class WhoaPlayerProperties
         CaveBorderAnglesProbabilities.AddItem(-45, 1);
 
         AreaEffectsProbabilities = new RandomListWithChances<AreaEffect>();
-        AreaEffectsProbabilities.AddItem(AreaEffect.ADZone, 0);
-        AreaEffectsProbabilities.AddItem(AreaEffect.billa, 1);
-        AreaEffectsProbabilities.AddItem(AreaEffect.illuminati, 0);
-        AreaEffectsProbabilities.AddItem(AreaEffect.parking, 0);
-        AreaEffectsProbabilities.AddItem(AreaEffect.school, 0);
-        AreaEffectsProbabilities.AddItem(AreaEffect.smokeWeedEveryday, 0);
-        AreaEffectsProbabilities.AddItem(AreaEffect.superstars, 0);
+        //AreaEffectsProbabilities.AddItem(AreaEffect.billa, 1);
+        AreaEffectsProbabilities.AddItem(AreaEffect.superstars, 1);
 
         Culture = new CultureInfo("cs-CZ");
         Characters = new WhoaCharacters();

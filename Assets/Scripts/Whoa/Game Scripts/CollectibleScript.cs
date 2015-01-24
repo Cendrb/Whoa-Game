@@ -22,6 +22,8 @@ public class CollectibleScript : MonoBehaviour
         if (col.CompareTag("Player") && script != null)
         {
             script.CollectCollectible(type);
+            ExplodeScript explode = GetComponent<ExplodeScript>();
+            explode.Explode();
             GameObject.Destroy(gameObject);
         }
     }
