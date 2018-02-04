@@ -43,15 +43,15 @@ public class SelfSpellsScript : MonoBehaviour
         rectTransform.localScale = new Vector3(1, 1, 1);
         rectTransform.anchoredPosition = new Vector3(13, -60);
 
-        Text aspectName = infoRow.transform.FindChild("AspectName").gameObject.GetComponent<Text>();
+        Text aspectName = infoRow.transform.Find("AspectName").gameObject.GetComponent<Text>();
         aspectName.fontStyle = FontStyle.Bold;
         aspectName.text = "Name";
 
-        Text aspectDuration = infoRow.transform.FindChild("AspectDuration").gameObject.GetComponent<Text>();
+        Text aspectDuration = infoRow.transform.Find("AspectDuration").gameObject.GetComponent<Text>();
         aspectDuration.fontStyle = FontStyle.Bold;
         aspectDuration.text = "Duration";
 
-        Text aspectAmplifier = infoRow.transform.FindChild("AspectAmplifier").gameObject.GetComponent<Text>();
+        Text aspectAmplifier = infoRow.transform.Find("AspectAmplifier").gameObject.GetComponent<Text>();
         aspectAmplifier.fontStyle = FontStyle.Bold;
         aspectAmplifier.text = "Amplifier";
 
@@ -81,16 +81,16 @@ public class SelfSpellsScript : MonoBehaviour
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(16, counter);
 
-            Text aspectName = row.transform.FindChild("AspectName").gameObject.GetComponent<Text>();
+            Text aspectName = row.transform.Find("AspectName").gameObject.GetComponent<Text>();
             aspectName.text = aspect.Name;
 
-            Text aspectDuration = row.transform.FindChild("AspectDuration").gameObject.GetComponent<Text>();
+            Text aspectDuration = row.transform.Find("AspectDuration").gameObject.GetComponent<Text>();
             if (aspect.ADPerDuration == -1)
                 aspectDuration.text = "None";
             else
                 aspectDuration.text = aspect.Duration.ToString() + " s";
 
-            Text aspectAmplifier = row.transform.FindChild("AspectAmplifier").gameObject.GetComponent<Text>();
+            Text aspectAmplifier = row.transform.Find("AspectAmplifier").gameObject.GetComponent<Text>();
             if (aspect.ADPerAmplifier == -1)
                 aspectAmplifier.text = "None";
             else
@@ -122,13 +122,13 @@ public class SelfSpellsScript : MonoBehaviour
             button.onClick.AddListener(new UnityAction(() => SelectSpell(index)));
             SpellButtonManager.spellButtons.Add(spell.Key, button);
 
-            Text text = spellObject.transform.FindChild("Name").gameObject.GetComponent<Text>();
+            Text text = spellObject.transform.Find("Name").gameObject.GetComponent<Text>();
             text.text = spell.Value.Name;
 
-            Text klidText = spellObject.transform.FindChild("KlidCost").gameObject.GetComponent<Text>();
+            Text klidText = spellObject.transform.Find("KlidCost").gameObject.GetComponent<Text>();
             klidText.text = spell.Value.GetKlidCost().FormatKlid();
 
-            Button setButton = spellObject.transform.FindChild("SetButton").gameObject.GetComponent<Button>();
+            Button setButton = spellObject.transform.Find("SetButton").gameObject.GetComponent<Button>();
             if (WhoaPlayerProperties.Character.SpellSlots == 0)
                 setButton.interactable = false;
             else

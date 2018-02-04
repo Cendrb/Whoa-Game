@@ -43,8 +43,8 @@ public class NewSelfSpellScript : MonoBehaviour
         infrectTransform.localScale = new Vector3(1, 1, 1);
         infrectTransform.anchoredPosition = new Vector2(8, -7);
         basicInformation.SetActive(false);
-        nameInput = infrectTransform.FindChild("SpellName").gameObject.GetComponent<InputField>();
-        idInput = infrectTransform.FindChild("SpellID").gameObject.GetComponent<InputField>();
+        nameInput = infrectTransform.Find("SpellName").gameObject.GetComponent<InputField>();
+        idInput = infrectTransform.Find("SpellID").gameObject.GetComponent<InputField>();
         nameInput.onValueChange.AddListener(new UnityAction<string>((text) => constructedSpell.Name = text));
         idInput.onValueChange.AddListener(new UnityAction<string>((text) => constructedSpell.Abbreviate = text));
 
@@ -60,7 +60,7 @@ public class NewSelfSpellScript : MonoBehaviour
                 rectTransform.localScale = new Vector3(1, 1, 1);
                 rectTransform.anchoredPosition = new Vector3(counter, -4);
 
-                Image image = rectTransform.FindChild("Image").GetComponent<Image>();
+                Image image = rectTransform.Find("Image").GetComponent<Image>();
                 image.sprite = template.Sprite;
 
                 Button button = templateObject.GetComponent<Button>();
@@ -94,16 +94,16 @@ public class NewSelfSpellScript : MonoBehaviour
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
-            Image image = rectTransform.FindChild("Image").GetComponent<Image>();
+            Image image = rectTransform.Find("Image").GetComponent<Image>();
             image.sprite = aspect.icon;
 
-            Text name = rectTransform.FindChild("Name").GetComponent<Text>();
+            Text name = rectTransform.Find("Name").GetComponent<Text>();
             name.text = aspect.Name;
 
-            Text constructionCost = rectTransform.FindChild("ConstructionCost").GetComponent<Text>();
+            Text constructionCost = rectTransform.Find("ConstructionCost").GetComponent<Text>();
             constructionCost.text = aspect.GetPrice().FormatAD();
 
-            Text castCost = rectTransform.FindChild("CastCost").GetComponent<Text>();
+            Text castCost = rectTransform.Find("CastCost").GetComponent<Text>();
             castCost.text = aspect.GetKlidCost().FormatKlid();
 
             Button button = templateObject.GetComponent<Button>();
@@ -145,20 +145,20 @@ public class NewSelfSpellScript : MonoBehaviour
                     script.Script = this;
                     script.SetLabels();
 
-                    Text name = rectTransform.FindChild("Text").gameObject.GetComponent<Text>();
+                    Text name = rectTransform.Find("Text").gameObject.GetComponent<Text>();
                     name.text = template.Name;
 
-                    Button removeButton = rectTransform.FindChild("RemoveButton").gameObject.GetComponent<Button>();
+                    Button removeButton = rectTransform.Find("RemoveButton").gameObject.GetComponent<Button>();
                     SelfAspect aspectCopy = aspect;
                     removeButton.onClick.AddListener(new UnityAction(() => OnRemoveButtonClick(aspectCopy)));
 
-                    GameObject amplifier = rectTransform.FindChild("Amplifier").gameObject;
+                    GameObject amplifier = rectTransform.Find("Amplifier").gameObject;
                     if (template.MinAmplifier != 0)
                     {
                         Text amplifierName = amplifier.GetComponent<Text>();
                         amplifierName.text = template.AmplifierName;
 
-                        Slider amplifierSlider = amplifier.transform.FindChild("Slider").gameObject.GetComponent<Slider>();
+                        Slider amplifierSlider = amplifier.transform.Find("Slider").gameObject.GetComponent<Slider>();
                         amplifierSlider.value = template.DefaultAmplifier;
                         amplifierSlider.maxValue = template.MaxAmplifier;
                         amplifierSlider.minValue = template.MinAmplifier;
@@ -166,10 +166,10 @@ public class NewSelfSpellScript : MonoBehaviour
                     else
                         GameObject.Destroy(amplifier);
 
-                    GameObject duration = rectTransform.FindChild("Duration").gameObject;
+                    GameObject duration = rectTransform.Find("Duration").gameObject;
                     if (template.MinDuration != 0)
                     {
-                        Slider durationSlider = duration.transform.FindChild("Slider").gameObject.GetComponent<Slider>();
+                        Slider durationSlider = duration.transform.Find("Slider").gameObject.GetComponent<Slider>();
                         durationSlider.value = template.DefaultDuration;
                         durationSlider.maxValue = template.MaxDuration;
                         durationSlider.minValue = template.MinDuration;

@@ -98,9 +98,9 @@ public class PlayerScript : MonoBehaviour
             rectTransform.SetParent(CanvasParent.transform);
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector2(120, counter);
-            Text abbreviateText = button.transform.FindChild("Abbreviate").gameObject.GetComponentInChildren<Text>();
+            Text abbreviateText = button.transform.Find("Abbreviate").gameObject.GetComponentInChildren<Text>();
             abbreviateText.text = spell.Abbreviate;
-            Text klidCostText = button.transform.FindChild("KlidCost").gameObject.GetComponentInChildren<Text>();
+            Text klidCostText = button.transform.Find("KlidCost").gameObject.GetComponentInChildren<Text>();
             klidCostText.text = spell.GetKlidCost().FormatKlid();
             spellKlidCostAmountsOnButtons.Add(klidCostText);
             selfSpellButtons.Add(index.Value, button);
@@ -174,7 +174,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
 
-        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsWebPlayer || Application.platform == RuntimePlatform.OSXWebPlayer)
+        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer)
             if (Input.GetMouseButtonDown(0))
             {
                 Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);

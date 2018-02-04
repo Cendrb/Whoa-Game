@@ -35,17 +35,17 @@ public class UpgradesScript : MonoBehaviour
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(6, counter);
 
-            Text nameText = upgradeObject.transform.FindChild("NameText").gameObject.GetComponent<Text>();
+            Text nameText = upgradeObject.transform.Find("NameText").gameObject.GetComponent<Text>();
             nameText.text = upgrade.Name;
 
-            Text levelText = upgradeObject.transform.FindChild("LevelText").gameObject.GetComponent<Text>();
+            Text levelText = upgradeObject.transform.Find("LevelText").gameObject.GetComponent<Text>();
             levelText.text = upgrade.GetLevel().ToString();
 
-            Image image = upgradeObject.transform.FindChild("Image").gameObject.GetComponent<Image>();
+            Image image = upgradeObject.transform.Find("Image").gameObject.GetComponent<Image>();
             image.sprite = upgrade.Sprite;
 
             int index = currentCharacter.Upgrades.IndexOf(upgrade);
-            Button button = upgradeObject.transform.FindChild("Button").gameObject.GetComponent<Button>();
+            Button button = upgradeObject.transform.Find("Button").gameObject.GetComponent<Button>();
             button.onClick.AddListener(new UnityEngine.Events.UnityAction(() => selectUpgrade(index)));
 
             counter -= 80;
@@ -73,7 +73,7 @@ public class UpgradesScript : MonoBehaviour
         switch (currentCharacter.BuyUpgrade(selectedUpgrade))
         {
             case BuyUpgradeResult.success:
-                upgradesParent.transform.FindChild(selectedUpgrade.Name).FindChild("LevelText").gameObject.GetComponent<Text>().text = selectedUpgrade.GetLevel().ToString();
+                upgradesParent.transform.Find(selectedUpgrade.Name).Find("LevelText").gameObject.GetComponent<Text>().text = selectedUpgrade.GetLevel().ToString();
                 showUpgrade();
                 MoneyScript.ShowMoney();
                 break;
@@ -137,19 +137,19 @@ public class UpgradesScript : MonoBehaviour
                 float newValue = effect.GetModifiedValue(currentValue, selectedUpgrade.GetLevel() + 1);
                 float difference = newValue - currentValue;
 
-                Text effectName = effectObject.transform.FindChild("EffectName").gameObject.GetComponent<Text>();
+                Text effectName = effectObject.transform.Find("EffectName").gameObject.GetComponent<Text>();
                 effectName.text = Static.GetName(effect.AffectedProperty);
 
-                Text currentText = effectObject.transform.FindChild("CurrentValue").gameObject.GetComponent<Text>();
+                Text currentText = effectObject.transform.Find("CurrentValue").gameObject.GetComponent<Text>();
                 currentText.text = currentValue.ToString();
 
-                Text newText = effectObject.transform.FindChild("NewValue").gameObject.GetComponent<Text>();
+                Text newText = effectObject.transform.Find("NewValue").gameObject.GetComponent<Text>();
                 newText.text = newValue.ToString();
 
-                Text diffText = effectObject.transform.FindChild("Difference").gameObject.GetComponent<Text>();
+                Text diffText = effectObject.transform.Find("Difference").gameObject.GetComponent<Text>();
                 diffText.text = difference.ToString();
 
-                Text ratioText = effectObject.transform.FindChild("Ratio").gameObject.GetComponent<Text>();
+                Text ratioText = effectObject.transform.Find("Ratio").gameObject.GetComponent<Text>();
                 ratioText.text = "1 unit per " + (selectedUpgrade.GetPrice() / difference).ToString("0.##") + " AD";
 
                 counter -= 155;

@@ -52,7 +52,7 @@ public class CharacterShopScript : MonoBehaviour
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
-            Text text = characterObject.transform.FindChild("Text").gameObject.GetComponent<Text>();
+            Text text = characterObject.transform.Find("Text").gameObject.GetComponent<Text>();
             text.text = character.Name;
 
             Button button = characterObject.GetComponent<Button>();
@@ -60,7 +60,7 @@ public class CharacterShopScript : MonoBehaviour
             WhoaCharacter characterCopy = character;
             button.onClick.AddListener(new UnityAction(() => SelectCharacter(characterCopy)));
 
-            Image image = characterObject.transform.FindChild("Image").gameObject.GetComponent<Image>();
+            Image image = characterObject.transform.Find("Image").gameObject.GetComponent<Image>();
             image.sprite = character.Sprite;
 
             counter -= 80;

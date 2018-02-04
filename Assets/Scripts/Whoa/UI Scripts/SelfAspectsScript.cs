@@ -40,16 +40,16 @@ public class SelfAspectsScript : MonoBehaviour
             rectTransform.localScale = new Vector3(1, 1, 1);
             rectTransform.anchoredPosition = new Vector3(0, counter);
 
-            Text text = aspectObject.transform.FindChild("Text").gameObject.GetComponent<Text>();
+            Text text = aspectObject.transform.Find("Text").gameObject.GetComponent<Text>();
             text.text = template.Name;
 
-            Image image = aspectObject.transform.FindChild("Image").gameObject.GetComponent<Image>();
+            Image image = aspectObject.transform.Find("Image").gameObject.GetComponent<Image>();
             image.sprite = template.Sprite;
 
-            Text adCostText = aspectObject.transform.FindChild("Price").gameObject.GetComponent<Text>();
+            Text adCostText = aspectObject.transform.Find("Price").gameObject.GetComponent<Text>();
             adCostText.text = template.RequiredMoney.ToString() + " AD";
 
-            Text highscoreText = aspectObject.transform.FindChild("Highscore").gameObject.GetComponent<Text>();
+            Text highscoreText = aspectObject.transform.Find("Highscore").gameObject.GetComponent<Text>();
             highscoreText.text = template.RequiredHighscore.ToString() + " HS";
 
             Button button = aspectObject.GetComponent<Button>();
