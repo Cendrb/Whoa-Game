@@ -10,6 +10,6 @@ public class ConstantVelocityScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rigidbody2D.velocity = new Vector2(xVelocity, yVelocity);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(xVelocity, yVelocity);
     }
 }

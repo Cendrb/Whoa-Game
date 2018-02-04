@@ -59,14 +59,14 @@ public class PlayerScript : MonoBehaviour
         // Generic character initialization
         gameObject.AddComponent<AudioSource>();
         gameObject.AddComponent<Rigidbody2D>();
-        rigidbody2D.gravityScale = 6;
-        rigidbody2D.drag = 1;
-        rigidbody2D.fixedAngle = true;
-        rigidbody2D.angularDrag = 0.05f;
+        GetComponent<Rigidbody2D>().gravityScale = 6;
+        GetComponent<Rigidbody2D>().drag = 1;
+        GetComponent<Rigidbody2D>().fixedAngle = true;
+        GetComponent<Rigidbody2D>().angularDrag = 0.05f;
         ((GameObject)Instantiate(Resources.Load<GameObject>("Prefabs/Characters/Generic/Farts"))).transform.parent = gameObject.transform;
         gameObject.transform.localScale = new Vector3(0.84f, 0.84f, 0.84f);
 
-        audio.PlayOneShot(startupSound);
+        GetComponent<AudioSource>().PlayOneShot(startupSound);
         WhoaPlayerProperties.Load();
         WhoaPlayerProperties.LastScore = 0;
         WhoaPlayerProperties.LastMoney = 0;
@@ -74,13 +74,13 @@ public class PlayerScript : MonoBehaviour
         properties.HealthChanged += RefreshHealthLabel;
         properties.KlidChanged += RefreshKlidCostLabels;
         properties.KlidChanged += RefreshKlidLabel;
-        rigidbody2D.mass = WhoaPlayerProperties.Character.Mass;
+        GetComponent<Rigidbody2D>().mass = WhoaPlayerProperties.Character.Mass;
         particles = GetComponentsInChildren<ParticleSystem>();
 
         SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         spriteRenderer.sprite = WhoaPlayerProperties.Character.Sprite;
 
-        particles[0].renderer.material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
+        particles[0].GetComponent<Renderer>().material.mainTexture = WhoaPlayerProperties.Character.Sprite.texture;
 
         particles[1].emissionRate = (int)WhoaPlayerProperties.Character.Speed;
 
@@ -161,7 +161,7 @@ public class PlayerScript : MonoBehaviour
                     bool casted = false;
                     foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
                     {
-                        if (pair.Value.collider2D.OverlapPoint(pos))
+                        if (pair.Value.GetComponent<Collider2D>().OverlapPoint(pos))
                         {
                             CastSelfSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
                             casted = true;
@@ -181,7 +181,7 @@ public class PlayerScript : MonoBehaviour
                 bool casted = false;
                 foreach (KeyValuePair<int, GameObject> pair in selfSpellButtons)
                 {
-                    if (pair.Value.collider2D.OverlapPoint(pos))
+                    if (pair.Value.GetComponent<Collider2D>().OverlapPoint(pos))
                     {
                         CastSelfSpell(WhoaPlayerProperties.Spells.SelfSpells[pair.Key]);
                         casted = true;
@@ -198,7 +198,7 @@ public class PlayerScript : MonoBehaviour
             }
         if (!bouncedOff)
         {
-            rigidbody2D.AddForce(new Vector2(properties.Speed, 0), ForceMode2D.Force);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(properties.Speed, 0), ForceMode2D.Force);
         }
     }
 
@@ -207,7 +207,7 @@ public class PlayerScript : MonoBehaviour
         float klidCost = spell.GetKlidCost();
         if (klidCost <= properties.Klid)
         {
-            audio.PlayOneShot(selfSpellCastedSound);
+            GetComponent<AudioSource>().PlayOneShot(selfSpellCastedSound);
             properties.Klid -= klidCost;
             foreach (SelfEffect effect in spell.Effects)
             {
@@ -221,9 +221,9 @@ public class PlayerScript : MonoBehaviour
     {
         WhoaPlayerProperties.Character.Data.Statistics.WhoaFlaps++;
         flapped = true;
-        rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
-        rigidbody2D.AddForce(new Vector2(0, properties.Flap), ForceMode2D.Impulse);
-        audio.PlayOneShot(flapSound);
+        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 0);
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, properties.Flap), ForceMode2D.Impulse);
+        GetComponent<AudioSource>().PlayOneShot(flapSound);
         particles[0].Emit((int)WhoaPlayerProperties.Character.Flap / 5);
     }
 
@@ -300,7 +300,7 @@ public class PlayerScript : MonoBehaviour
         if (damage == -1)
             return false;
 
-        audio.PlayOneShot(crashSound);
+        GetComponent<AudioSource>().PlayOneShot(crashSound);
 
         properties.Health -= damage;
 
@@ -368,7 +368,7 @@ public class PlayerScript : MonoBehaviour
             }
 
             float yPosition = UnityEngine.Random.Range(-7f, 7f);
-            GameObject collectible = (GameObject)Instantiate(prefab, new Vector2(rigidbody2D.position.x + 40, yPosition), new Quaternion());
+            GameObject collectible = (GameObject)Instantiate(prefab, new Vector2(GetComponent<Rigidbody2D>().position.x + 40, yPosition), new Quaternion());
             CollectibleScript script = collectible.GetComponent<CollectibleScript>();
             script.Setup(this);
         }
@@ -417,11 +417,11 @@ public class PlayerScript : MonoBehaviour
         int direction = 1;
         if (UnityEngine.Random.Range(0, 1) == 1)
             direction = -1;
-        Camera.main.rigidbody2D.angularVelocity = 90 * direction;
+        Camera.main.GetComponent<Rigidbody2D>().angularVelocity = 90 * direction;
         yield return new WaitForSeconds(2);
-        Camera.main.rigidbody2D.angularVelocity = -90 * direction;
+        Camera.main.GetComponent<Rigidbody2D>().angularVelocity = -90 * direction;
         yield return new WaitForSeconds(2);
-        Camera.main.rigidbody2D.angularVelocity = 0;
+        Camera.main.GetComponent<Rigidbody2D>().angularVelocity = 0;
     }
 
     private System.Collections.IEnumerator BillaEffect()
@@ -438,7 +438,7 @@ public class PlayerScript : MonoBehaviour
             yield return new WaitForSeconds(0.012f);
         }
 
-        audio.PlayOneShot(AreaEffects.MetrixSound);
+        GetComponent<AudioSource>().PlayOneShot(AreaEffects.MetrixSound);
 
         yield return new WaitForSeconds(18);
         
@@ -465,11 +465,11 @@ public class PlayerScript : MonoBehaviour
             yield return new WaitForSeconds(0.012f);
         }
 
-        audio.PlayOneShot(AreaEffects.RokoSound);
+        GetComponent<AudioSource>().PlayOneShot(AreaEffects.RokoSound);
 
         yield return new WaitForSeconds(19);
 
-        rigidbody2D.AddForce(new Vector2(0, -20), ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(0, -20), ForceMode2D.Impulse);
 
         // FADING OUT
         for (byte alpha = 150; alpha > 0; alpha--)

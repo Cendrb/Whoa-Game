@@ -1,11 +1,6 @@
-﻿using Google.GData.Spreadsheets;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using Google.GData.Spreadsheets;
 using UnityEngine;
 
 public class WhoaCharacters
@@ -43,14 +38,14 @@ public class WhoaCharacters
         CharacterUpgrade upgrade = new CharacterUpgrade("You shall not pass!", 69, 69, 69);
         foreach (ListEntry row in upgradesList.Entries)
         {
-            int id = int.Parse(row.Elements[0].Value);
-            if (id == -1)
+            string id = row.Elements[0].Value;
+            if (string.IsNullOrEmpty(id))
             {
                 upgrade.Effects.Add(parseEffect(row));
             }
             else
             {
-                currentlyUpgradedCharacter = characters[id];
+                currentlyUpgradedCharacter = characters.Find(character => character.Name.Equals(id, StringComparison.OrdinalIgnoreCase));
                 
                 string name = row.Elements[1].Value;
                 int maxLevel = int.Parse(row.Elements[2].Value);

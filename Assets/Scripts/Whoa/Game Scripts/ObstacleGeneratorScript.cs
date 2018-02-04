@@ -170,7 +170,7 @@ public class ObstacleGeneratorScript : MonoBehaviour
         pos += new Vector2(data.Offset, 0);
         script.PositionMovementAfterCollision = new Vector2(Random.Range(data.SpaceBetweenMin, data.SpaceBetweenMax), 0);
         GameObject dynamicObstacle = Instantiate(GetPrefabFor(collisionType), pos, new Quaternion()) as GameObject;
-        dynamicObstacle.rigidbody2D.velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
+        dynamicObstacle.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(data.XVelocityMin, data.XVelocityMax), Random.Range(data.YVelocityMin, data.YVelocityMax));
         dynamicObstacle.transform.SetParent(playerTransform, true);
     }
 
